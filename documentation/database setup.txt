@@ -1,0 +1,6 @@
+in c9.io:
+mysql -u username -p databasename < file.sql
+
+mysql-ctl start
+
+mysql-ctl cli
