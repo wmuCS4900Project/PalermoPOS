@@ -1,0 +1,2 @@
+json.extract! order, :id, :belongs_to, :UserID, :OrderDate, :OrderTime, :TotalCost, :Paid, :DriverID, :Discounts, :AmountPaid, :ChangeDue, :TIP, :created_at, :updated_at
+json.url order_url(order, format: :json)

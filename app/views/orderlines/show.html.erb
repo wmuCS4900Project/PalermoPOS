@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Belongs to:</strong>
+  <%= @orderline.belongs_to %>
+</p>
+
+<p>
+  <strong>Productparentid:</strong>
+  <%= @orderline.ProductParentID %>
+</p>
+
+<p>
+  <strong>Options:</strong>
+  <%= @orderline.Options %>
+</p>
+
+<p>
+  <strong>Itemtotalcost:</strong>
+  <%= @orderline.ItemTotalCost %>
+</p>
+
+<%= link_to 'Edit', edit_orderline_path(@orderline) %> |
+<%= link_to 'Back', orderlines_path %>

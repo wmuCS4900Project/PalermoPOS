@@ -1,0 +1,72 @@
+<%= form_for(order) do |f| %>
+  <% if order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+      <% order.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :belongs_to %>
+    <%= f.text_field :belongs_to %>
+  </div>
+
+  <div class="field">
+    <%= f.label :UserID %>
+    <%= f.number_field :UserID %>
+  </div>
+
+  <div class="field">
+    <%= f.label :OrderDate %>
+    <%= f.datetime_select :OrderDate %>
+  </div>
+
+  <div class="field">
+    <%= f.label :OrderTime %>
+    <%= f.time_select :OrderTime %>
+  </div>
+
+  <div class="field">
+    <%= f.label :TotalCost %>
+    <%= f.text_field :TotalCost %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Paid %>
+    <%= f.check_box :Paid %>
+  </div>
+
+  <div class="field">
+    <%= f.label :DriverID %>
+    <%= f.number_field :DriverID %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Discounts %>
+    <%= f.text_field :Discounts %>
+  </div>
+
+  <div class="field">
+    <%= f.label :AmountPaid %>
+    <%= f.text_field :AmountPaid %>
+  </div>
+
+  <div class="field">
+    <%= f.label :ChangeDue %>
+    <%= f.text_field :ChangeDue %>
+  </div>
+
+  <div class="field">
+    <%= f.label :TIP %>
+    <%= f.text_field :TIP %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

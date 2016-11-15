@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Belongs to:</strong>
+  <%= @option.belongs_to %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @option.Name %>
+</p>
+
+<p>
+  <strong>Productparentid:</strong>
+  <%= @option.ProductParentID %>
+</p>
+
+<p>
+  <strong>Cost:</strong>
+  <%= @option.Cost %>
+</p>
+
+<%= link_to 'Edit', edit_option_path(@option) %> |
+<%= link_to 'Back', options_path %>

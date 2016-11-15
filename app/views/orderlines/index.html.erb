@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Orderlines</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Belongs to</th>
+      <th>Productparentid</th>
+      <th>Options</th>
+      <th>Itemtotalcost</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @orderlines.each do |orderline| %>
+      <tr>
+        <td><%= orderline.belongs_to %></td>
+        <td><%= orderline.ProductParentID %></td>
+        <td><%= orderline.Options %></td>
+        <td><%= orderline.ItemTotalCost %></td>
+        <td><%= link_to 'Show', orderline %></td>
+        <td><%= link_to 'Edit', edit_orderline_path(orderline) %></td>
+        <td><%= link_to 'Destroy', orderline, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Orderline', new_orderline_path %>

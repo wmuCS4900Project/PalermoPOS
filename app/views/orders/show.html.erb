@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Belongs to:</strong>
+  <%= @order.belongs_to %>
+</p>
+
+<p>
+  <strong>Userid:</strong>
+  <%= @order.UserID %>
+</p>
+
+<p>
+  <strong>Orderdate:</strong>
+  <%= @order.OrderDate %>
+</p>
+
+<p>
+  <strong>Ordertime:</strong>
+  <%= @order.OrderTime %>
+</p>
+
+<p>
+  <strong>Totalcost:</strong>
+  <%= @order.TotalCost %>
+</p>
+
+<p>
+  <strong>Paid:</strong>
+  <%= @order.Paid %>
+</p>
+
+<p>
+  <strong>Driverid:</strong>
+  <%= @order.DriverID %>
+</p>
+
+<p>
+  <strong>Discounts:</strong>
+  <%= @order.Discounts %>
+</p>
+
+<p>
+  <strong>Amountpaid:</strong>
+  <%= @order.AmountPaid %>
+</p>
+
+<p>
+  <strong>Changedue:</strong>
+  <%= @order.ChangeDue %>
+</p>
+
+<p>
+  <strong>Tip:</strong>
+  <%= @order.TIP %>
+</p>
+
+<%= link_to 'Edit', edit_order_path(@order) %> |
+<%= link_to 'Back', orders_path %>

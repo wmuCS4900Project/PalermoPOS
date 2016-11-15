@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  belongs_to: 
+  UserID: 1
+  OrderDate: 2016-11-15 00:16:22
+  OrderTime: 2016-11-15 00:16:22
+  TotalCost: 9.99
+  Paid: false
+  DriverID: 1
+  Discounts: 9.99
+  AmountPaid: 9.99
+  ChangeDue: 9.99
+  TIP: 9.99
+
+two:
+  belongs_to: 
+  UserID: 1
+  OrderDate: 2016-11-15 00:16:22
+  OrderTime: 2016-11-15 00:16:22
+  TotalCost: 9.99
+  Paid: false
+  DriverID: 1
+  Discounts: 9.99
+  AmountPaid: 9.99
+  ChangeDue: 9.99
+  TIP: 9.99

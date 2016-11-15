@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  UserName: MyString
+  Password: MyString
+  Driver: false
+  DateAdded: 2016-11-15 00:01:04
+  IsManager: false
+
+two:
+  UserName: MyString
+  Password: MyString
+  Driver: false
+  DateAdded: 2016-11-15 00:01:04
+  IsManager: false

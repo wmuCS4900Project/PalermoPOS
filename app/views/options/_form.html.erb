@@ -1,0 +1,37 @@
+<%= form_for(option) do |f| %>
+  <% if option.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(option.errors.count, "error") %> prohibited this option from being saved:</h2>
+
+      <ul>
+      <% option.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :belongs_to %>
+    <%= f.text_field :belongs_to %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Name %>
+    <%= f.text_field :Name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :ProductParentID %>
+    <%= f.number_field :ProductParentID %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Cost %>
+    <%= f.text_field :Cost %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
