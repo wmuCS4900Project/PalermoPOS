@@ -4,3 +4,8 @@ mysql -u username -p databasename < file.sql
 mysql-ctl start
 
 mysql-ctl cli
+
+http://stackoverflow.com/questions/5188444/auto-generate-scaffolding-for-an-existing-database-scheme-in-rails-3
+https://hackhands.com/ruby-rails-tutorial-creating-rails-instance-existing-mysql-db/
+
+https://github.com/brianmario/mysql2

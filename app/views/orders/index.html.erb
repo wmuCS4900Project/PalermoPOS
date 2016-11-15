@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Orders</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Belongs to</th>
+      <th>Userid</th>
+      <th>Orderdate</th>
+      <th>Ordertime</th>
+      <th>Totalcost</th>
+      <th>Paid</th>
+      <th>Driverid</th>
+      <th>Discounts</th>
+      <th>Amountpaid</th>
+      <th>Changedue</th>
+      <th>Tip</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.belongs_to %></td>
+        <td><%= order.UserID %></td>
+        <td><%= order.OrderDate %></td>
+        <td><%= order.OrderTime %></td>
+        <td><%= order.TotalCost %></td>
+        <td><%= order.Paid %></td>
+        <td><%= order.DriverID %></td>
+        <td><%= order.Discounts %></td>
+        <td><%= order.AmountPaid %></td>
+        <td><%= order.ChangeDue %></td>
+        <td><%= order.TIP %></td>
+        <td><%= link_to 'Show', order %></td>
+        <td><%= link_to 'Edit', edit_order_path(order) %></td>
+        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Order', new_order_path %>

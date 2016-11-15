@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  belongs_to: 
+  ProductParentID: 1
+  Options: MyString
+  ItemTotalCost: 9.99
+
+two:
+  belongs_to: 
+  ProductParentID: 1
+  Options: MyString
+  ItemTotalCost: 9.99

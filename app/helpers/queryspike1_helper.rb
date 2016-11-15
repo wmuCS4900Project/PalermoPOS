@@ -1,0 +1,2 @@
+module Queryspike1Helper
+end
