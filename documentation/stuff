@@ -1,0 +1,11 @@
+rails generate scaffold Customer Phone:string LastName:string FirstName:string AddressNumber:string StreetName:string City:string State:string Zip:integer Directions:string LastOrderNumber:integer FirstOrderDate:datetime TotalOrderDollars:decimal TotalOrderCount:integer BadCkAmt:integer BadCkCount:decimal LongDelivery:boolean LastOrderDate:datetime Notes:string --no-migration
+
+rails generate scaffold Product ProductName:string Cost:decimal ProductCategory:integer Generic:boolean --no-migration
+
+rails generate model User UserName:string Password:string Driver:boolean IsManager:boolean
+
+rails generate model Option Name:string Cost:decimal
+
+rails generate model Order UserID:integer OrderDate:datetime OrderTime:time TotalCost:decimal Paid:boolean DriverID:integer Discounts:decimal AmountPaid:decimal ChangeDue:decimal TIP:decimal --no-migration
+
+rails generate scaffold Orderline belongs_to:Order ProductParentID:integer Options:string ItemTotalCost:decimal --no-migration

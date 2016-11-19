@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  OrderTime: 2016-11-17 22:49:52
+  TotalCost: 9.99
+  Paid: false
+  DriverID: 1
+  Discounts: 9.99
+  AmountPaid: 9.99
+  ChangeDue: 9.99
+  TIP: 9.99
+
+two:
+  OrderTime: 2016-11-17 22:49:52
+  TotalCost: 9.99
+  Paid: false
+  DriverID: 1
+  Discounts: 9.99
+  AmountPaid: 9.99
+  ChangeDue: 9.99
+  TIP: 9.99
