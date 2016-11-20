@@ -1,11 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  ProductName: MyString
   Options: MyString
   ItemTotalCost: 9.99
+  product: one
+  order: one
 
 two:
-  ProductName: MyString
   Options: MyString
   ItemTotalCost: 9.99
+  product: two
+  order: two

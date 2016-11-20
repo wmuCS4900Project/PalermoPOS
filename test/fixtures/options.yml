@@ -3,7 +3,9 @@
 one:
   Name: MyString
   Cost: 9.99
+  product: one
 
 two:
   Name: MyString
   Cost: 9.99
+  product: two

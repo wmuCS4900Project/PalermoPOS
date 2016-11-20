@@ -1,13 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  ProductName: MyString
+  Name: MyString
   Cost: 9.99
-  ProductCategory: 1
+  Category: 1
   Generic: false
+  Special: false
 
 two:
-  ProductName: MyString
+  Name: MyString
   Cost: 9.99
-  ProductCategory: 1
+  Category: 1
   Generic: false
+  Special: false

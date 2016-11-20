@@ -1,10 +1,11 @@
 class CreateProducts < ActiveRecord::Migration[5.0]
   def change
     create_table :products do |t|
-      t.string :ProductName
+      t.string :Name
       t.decimal :Cost
-      t.column :ProductCategory, :integer
+      t.integer :Category
       t.boolean :Generic
+      t.boolean :Special
 
       t.timestamps
     end

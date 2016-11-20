@@ -1,3 +1,4 @@
 class Order < ApplicationRecord
-    has_many :orderlines
+  belongs_to :user
+  has_many :orderlines
 end
