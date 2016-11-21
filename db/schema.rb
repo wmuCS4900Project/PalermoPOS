@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161119212631) do
+ActiveRecord::Schema.define(version: 20161121160956) do
 
   create_table "customers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Phone"
@@ -33,6 +33,13 @@ ActiveRecord::Schema.define(version: 20161119212631) do
     t.string   "Notes"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
+  end
+
+  create_table "drivers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_drivers_on_user_id", using: :btree
   end
 
   create_table "options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -59,7 +66,6 @@ ActiveRecord::Schema.define(version: 20161119212631) do
     t.datetime "TimeOrdered"
     t.decimal  "TotalCost",   precision: 10
     t.boolean  "PaidFor"
-    t.integer  "DriverID"
     t.decimal  "Discounts",   precision: 10
     t.decimal  "AmountPaid",  precision: 10
     t.decimal  "ChangeDue",   precision: 10
@@ -67,6 +73,10 @@ ActiveRecord::Schema.define(version: 20161119212631) do
     t.integer  "user_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.integer  "driver_id"
+    t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_orders_on_customer_id", using: :btree
+    t.index ["driver_id"], name: "index_orders_on_driver_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
 
@@ -89,8 +99,11 @@ ActiveRecord::Schema.define(version: 20161119212631) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "drivers", "users"
   add_foreign_key "options", "products"
   add_foreign_key "orderlines", "orders"
   add_foreign_key "orderlines", "products"
+  add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "drivers"
   add_foreign_key "orders", "users"
 end
