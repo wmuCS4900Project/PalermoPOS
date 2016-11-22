@@ -6,6 +6,8 @@ one:
   Category: 1
   Generic: false
   Special: false
+  DoesHalves: false
+  DoesQuarters: false
 
 two:
   Name: MyString
@@ -13,3 +15,5 @@ two:
   Category: 1
   Generic: false
   Special: false
+  DoesHalves: false
+  DoesQuarters: false

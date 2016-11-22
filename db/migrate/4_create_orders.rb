@@ -10,6 +10,7 @@ class CreateOrders < ActiveRecord::Migration[5.0]
       t.decimal :ChangeDue
       t.decimal :Tip
       t.references :user, foreign_key: true
+      t.references :customer, foreign_key: true
 
       t.timestamps
     end

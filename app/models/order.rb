@@ -1,6 +1,5 @@
 class Order < ApplicationRecord
-  belongs_to :customer
   belongs_to :user
-  belongs_to :driver
+  belongs_to :customer
   has_many :orderlines
 end

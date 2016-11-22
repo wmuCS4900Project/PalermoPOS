@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  TimeOrdered: 2016-11-19 21:26:22
+  TimeOrdered: 2016-11-21 22:04:49
   TotalCost: 9.99
   PaidFor: false
   DriverID: 1
@@ -10,9 +10,10 @@ one:
   ChangeDue: 9.99
   Tip: 9.99
   user: one
+  customer: one
 
 two:
-  TimeOrdered: 2016-11-19 21:26:22
+  TimeOrdered: 2016-11-21 22:04:49
   TotalCost: 9.99
   PaidFor: false
   DriverID: 1
@@ -21,3 +22,4 @@ two:
   ChangeDue: 9.99
   Tip: 9.99
   user: two
+  customer: two
