@@ -1,0 +1,41 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Phone: MyString
+  LastName: MyString
+  FirstName: MyString
+  AddressNumber: MyString
+  StreetName: MyString
+  City: MyString
+  State: MyString
+  Zip: 1
+  Directions: MyString
+  LastOrderNumber: 1
+  FirstOrderDate: 2016-11-19 21:24:17
+  TotalOrderDollars: 9.99
+  TotalOrderCount: 1
+  BadCkAmt: 1
+  BadCkCount: 9.99
+  LongDelivery: false
+  LastOrderDate: 2016-11-19 21:24:17
+  Notes: MyString
+
+two:
+  Phone: MyString
+  LastName: MyString
+  FirstName: MyString
+  AddressNumber: MyString
+  StreetName: MyString
+  City: MyString
+  State: MyString
+  Zip: 1
+  Directions: MyString
+  LastOrderNumber: 1
+  FirstOrderDate: 2016-11-19 21:24:17
+  TotalOrderDollars: 9.99
+  TotalOrderCount: 1
+  BadCkAmt: 1
+  BadCkCount: 9.99
+  LongDelivery: false
+  LastOrderDate: 2016-11-19 21:24:17
+  Notes: MyString

@@ -1,0 +1,14 @@
+<%= form_for(@order) do |f| =%>
+
+  <select>
+    <% @products.each do |p| %>
+      <tr>
+        <option value=counter><%= p.Name =%></option>
+      </tr>
+    <% end %>
+  </select>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
