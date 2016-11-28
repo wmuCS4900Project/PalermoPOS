@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161121205937) do
+ActiveRecord::Schema.define(version: 20161128024429) do
+
+  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string   "Name"
+    t.boolean  "Splits"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "customers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "Phone"
@@ -44,11 +51,11 @@ ActiveRecord::Schema.define(version: 20161121205937) do
 
   create_table "options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "Name"
-    t.decimal  "Cost",       precision: 10
-    t.integer  "product_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.index ["product_id"], name: "index_options_on_product_id", using: :btree
+    t.decimal  "Cost",        precision: 10
+    t.integer  "category_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["category_id"], name: "index_options_on_category_id", using: :btree
   end
 
   create_table "orderlines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -85,14 +92,11 @@ ActiveRecord::Schema.define(version: 20161121205937) do
 
   create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "Name"
-    t.decimal  "Cost",         precision: 8, scale: 2
-    t.integer  "Category"
-    t.boolean  "Generic"
-    t.boolean  "Special"
-    t.boolean  "DoesHalves"
-    t.boolean  "DoesQuarters"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.decimal  "Cost",        precision: 8, scale: 2
+    t.integer  "category_id"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.index ["category_id"], name: "index_products_on_category_id", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -105,9 +109,10 @@ ActiveRecord::Schema.define(version: 20161121205937) do
   end
 
   add_foreign_key "drivers", "users"
-  add_foreign_key "options", "products"
+  add_foreign_key "options", "categories"
   add_foreign_key "orderlines", "orders"
   add_foreign_key "orderlines", "products"
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "users"
+  add_foreign_key "products", "categories"
 end

@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   root 'application#hello'
   resources :queryspike1
   resources :users
+  resources :orders
 end

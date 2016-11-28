@@ -1,16 +1,13 @@
-<%= form_for(order) do |f| %>
-  <% if order.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+<%= form_for(@order) do |f| %>
 
-      <ul>
-      <% order.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+  <select>
+    <% @products.each do |p| %>
+      <tr>
+        <option value=counter><%= p.Name =%></option>
+      </tr>
+    <% end %>
+  </select>
+  
   <div class="actions">
     <%= f.submit %>
   </div>
