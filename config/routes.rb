@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :queryspike1
   resources :users
   resources :orders
+  resources :products
 end

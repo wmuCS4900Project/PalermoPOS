@@ -5,6 +5,7 @@ class OrdersController < ApplicationController
   # GET /orders.json
   def index
     @orders = Order.all
+    @products = Product.all
   end
 
   # GET /orders/1
@@ -15,6 +16,7 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @order = Order.new
+    @products = Product.all
   end
 
   # GET /orders/1/edit
