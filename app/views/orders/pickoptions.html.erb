@@ -1,0 +1,13 @@
+<h1>Choose Options</h1>
+
+<%= @item1 %>
+<%= @item2 %>
+<%= @item3 %>
+
+<%= if(category.find(products.find(@item1).Category).Splits) %>
+    <%= render 'splits', orderline: @orderline1 %>
+<%= else %>
+    <%= render 'nosplit', orderline: @orderline1 %>
+
+
+<%= link_to 'Trash This Order', orders_path %>

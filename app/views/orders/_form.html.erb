@@ -1,14 +1,36 @@
-<%= form_for(@order) do |f| =%>
+<%= form_tag("/orders/pickoptions", :method=>'post', :multipart => true) do %>
 
-  <select>
+  <select name="item1">
     <% @products.each do |p| %>
       <tr>
-        <option value=counter><%= p.Name =%></option>
+        <option value="<%= p.id %>"><%= p.Name =%></option>
       </tr>
     <% end %>
   </select>
   
+  <select name="item2">
+    <% @products.each do |p| %>
+      <tr>
+        <option value="<%= p.id %>"><%= p.Name =%></option>
+      </tr>
+    <% end %>
+  </select>
+  
+  <select name="item3">
+    <% @products.each do |p| %>
+      <tr>
+        <option value="<%= p.id %>"><%= p.Name =%></option>
+      </tr>
+    <% end %>
+  </select>
+  
+  <br><br>
   <div class="actions">
-    <%= f.submit %>
+    <%= submit_tag "Start New Order" %>
+  </div>
+  
+  <div>
+    <%= @got %>
+    <%= params.inspect %>
   </div>
 <% end %>
