@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Name: MyString
+  Cost: 9.99
+  Category: 1
+  Generic: false
+  Special: false
+  DoesHalves: false
+  DoesQuarters: false
+
+two:
+  Name: MyString
+  Cost: 9.99
+  Category: 1
+  Generic: false
+  Special: false
+  DoesHalves: false
+  DoesQuarters: false
