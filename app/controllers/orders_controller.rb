@@ -15,7 +15,8 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    @order = Order.new
+    @order = Order.create :customer_id => 1, :user_id => 1, :PaidFor => false
+    @ordernum = @order.id
     @products = Product.all
     @got = params[:item1]
     puts "did the thing"
@@ -26,12 +27,30 @@ class OrdersController < ApplicationController
   end
   
   def pickoptions
-    @item1 = params[:item1]
-    @item2 = params[:item2]
-    @item3 = params[:item3]
+    items = params[:items]
+    @itemlist = []
+    items.each do |b|
+      if b != "1"
+        @itemlist.push(b)
+      end
+    end
+    
+    @order = Order.find(params[:ordernum])
+    @itemnums = []
+    
+    @itemlist.each do |a|
+      @i = Orderline.create :product_id => a, :order_id => @order.id
+      @itemnums.push(@i.id)
+    end
+    
     @products = Product.all
     @options = Option.all
     @categories = Category.all
+  end
+  
+  def confirmorder
+    
+    
   end
   
 

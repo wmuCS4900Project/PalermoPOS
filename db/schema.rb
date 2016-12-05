@@ -75,13 +75,13 @@ ActiveRecord::Schema.define(version: 20161128024429) do
 
   create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.datetime "TimeOrdered"
-    t.decimal  "TotalCost",   precision: 10
+    t.decimal  "TotalCost",   precision: 8, scale: 2
     t.boolean  "PaidFor"
     t.integer  "DriverID"
-    t.decimal  "Discounts",   precision: 10
-    t.decimal  "AmountPaid",  precision: 10
-    t.decimal  "ChangeDue",   precision: 10
-    t.decimal  "Tip",         precision: 10
+    t.decimal  "Discounts",   precision: 8, scale: 2
+    t.decimal  "AmountPaid",  precision: 8, scale: 2
+    t.decimal  "ChangeDue",   precision: 8, scale: 2
+    t.decimal  "Tip",         precision: 8, scale: 2
     t.integer  "user_id"
     t.integer  "customer_id"
     t.datetime "created_at",                 null: false
