@@ -15,11 +15,11 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    @order = Order.create :customer_id => 1, :user_id => 1, :PaidFor => false
+    @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => 1
     @ordernum = @order.id
     @products = Product.all
-    @got = params[:item1]
-    puts "did the thing"
+    @customers = Customer.all
+    @users = User.all
   end
 
   # GET /orders/1/edit
@@ -27,6 +27,16 @@ class OrdersController < ApplicationController
   end
   
   def pickoptions
+    @order = Order.find(params[:ordernum])
+
+    user = params[:user]
+    @order.user_id = user
+    
+    cust = params[:customer]
+    @order.customer_id = cust
+    
+    @order.save!
+    
     items = params[:items]
     @itemlist = []
     items.each do |b|
@@ -35,7 +45,6 @@ class OrdersController < ApplicationController
       end
     end
     
-    @order = Order.find(params[:ordernum])
     @itemnums = []
     
     @itemlist.each do |a|
