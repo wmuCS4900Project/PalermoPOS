@@ -1,0 +1,26 @@
+<%= form_tag("/orders/confirmorder", :method=>'post', :multipart => true) do %>
+
+  <h1>Choose Options</h1>
+  
+  <div>
+    <% @itemlist.each do |p| %>
+      <% if p != "1" %>
+        <%= @products.find(p).Name %>
+        <br>
+        <% if @categories.find(@products.find(p).category_id).Splits == true then %>
+            <%= render 'splits', :p => p %>
+        <% else %>
+            <%= render 'nosplit', :p => p %>
+        <% end %>
+        <br><br>
+      <% end %>
+    <% end %>
+  </div>
+  
+  <div class="actions">
+      <%= submit_tag "Start New Order" %>
+  </div>
+  
+  <%= link_to 'Trash This Order', orders_path %>
+  <%= @itemlist %>
+<% end %>

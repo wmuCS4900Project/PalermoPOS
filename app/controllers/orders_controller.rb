@@ -16,28 +16,48 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    @order = Order.new
+    @order = Order.create :customer_id => 1, :user_id => 1, :PaidFor => false
+    @ordernum = @order.id
     @products = Product.all
+    @got = params[:item1]
+    puts "did the thing"
   end
 
   # GET /orders/1/edit
   def edit
   end
+  
+  def pickoptions
+    items = params[:items]
+    @itemlist = []
+    items.each do |b|
+      if b != "1"
+        @itemlist.push(b)
+      end
+    end
+    
+    @order = Order.find(params[:ordernum])
+    @itemnums = []
+    
+    @itemlist.each do |a|
+      @i = Orderline.create :product_id => a, :order_id => @order.id
+      @itemnums.push(@i.id)
+    end
+    
+    @products = Product.all
+    @options = Option.all
+    @categories = Category.all
+  end
+  
+  def confirmorder
+    
+    
+  end
+  
 
   # POST /orders
   # POST /orders.json
   def create
-    @order = Order.new(order_params)
-
-    respond_to do |format|
-      if @order.save
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
-        format.json { render :show, status: :created, location: @order }
-      else
-        format.html { render :new }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PATCH/PUT /orders/1
@@ -72,6 +92,6 @@ class OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.fetch(:order, {})
+      params.fetch()
     end
 end
