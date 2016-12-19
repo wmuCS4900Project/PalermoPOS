@@ -28,6 +28,7 @@ class OrdersController < ApplicationController
   
   def pickoptions
     @order = Order.find(params[:ordernum])
+    @ordernum = params[:ordernum]
 
     user = params[:user]
     @order.user_id = user
@@ -45,19 +46,111 @@ class OrdersController < ApplicationController
       end
     end
     
-    @itemnums = []
+    @items = []
     
     @itemlist.each do |a|
-      @i = Orderline.create :product_id => a, :order_id => @order.id
-      @itemnums.push(@i.id)
+      @items.push(Orderline.create :product_id => a, :order_id => @order.id)
     end
     
+    @orderlines = Orderline.all
     @products = Product.all
     @options = Option.all
     @categories = Category.all
+    
   end
   
   def confirmorder
+  
+    @ordernum = params[:ordernum]
+    @order = Order.find(@ordernum)
+    @products = Product.all
+    @orderlines = Orderline.all
+    @items = params[:items]
+    
+    @items.each do |a|
+      a.save!
+    end
+    
+    @itemnums = @orderlines.where(order_id: @ordernum).ids
+    @options = Option.all
+    @categories = Category.all
+  
+  
+  end
+
+  
+  
+  def confirmorder2
+    
+    @ordernum = params[:ordernum]
+    @order = Order.find(@ordernum)
+    @products = Product.all
+    @orderlines = Orderline.all
+    @items = params[:items]
+    
+    @items.each do |a|
+      a.save!
+    end
+    
+    @itemnums = @orderlines.where(order_id: @ordernum).ids
+    @options = Option.all
+    @categories = Category.all
+    
+    @itemnums.each do |a|
+      @orderline = @orderlines.find(a)
+      
+      cost = @products.find(@orderline.product_id).Cost
+      
+      if @categories.find(@products.find(@orderline.product_id).category_id).Splits
+        
+        @pname1 = ":" + @orderline.id.to_s + "options1"
+        Rails.logger.debug("pname1: #{@pname1.inspect}")
+        if params.has_key?(@pname1.to_s)
+          @ops1 = params[@pname1.to_s]
+          Rails.logger.debug("Ops1: #{@ops1.inspect}")
+          @ops1.each do |b|
+            cost = cost + (@options.find(b).Cost * 0.5)
+          end
+          @orderline.Options1 = @ops1
+        else
+          Rails.logger.debug("key not found")
+        end
+        
+        @pname2 = ":" + @orderline.id.to_s + "options2"
+        Rails.logger.debug("pname2: #{@pname2.inspect}")
+        if params.has_key?(@pname2.to_s)
+          @ops2 = params[@pname2.to_s]
+          Rails.logger.debug("Ops2: #{@ops2.inspect}")
+          @ops2.each do |b|
+            cost = cost + (@options.find(b).Cost * 0.5)
+          end
+          @orderline.Options2 = @ops2
+        else
+          Rails.logger.debug("key not found")
+        end
+        
+      else
+        
+        pname = ":" + @orderline.id.to_s + "options"
+        if params.has_key?(pname)
+          @ops = params[pname]
+
+          @ops.each do |b|
+           cost = cost + @options.find(b).Cost
+          end
+          @orderline.Options1 = @ops
+        end
+        
+        
+      end
+      
+      @orderline.ItemTotalCost = cost
+      
+      @orderline.save!
+        
+    end
+    
+    puts params.inspect    
     
     
   end

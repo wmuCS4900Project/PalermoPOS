@@ -3,17 +3,9 @@
 one:
   Name: MyString
   Cost: 9.99
-  Category: 1
-  Generic: false
-  Special: false
-  DoesHalves: false
-  DoesQuarters: false
+  category: one
 
 two:
   Name: MyString
   Cost: 9.99
-  Category: 1
-  Generic: false
-  Special: false
-  DoesHalves: false
-  DoesQuarters: false
+  category: two

@@ -12,10 +12,10 @@ class CreateCustomers < ActiveRecord::Migration[5.0]
       t.string :Directions
       t.integer :LastOrderNumber
       t.datetime :FirstOrderDate
-      t.decimal :TotalOrderDollars
       t.integer :TotalOrderCount
-      t.integer :BadCkAmt
-      t.decimal :BadCkCount
+      t.decimal :TotalOrderDollars, :precision => 8, :scale => 2
+      t.integer :BadCkCount
+      t.decimal :BadCkTotal, :precision => 8, :scale => 2
       t.boolean :LongDelivery
       t.datetime :LastOrderDate
       t.string :Notes
