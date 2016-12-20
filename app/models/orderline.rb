@@ -7,4 +7,6 @@ class Orderline < ApplicationRecord
       halfquarterquarter: 2,
       quarters: 3
   }
+  attr_accessor :options1array
+
 end

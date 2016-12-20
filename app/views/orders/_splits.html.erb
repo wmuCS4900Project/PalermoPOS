@@ -1,18 +1,20 @@
 <tbody>
   Left Half:
   <br>
-  <% @options.where(category_id: @products.find(p.product_id).category_id).each do |e| %>
+  <% @ops1 = p + "options1[]" %>
+  <% @ops2 = p + "options2[]" %>
+  <% @options.where(category_id: @products.find(p).category_id).each do |e| %>
     <tr>
-        <td><%= check_box_tag p.Options1, e.id %></td>
+        <td><%= check_box_tag @ops1, e.id %></td>
     </tr>
     <%= e.Name %>
   <% end %>
   <br>
   Right Half:
   <br>
-  <% @options.where(category_id: @products.find(p.product_id).category_id).each do |e| %>
+  <% @options.where(category_id: @products.find(p).category_id).each do |e| %>
     <tr>
-        <td><%= check_box_tag p.Options2, e.id %></td>
+        <td><%= check_box_tag @ops2, e.id %></td>
     </tr>
     <%= e.Name %>
   <% end %>

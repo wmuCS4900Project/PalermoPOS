@@ -38,4 +38,4 @@ Option.create :Name => "Onion", :Cost => 2, :category_id => 2
 
 Option.create :Name => "Ham", :Cost => 0.5, :category_id => 7
 Option.create :Name => "Lettuce", :Cost => 0.5, :category_id => 7
-Option.create :Name => "Ham", :Cost => 0.5, :category_id => 7
+Option.create :Name => "Sausage", :Cost => 0.5, :category_id => 7

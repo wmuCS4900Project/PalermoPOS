@@ -38,9 +38,9 @@ class OrdersController < ApplicationController
     
     @order.save!
     
-    items = params[:items]
+    is = params[:items]
     @itemlist = []
-    items.each do |b|
+    is.each do |b|
       if b != "1"
         @itemlist.push(b)
       end
@@ -49,8 +49,11 @@ class OrdersController < ApplicationController
     @items = []
     
     @itemlist.each do |a|
-      @items.push(Orderline.create :product_id => a, :order_id => @order.id)
+      @newol = Orderline.create :product_id => a, :order_id => @order.id
+      @items.push(@newol.id)
     end
+    
+    puts @items
     
     @orderlines = Orderline.all
     @products = Product.all
@@ -63,24 +66,43 @@ class OrdersController < ApplicationController
   
     @ordernum = params[:ordernum]
     @order = Order.find(@ordernum)
+    
     @products = Product.all
     @orderlines = Orderline.all
-    @items = params[:items]
-    
-    @items.each do |a|
-      a.save!
-    end
-    
-    @itemnums = @orderlines.where(order_id: @ordernum).ids
     @options = Option.all
     @categories = Category.all
-  
-  
+    
+    @i = params[:items]
+    @items = @i.split(" ")
+    
+    @items.each do |orderlineid|
+      
+      thisorderline = @orderlines.find(orderlineid)
+      cost = @products.find(thisorderline.product_id).Cost
+      
+      if(@categories.find(@products.find(thisorderline.product_id).category_id).Splits == true)
+        
+        
+      else  
+        opname = orderlineid + "options"
+        thisoptions = params["#{opname}"]
+        puts "this is " + thisoptions.to_s
+        thisoptions.each do |c|
+          cost = cost + @options.find(c).Cost
+        end
+        thisorderline.Options1 = thisoptions
+
+      end
+      
+      thisorderline.ItemTotalCost = cost
+      thisorderline.save!
+    end
+
   end
 
   
   
-  def confirmorder2
+  def confirmorder2 #I AM DEPRECATED
     
     @ordernum = params[:ordernum]
     @order = Order.find(@ordernum)
