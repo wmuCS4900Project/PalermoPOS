@@ -28,6 +28,7 @@ class OrdersController < ApplicationController
   
   def pickoptions
     @order = Order.find(params[:ordernum])
+    @ordernum = params[:ordernum]
 
     user = params[:user]
     @order.user_id = user
@@ -37,27 +38,141 @@ class OrdersController < ApplicationController
     
     @order.save!
     
-    items = params[:items]
+    is = params[:items]
     @itemlist = []
-    items.each do |b|
+    is.each do |b|
       if b != "1"
         @itemlist.push(b)
       end
     end
     
-    @itemnums = []
+    @items = []
     
     @itemlist.each do |a|
-      @i = Orderline.create :product_id => a, :order_id => @order.id
-      @itemnums.push(@i.id)
+      @newol = Orderline.create :product_id => a, :order_id => @order.id
+      @items.push(@newol.id)
     end
     
+    puts @items
+    
+    @orderlines = Orderline.all
     @products = Product.all
     @options = Option.all
     @categories = Category.all
+    
   end
   
   def confirmorder
+  
+    @ordernum = params[:ordernum]
+    @order = Order.find(@ordernum)
+    
+    @products = Product.all
+    @orderlines = Orderline.all
+    @options = Option.all
+    @categories = Category.all
+    
+    @i = params[:items]
+    @items = @i.split(" ")
+    
+    @items.each do |orderlineid|
+      
+      thisorderline = @orderlines.find(orderlineid)
+      cost = @products.find(thisorderline.product_id).Cost
+      
+      if(@categories.find(@products.find(thisorderline.product_id).category_id).Splits == true)
+        
+        
+      else  
+        opname = orderlineid + "options"
+        thisoptions = params["#{opname}"]
+        puts "this is " + thisoptions.to_s
+        thisoptions.each do |c|
+          cost = cost + @options.find(c).Cost
+        end
+        thisorderline.Options1 = thisoptions
+
+      end
+      
+      thisorderline.ItemTotalCost = cost
+      thisorderline.save!
+    end
+
+  end
+
+  
+  
+  def confirmorder2 #I AM DEPRECATED
+    
+    @ordernum = params[:ordernum]
+    @order = Order.find(@ordernum)
+    @products = Product.all
+    @orderlines = Orderline.all
+    @items = params[:items]
+    
+    @items.each do |a|
+      a.save!
+    end
+    
+    @itemnums = @orderlines.where(order_id: @ordernum).ids
+    @options = Option.all
+    @categories = Category.all
+    
+    @itemnums.each do |a|
+      @orderline = @orderlines.find(a)
+      
+      cost = @products.find(@orderline.product_id).Cost
+      
+      if @categories.find(@products.find(@orderline.product_id).category_id).Splits
+        
+        @pname1 = ":" + @orderline.id.to_s + "options1"
+        Rails.logger.debug("pname1: #{@pname1.inspect}")
+        if params.has_key?(@pname1.to_s)
+          @ops1 = params[@pname1.to_s]
+          Rails.logger.debug("Ops1: #{@ops1.inspect}")
+          @ops1.each do |b|
+            cost = cost + (@options.find(b).Cost * 0.5)
+          end
+          @orderline.Options1 = @ops1
+        else
+          Rails.logger.debug("key not found")
+        end
+        
+        @pname2 = ":" + @orderline.id.to_s + "options2"
+        Rails.logger.debug("pname2: #{@pname2.inspect}")
+        if params.has_key?(@pname2.to_s)
+          @ops2 = params[@pname2.to_s]
+          Rails.logger.debug("Ops2: #{@ops2.inspect}")
+          @ops2.each do |b|
+            cost = cost + (@options.find(b).Cost * 0.5)
+          end
+          @orderline.Options2 = @ops2
+        else
+          Rails.logger.debug("key not found")
+        end
+        
+      else
+        
+        pname = ":" + @orderline.id.to_s + "options"
+        if params.has_key?(pname)
+          @ops = params[pname]
+
+          @ops.each do |b|
+           cost = cost + @options.find(b).Cost
+          end
+          @orderline.Options1 = @ops
+        end
+        
+        
+      end
+      
+      @orderline.ItemTotalCost = cost
+      
+      @orderline.save!
+        
+    end
+    
+    puts params.inspect    
     
     
   end

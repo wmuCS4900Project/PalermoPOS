@@ -12,10 +12,10 @@ one:
   Directions: MyString
   LastOrderNumber: 1
   FirstOrderDate: 2016-11-19 21:24:17
-  TotalOrderDollars: 9.99
   TotalOrderCount: 1
-  BadCkAmt: 1
-  BadCkCount: 9.99
+  TotalOrderDollars: 9.99
+  BadCkCount: 1
+  BadCkTotal: 9.99
   LongDelivery: false
   LastOrderDate: 2016-11-19 21:24:17
   Notes: MyString
@@ -32,10 +32,10 @@ two:
   Directions: MyString
   LastOrderNumber: 1
   FirstOrderDate: 2016-11-19 21:24:17
-  TotalOrderDollars: 9.99
   TotalOrderCount: 1
-  BadCkAmt: 1
-  BadCkCount: 9.99
+  TotalOrderDollars: 9.99
+  BadCkCount: 1
+  BadCkTotal: 9.99
   LongDelivery: false
   LastOrderDate: 2016-11-19 21:24:17
   Notes: MyString
