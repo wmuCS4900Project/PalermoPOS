@@ -6,7 +6,8 @@ class OrdersController < ApplicationController
   def index
     @orders = Order.all
     @products = Product.all
-    @pending = Order.where("PaidFor IS NULL")
+    @pending = Order.where("PaidFor IS NULL OR PaidFor=0")
+    @completed = Order.where("PaidFor=1")
   end
 
   # GET /orders/1
