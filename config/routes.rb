@@ -3,11 +3,10 @@ Rails.application.routes.draw do
   
   root 'application#hello'
   resources :users
-  resources :orders
   resources :products
   resources :categories
-  get "orders/new"
-  post "/orders/new"
-  post "/orders/pickoptions"
-  post "/orders/confirmorder"
+  get "orders" => 'orders'
+  post "orders/new" => 'orders#new'
+  post "orders/pickoptions" => 'orders#pickoptions'
+  post "orders/confirmorder" => 'orders/confirmorder'
 end
