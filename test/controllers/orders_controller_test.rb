@@ -14,10 +14,30 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     get new_order_url
     assert_response :success
   end
+  
+  test "should get pickoptions" do
+    post orders_pickoptions_url
+    assert_response :success
+  end
+  
+  test "should get confirmorder" do
+    post orders_confirmorder_url
+    assert_response :success
+  end
+  
+  test "should get custsearch" do
+    get orders_custsearch_url
+    assert_response :success
+  end
+  
+  test "search 1" do
+    get order_url(@order), params: { searchcriteria: phone, criteria: "111" }
+    assert_includes  "results"
+    
 
   test "should create order" do
     assert_difference('Order.count') do
-      post new_order_url
+      get new_order_url
     end
 
     assert_redirected_to pickoptions_order_url

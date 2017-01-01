@@ -1,8 +1,0 @@
-<tbody>
-  <% @options.where(category_id: @products.find(p.product_id).category_id).each do |e| %>
-    <tr>
-        <td><%= check_box_tag p.Options1, e.id %></td>
-    </tr>
-    <%= e.Name %>
-  <% end %>
-</tbody>

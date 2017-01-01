@@ -5,8 +5,9 @@ Rails.application.routes.draw do
   resources :users
   resources :products
   resources :categories
-  get "orders" => 'orders'
-  post "orders/new" => 'orders#new'
   post "orders/pickoptions" => 'orders#pickoptions'
-  post "orders/confirmorder" => 'orders/confirmorder'
+  post "orders/confirmorder" => 'orders#confirmorder'
+  get "orders/custsearch" => 'orders#custsearch'
+  resources :orders
+
 end

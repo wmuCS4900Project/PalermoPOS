@@ -17,17 +17,47 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => 1
+    if params[:custid].present?
+      @custid = params[:custid]
+      @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => @custid
+      puts "did order good"
+    else
+      @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => 1
+      puts "did order default"
+    end
     @ordernum = @order.id
     @products = Product.all
     @customers = Customer.all
     @users = User.all
+  end
+  
+  # GET /orders/custsearch
+  def custsearch
+
+    c = params[:criteria]
+    crit = params[:searchcriteria]
+    if crit == "phone"
+      @results = Customer.where("Phone like ?", "%#{c}%")
+    elsif crit == "name"
+      r1 = Customer.where("FirstName like ?", "%#{c}%")
+      r2 = Customer.where("LastName like ?", "%#{c}%")
+      @results = r1 + r2
+    elsif crit == "address"
+      r1 = Customer.where("AddressNumber like ?", "%#{c}%")
+      r2 = Customer.where("StreetName like ?", "%#{c}%")
+      @results = r1 + r2
+    elsif crit == "city"
+      @results = Customer.where("City like ?", "%#{c}%")
+    elsif crit == "zip"
+      @results = Customer.where("Zip like ?", "%#{c}%")
+    end
   end
 
   # GET /orders/1/edit
   def edit
   end
   
+  # POST /orders/getoptions
   def pickoptions
     @order = Order.find(params[:ordernum])
     @ordernum = params[:ordernum]
@@ -64,6 +94,8 @@ class OrdersController < ApplicationController
     
   end
   
+  
+  # POST /orders/confirmorder
   def confirmorder
   
     @ordernum = params[:ordernum]
