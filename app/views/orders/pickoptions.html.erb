@@ -2,25 +2,31 @@
 
   <h1>Choose Options</h1>
   
-  <div>
-    <% @itemlist.each do |p| %>
-      <% if p != "1" %>
-        <%= @products.find(p).Name %>
-        <br>
-        <% if @categories.find(@products.find(p).category_id).Splits == true then %>
-            <%= render 'splits', :p => p %>
-        <% else %>
-            <%= render 'nosplit', :p => p %>
-        <% end %>
-        <br><br>
-      <% end %>
+  
+  <% @items.each do |item| %>
+    <%= @products.find(@orderlines.find(item).product_id).Name %>
+    
+    <% if @categories.find(@products.find(@orderlines.find(item).product_id).category_id).Splits == true then %>
+    
+    <% else %>
+      <% @options.where(category_id: @products.find(@orderlines.find(item).product_id).category_id).each do |e| %>
+        <tr>
+          <% @ops1 = item.to_s + "options[]" %>
+          <td><%= check_box_tag @ops1, e.id %></td>
+        </tr>
+        <%= e.Name %>
+      <% end %>      
     <% end %>
-  </div>
+    <br>
+  <% end %>
+  
+  <%= hidden_field_tag :ordernum, @ordernum %>
+  <%= hidden_field_tag :items, @items %>
   
   <div class="actions">
       <%= submit_tag "Start New Order" %>
   </div>
   
   <%= link_to 'Trash This Order', orders_path %>
-  <%= @itemlist %>
+  
 <% end %>

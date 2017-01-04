@@ -3,9 +3,9 @@
 one:
   Name: MyString
   Cost: 9.99
-  product: one
+  category: two
 
 two:
   Name: MyString
   Cost: 9.99
-  product: two
+  category: one
