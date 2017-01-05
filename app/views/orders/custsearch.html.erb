@@ -20,7 +20,7 @@
 <% end %>
 
 <div class = "results" >
-  <%= form_tag("/orders/new", :method=>'get', :multipart => true) do %>
+  <%= form_tag("/orders/startorder", :method=>'get', :multipart => true) do %>
     <% if defined?(@results) %>
       <h2>Results</h2>
       <% @results.each do |a| %>

@@ -10,8 +10,8 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get new" do
-    get new_order_url
+  test "should get startorder" do
+    get orders_startorder_url
     assert_response :success
   end
   

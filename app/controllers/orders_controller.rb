@@ -15,8 +15,8 @@ class OrdersController < ApplicationController
   def show
   end
 
-  # GET /orders/new
-  def new
+  # GET /orders/start
+  def startorder
     if params[:custid].present?
       @custid = params[:custid]
       @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => @custid
@@ -52,6 +52,14 @@ class OrdersController < ApplicationController
       @results = Customer.where("Zip like ?", "%#{c}%")
     end
   end
+  
+  def pending
+    @orders = Order.where('created_at BETWEEN ? AND ?', DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    @customers = Customer.all
+    @products = Product.all
+    @options = Option.all
+    @orderlines = Orderline.all
+  end
 
   # GET /orders/1/edit
   def edit
@@ -64,9 +72,6 @@ class OrdersController < ApplicationController
 
     user = params[:user]
     @order.user_id = user
-    
-    cust = params[:customer]
-    @order.customer_id = cust
     
     @order.save!
     
