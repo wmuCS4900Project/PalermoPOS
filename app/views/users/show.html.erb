@@ -1,27 +1,27 @@
 <p id="notice"><%= notice %></p>
 <p>
-  <strong>Username:</strong>
+  <strong>Name:</strong>
   <%= @user.Name %>
 </p>
 
 <p>
-  <strong>Password:</strong>
-  <%= @user.Password %>
+  <strong>Username:</strong>
+  <%= @user.username %>
 </p>
 
 <p>
   <strong>Driver:</strong>
-  <%= @user.Driver %>
+  <%= !! @user.Driver ? 'Yes' : 'No' %>
 </p>
 
 <p>
-  <strong>Dateadded:</strong>
-  <%= @user.created_at %>
+  <strong>User Since:</strong>
+  <%= @user.created_at.strftime("%l:%M %p %B %m, %Y") %>
 </p>
 
 <p>
-  <strong>Ismanager:</strong>
-  <%= @user.IsManager %>
+  <strong>Manager:</strong>
+  <%= !! @user.IsManager ? 'Yes' : 'No' %>
 </p>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
