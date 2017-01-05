@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  Phone: MyString
+  Phone: 1112223333
   LastName: MyString
   FirstName: MyString
   AddressNumber: MyString
@@ -21,7 +21,7 @@ one:
   Notes: MyString
 
 two:
-  Phone: MyString
+  Phone: 4445556666
   LastName: MyString
   FirstName: MyString
   AddressNumber: MyString

@@ -4,10 +4,27 @@
   
   
   <% @items.each do |item| %>
-    <%= @products.find(@orderlines.find(item).product_id).Name %>
+    <%= @products.find(@orderlines.find(item).product_id).Name %><br>
     
     <% if @categories.find(@products.find(@orderlines.find(item).product_id).category_id).Splits == true then %>
-    
+      <%= "Split type" %>
+      <% @splitp = item.to_s + "split" %>
+      <%= select_tag @splitp, options_for_select(Orderline.splitstyles.keys {|k, v| [k.humanize, v]}) %><br>
+      <% @opslist = [] %>
+      <% @opslist.push(item.to_s + "options1[]") %>
+      <% @opslist.push(item.to_s + "options2[]") %>
+      <% @opslist.push(item.to_s + "options3[]") %>
+      <% @opslist.push(item.to_s + "options4[]") %>
+      <% (0..3).each do |b| %>
+        <%= b %>
+        <% @options.where(category_id: @products.find(@orderlines.find(item).product_id).category_id).each do |e| %>
+          <tr>
+            <td><%= check_box_tag @opslist[b], e.id %></td>
+          </tr>
+          <%= e.Name %>
+        <% end %>
+        <br>
+      <% end %>
     <% else %>
       <% @options.where(category_id: @products.find(@orderlines.find(item).product_id).category_id).each do |e| %>
         <tr>
@@ -15,7 +32,8 @@
           <td><%= check_box_tag @ops1, e.id %></td>
         </tr>
         <%= e.Name %>
-      <% end %>      
+      <% end %>
+      <br>
     <% end %>
     <br>
   <% end %>
