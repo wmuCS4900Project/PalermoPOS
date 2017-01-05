@@ -9,6 +9,9 @@ gem 'sqlite3'
 #we're going to use MYSQL instead of sqlite - 11/7/16 joe
 gem 'mysql2'
 
+# Library for password hashing
+gem 'bcrypt',         '3.1.11'
+
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
