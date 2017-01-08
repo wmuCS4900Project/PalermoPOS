@@ -2,8 +2,8 @@
 
 one:
   Phone: 1112223333
-  LastName: MyString
-  FirstName: MyString
+  LastName: Smith
+  FirstName: Jim
   AddressNumber: MyString
   StreetName: MyString
   City: MyString
@@ -22,8 +22,8 @@ one:
 
 two:
   Phone: 4445556666
-  LastName: MyString
-  FirstName: MyString
+  LastName: Brown
+  FirstName: Bob
   AddressNumber: MyString
   StreetName: MyString
   City: MyString
