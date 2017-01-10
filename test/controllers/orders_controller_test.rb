@@ -3,6 +3,7 @@ require 'test_helper'
 class OrdersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @order = orders(:one)
+    @cust1 = customers(:one)
   end
 
   test "should get index" do
@@ -10,17 +11,49 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get new" do
-    get new_order_url
+  test "should get startorder" do
+    get orders_startorder_url
     assert_response :success
   end
+  
+  test "should get pickoptions" do
+    post orders_pickoptions_url, params: { id: 0 }
+    assert_response :success
+  end
+  
+  test "should get confirmorder" do
+    post orders_confirmorder_url
+    assert_response :success
+  end
+  
+  test "should get custsearch" do
+    get orders_custsearch_url
+    assert_response :success
+  end
+  
+  test "search 1" do
+    get order_url(@order), params: { searchcriteria: "phone", criteria: "111" }
+    assert_not(@order.nil?)
+    puts @results
+    puts @cust1
+    assert_includes(@results, @cust1, "found it")
+  end
+  
+  test "search 2" do
+    get order_url(@order), params: {searchcriteria: "name", criteria: "jim" }
+    assert_not(@order.nil?)
+    puts @results
+    puts @cust1
+    assert_includes(@results, @cust1, "found it")
+  end
+    
 
   test "should create order" do
     assert_difference('Order.count') do
-      post orders_url, params: { order: {  } }
+      get new_order_url
     end
 
-    assert_redirected_to order_url(Order.last)
+    assert_redirected_to pickoptions_order_url
   end
 
   test "should show order" do
@@ -45,4 +78,5 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to orders_url
   end
+  
 end

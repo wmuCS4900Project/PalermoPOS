@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  Phone: MyString
-  LastName: MyString
-  FirstName: MyString
+  Phone: 1112223333
+  LastName: Smith
+  FirstName: Jim
   AddressNumber: MyString
   StreetName: MyString
   City: MyString
@@ -21,9 +21,9 @@ one:
   Notes: MyString
 
 two:
-  Phone: MyString
-  LastName: MyString
-  FirstName: MyString
+  Phone: 4445556666
+  LastName: Brown
+  FirstName: Bob
   AddressNumber: MyString
   StreetName: MyString
   City: MyString

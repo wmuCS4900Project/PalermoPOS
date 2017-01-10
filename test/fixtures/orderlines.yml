@@ -4,18 +4,18 @@ one:
   ItemTotalCost: 9.99
   product: one
   order: one
-  Split: 1
   Options1: MyString
   Options2: MyString
   Options3: MyString
   Options4: MyString
+  splitstyle: 1
 
 two:
   ItemTotalCost: 9.99
   product: two
   order: two
-  Split: 1
   Options1: MyString
   Options2: MyString
   Options3: MyString
   Options4: MyString
+  splitstyle: 1

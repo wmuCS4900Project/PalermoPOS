@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 8) do
+ActiveRecord::Schema.define(version: 9) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "Name"
@@ -62,13 +62,13 @@ ActiveRecord::Schema.define(version: 8) do
     t.decimal  "ItemTotalCost", precision: 8, scale: 2
     t.integer  "product_id"
     t.integer  "order_id"
-    t.integer  "Split"
     t.string   "Options1"
     t.string   "Options2"
     t.string   "Options3"
     t.string   "Options4"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.integer  "splitstyle",                            default: 0
     t.index ["order_id"], name: "index_orderlines_on_order_id", using: :btree
     t.index ["product_id"], name: "index_orderlines_on_product_id", using: :btree
   end

@@ -1,0 +1,52 @@
+<%= render 'bars/top' %>
+<%= form_tag("/orders/custsearch", :method=>'get', :multipart => true) do %>
+
+  <h1>Customer Search</h1>
+  Enter a search criteria: <br>
+  <%= text_field_tag 'criteria' %> <br><br>
+  Search by: <br>
+  <%= radio_button_tag 'searchcriteria', 'phone', true %>Phone<br> 
+  <%= radio_button_tag 'searchcriteria', 'name' %>Name<br>
+  <%= radio_button_tag 'searchcriteria', 'address' %>Address<br>
+  <%= radio_button_tag 'searchcriteria', 'city' %>City<br>
+  <%= radio_button_tag 'searchcriteria', 'zip' %>Zip<br>
+  <br>
+  
+  <div class="actions">
+    <%= submit_tag "Search" %>
+  </div>
+  
+  
+<% end %>
+
+<div class = "results" >
+  <%= form_tag("/orders/startorder", :method=>'get', :multipart => true) do %>
+    <% if defined?(@results) %>
+      <h2>Results</h2>
+      <% @results.each do |a| %>
+        <%= radio_button_tag 'custid', a.id %>
+        <%= a.FirstName %>
+        <%= a.LastName %>
+        <br>
+      <% end %>
+      <%= submit_tag "Start New Order" %>
+    <% end %>
+  <% end %>
+</div>
+
+  
+
+<br>
+<div class = "printing" >
+  
+  <button onclick="myFunction()">Print this page</button>
+  
+  <script>
+  function myFunction() {
+      window.print();
+  }
+  </script>
+</div>
+
+<%= link_to 'Trash This Order', orders_path %>
+
