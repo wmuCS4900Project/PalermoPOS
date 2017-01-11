@@ -32,7 +32,7 @@ class UsersController < ApplicationController
       else
         render 'new'
       end
-    end
+  end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json

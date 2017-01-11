@@ -8,6 +8,7 @@ class OrdersController < ApplicationController
   def index
     @orders = Order.all
     @products = Product.all
+    @customers = Customer.all
     @pending = Order.where("PaidFor IS NULL OR PaidFor=0")
     @completed = Order.where("PaidFor=1")
   end
@@ -65,6 +66,22 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
+  end
+  
+  def cashout
+    
+    if !params[:id].present?
+      redirect_to orders_url
+    end
+    
+    @id = params[:id]
+    
+    @order = Order.find(@id)
+    
+    @customer = Customer.find(@order.customer_id)
+    @orderlines = Orderline.where(order_id: @id)
+    
+    
   end
   
   # POST /orders/getoptions

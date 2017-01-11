@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :categories
 
   post "orders/pickoptions" => 'orders#pickoptions'
+  get "orders/cashout" => 'orders#cashout'
   post "orders/confirmorder" => 'orders#confirmorder'
   get "orders/custsearch" => 'orders#custsearch'
   get "orders/startorder" => 'orders#startorder'
