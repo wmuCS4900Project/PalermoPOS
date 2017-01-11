@@ -23,7 +23,7 @@
       <tr>
         <td>Order # <%= order.id %></td>
         <td>Ordered By: <%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
-        <td><%= link_to 'Cash Out', orders_cashout_path(order.id) %></td>
+        <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ) %></td>
         <td><%= link_to 'Show', order %></td>
         <td><%= link_to 'Edit', edit_order_path(order) %></td>
         <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>

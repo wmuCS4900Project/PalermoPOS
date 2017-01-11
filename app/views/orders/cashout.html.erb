@@ -1,3 +1,15 @@
 <%= render 'bars/top' %>
 
 <h1>Cash Out Order <%= @order.id %></h1>
+
+
+<body>
+  
+  Subtotal: <%= @order.TotalCost %><br>
+  Taxes: <%= @order.Tax %><br>
+</body>
+
+
+<%= form_tag("/orders/cashedout", :method=>'post', :multipart => true) do %>
+  <%= text_field_tag 'amountpaid' %>
+<% end %>
