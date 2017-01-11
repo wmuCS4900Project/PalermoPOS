@@ -18,15 +18,13 @@ class OrdersController < ApplicationController
   def show
   end
 
-  # GET /orders/start
+  # GET /orders/startorder
   def startorder
     if params[:custid].present?
       @custid = params[:custid]
       @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => @custid
-      puts "did order good"
     else
       @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => 1
-      puts "did order default"
     end
     @ordernum = @order.id
     @products = Product.all
@@ -36,7 +34,6 @@ class OrdersController < ApplicationController
   
   # GET /orders/custsearch
   def custsearch
-
     c = params[:criteria]
     crit = params[:searchcriteria]
     if crit == "phone"
@@ -56,6 +53,7 @@ class OrdersController < ApplicationController
     end
   end
   
+  #deprecated?
   def pending
     @orders = Order.where('created_at BETWEEN ? AND ?', DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
     @customers = Customer.all
