@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170111003737) do
+ActiveRecord::Schema.define(version: 20170111200703) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "Name"
@@ -51,10 +51,11 @@ ActiveRecord::Schema.define(version: 20170111003737) do
 
   create_table "options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "Name"
-    t.decimal  "Cost",        precision: 8, scale: 2
+    t.decimal  "Cost",         precision: 8, scale: 2
     t.integer  "category_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "Abbreviation"
     t.index ["category_id"], name: "index_options_on_category_id", using: :btree
   end
 
@@ -94,11 +95,12 @@ ActiveRecord::Schema.define(version: 20170111003737) do
 
   create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "Name"
-    t.decimal  "Cost",        precision: 8, scale: 2
+    t.decimal  "Cost",         precision: 8, scale: 2
     t.string   "freeoptions"
     t.integer  "category_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "Abbreviation"
     t.index ["category_id"], name: "index_products_on_category_id", using: :btree
   end
 
