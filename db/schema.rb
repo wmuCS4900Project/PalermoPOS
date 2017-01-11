@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170111200703) do
+ActiveRecord::Schema.define(version: 20170111203011) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "Name"
@@ -76,19 +76,22 @@ ActiveRecord::Schema.define(version: 20170111200703) do
 
   create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.datetime "TimeOrdered"
-    t.decimal  "TotalCost",   precision: 8, scale: 2
+    t.decimal  "TotalCost",     precision: 8, scale: 2
     t.boolean  "PaidFor"
     t.integer  "DriverID"
-    t.decimal  "Discounts",   precision: 8, scale: 2
-    t.decimal  "AmountPaid",  precision: 8, scale: 2
-    t.decimal  "ChangeDue",   precision: 8, scale: 2
-    t.decimal  "Tip",         precision: 8, scale: 2
+    t.decimal  "Discounts",     precision: 8, scale: 2
+    t.decimal  "AmountPaid",    precision: 8, scale: 2
+    t.decimal  "ChangeDue",     precision: 8, scale: 2
+    t.decimal  "Tip",           precision: 8, scale: 2
     t.integer  "user_id"
     t.integer  "customer_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.decimal  "Tax",         precision: 8, scale: 2
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.decimal  "Tax",           precision: 8, scale: 2
     t.boolean  "PaidCash"
+    t.boolean  "Cancelled"
+    t.boolean  "Refunded"
+    t.decimal  "RefundedTotal", precision: 8, scale: 2
     t.index ["customer_id"], name: "index_orders_on_customer_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
