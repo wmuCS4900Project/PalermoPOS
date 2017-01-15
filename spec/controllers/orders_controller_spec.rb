@@ -48,6 +48,10 @@ RSpec.describe OrdersController, :type => :controller do
     
     let!(:first) { create :customer, :one }
 
+    it "finds startorder" do
+      get :startorder
+      expect(response).to be_success
+    end
     
     it "should create a new order with customer 1" do
       get :startorder, params: { custid: first.id }

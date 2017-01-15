@@ -1,6 +1,10 @@
 class Orderline < ApplicationRecord
   belongs_to :product
   belongs_to :order
-  enum splitstyle: [:whole, :halves, :hqq, :quarters]
+  serialize :Options1
+  serialize :Options2
+  serialize :Options3
+  serialize :Options4
+  enum splitstyle: [:whole, :halves, :quarters]
   
 end

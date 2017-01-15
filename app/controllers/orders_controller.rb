@@ -9,13 +9,22 @@ class OrdersController < ApplicationController
     @orders = Order.all
     @products = Product.all
     @customers = Customer.all
-    @pending = Order.where("PaidFor IS NULL OR PaidFor=0")
-    @completed = Order.where("PaidFor=1")
+    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false")
+    @cancelled = Order.where("Cancelled IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    @completed = Order.where("PaidFor IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    @refunded = Order.where("Refunded IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
   end
 
   # GET /orders/1
   # GET /orders/1.json
   def show
+    @order = Order.find(params[:id])
+    @customers = Customer.all
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
+    @products = Product.all
+    @options = Option.all
+    puts @order.inspect
+    puts @orderlines.inspect
   end
 
   # GET /orders/startorder
@@ -51,6 +60,15 @@ class OrdersController < ApplicationController
     elsif crit == "zip"
       @results = Customer.where("Zip like ?", "%#{c}%")
     end
+  end
+  
+  #get receipt
+  def receipt
+    @order_id = params[:order_id]
+    @order = Order.find(@order_id)
+    @customer = Customer.find(@order.customer_id)
+    @options = Option.all
+    @products = Product.all
   end
   
   #deprecated?
@@ -149,9 +167,11 @@ class OrdersController < ApplicationController
     @order = Order.find(@ordernum)
     
     @products = Product.all
-    @orderlines = Orderline.all
     @options = Option.all
     @categories = Category.all
+    
+    @customers = Customer.all
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
     
     @items = @orderlines.where(order_id: @ordernum).ids
     puts @items
@@ -159,13 +179,10 @@ class OrdersController < ApplicationController
     @totalcost = 0.0
     
     @items.each do |orderlineid|
-      
       thisorderline = @orderlines.find(orderlineid)
-      
       if(@categories.find(@products.find(thisorderline.product_id).category_id).Splits == true)
         puts "insplits"
         thisorderline.splitstyle = params["#{orderlineid.to_s + "split"}"]
-
         if(thisorderline.whole?)
           line_saver(thisorderline, params[orderlineid.to_s + "options1"], nil, nil, nil)
         elsif(thisorderline.halves?)
@@ -173,19 +190,16 @@ class OrdersController < ApplicationController
         elsif(thisorderline.quarters?)
           line_saver(thisorderline, params[orderlineid.to_s + "options1"], params[orderlineid.to_s + "options2"], params[orderlineid.to_s + "options3"], params[orderlineid.to_s + "options4"])
         end
-        
       else  
         thisorderline.splitstyle = :whole
         line_saver(thisorderline, params[orderlineid.to_s + "options"], nil, nil, nil)
       end
-      
       @totalcost = @totalcost + thisorderline.ItemTotalCost
     end
+    
     @order.TotalCost = @totalcost
     @order.save!
     
-    redirect_to orders_url
-
   end
 
 
