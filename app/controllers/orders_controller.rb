@@ -8,24 +8,32 @@ class OrdersController < ApplicationController
   def index
     @orders = Order.all
     @products = Product.all
-    @pending = Order.where("PaidFor IS NULL OR PaidFor=0")
-    @completed = Order.where("PaidFor=1")
+    @customers = Customer.all
+    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false")
+    @cancelled = Order.where("Cancelled IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    @completed = Order.where("PaidFor IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    @refunded = Order.where("Refunded IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
   end
 
   # GET /orders/1
   # GET /orders/1.json
   def show
+    @order = Order.find(params[:id])
+    @customers = Customer.all
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
+    @products = Product.all
+    @options = Option.all
+    puts @order.inspect
+    puts @orderlines.inspect
   end
 
-  # GET /orders/start
+  # GET /orders/startorder
   def startorder
     if params[:custid].present?
       @custid = params[:custid]
       @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => @custid
-      puts "did order good"
     else
       @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => 1
-      puts "did order default"
     end
     @ordernum = @order.id
     @products = Product.all
@@ -35,7 +43,6 @@ class OrdersController < ApplicationController
   
   # GET /orders/custsearch
   def custsearch
-
     c = params[:criteria]
     crit = params[:searchcriteria]
     if crit == "phone"
@@ -55,6 +62,16 @@ class OrdersController < ApplicationController
     end
   end
   
+  #get receipt
+  def receipt
+    @order_id = params[:order_id]
+    @order = Order.find(@order_id)
+    @customer = Customer.find(@order.customer_id)
+    @options = Option.all
+    @products = Product.all
+  end
+  
+  #deprecated?
   def pending
     @orders = Order.where('created_at BETWEEN ? AND ?', DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
     @customers = Customer.all
@@ -65,6 +82,47 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
+  end
+  
+  def cashout
+    
+    if !params[:id].present?
+      redirect_to orders_url
+    end
+    
+    @id = params[:id]
+    
+    @order = Order.find(@id)
+    
+    @customer = Customer.find(@order.customer_id)
+    @orderlines = Orderline.where(order_id: @id)
+    
+    @cashsplit = @order.TotalCost.divmod 1
+    @taxes = 0.0
+    @centstax = 0.0
+    @taxes = (@cashsplit[0] * 0.06)
+    
+    if((0.10 >= @cashsplit[1]) && (@cashsplit[1] >= 0.00))
+      @centstax = 0.0
+    elsif((0.24 >= @cashsplit[1]) && (@cashsplit[1] >= 0.11))
+      @centstax = 0.01
+    elsif((0.41 >= @cashsplit[1]) && (@cashsplit[1] >= 0.25))
+      @centstax = 0.02
+    elsif((0.58 >= @cashsplit[1]) && (@cashsplit[1] >= 0.42))
+      @centstax = 0.03    
+    elsif((0.74 >= @cashsplit[1]) && (@cashsplit[1] >= 0.59))
+      @centstax = 0.04    
+    elsif((0.91 >= @cashsplit[1]) && (@cashsplit[1] >= 0.75))
+      @centstax = 0.05
+    elsif((0.99 >= @cashsplit[1]) && (@cashsplit[1] >= 0.92))
+      @centstax = 0.06      
+    end
+    
+    @taxes = @taxes + @centstax
+    
+    @order.Tax = @taxes
+    @order.save!
+      
   end
   
   # POST /orders/getoptions
@@ -109,21 +167,22 @@ class OrdersController < ApplicationController
     @order = Order.find(@ordernum)
     
     @products = Product.all
-    @orderlines = Orderline.all
     @options = Option.all
     @categories = Category.all
+    
+    @customers = Customer.all
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
     
     @items = @orderlines.where(order_id: @ordernum).ids
     puts @items
     
+    @totalcost = 0.0
+    
     @items.each do |orderlineid|
-      
       thisorderline = @orderlines.find(orderlineid)
-      
       if(@categories.find(@products.find(thisorderline.product_id).category_id).Splits == true)
         puts "insplits"
         thisorderline.splitstyle = params["#{orderlineid.to_s + "split"}"]
-
         if(thisorderline.whole?)
           line_saver(thisorderline, params[orderlineid.to_s + "options1"], nil, nil, nil)
         elsif(thisorderline.halves?)
@@ -131,14 +190,16 @@ class OrdersController < ApplicationController
         elsif(thisorderline.quarters?)
           line_saver(thisorderline, params[orderlineid.to_s + "options1"], params[orderlineid.to_s + "options2"], params[orderlineid.to_s + "options3"], params[orderlineid.to_s + "options4"])
         end
-        
       else  
         thisorderline.splitstyle = :whole
         line_saver(thisorderline, params[orderlineid.to_s + "options"], nil, nil, nil)
       end
-      
+      @totalcost = @totalcost + thisorderline.ItemTotalCost
     end
-
+    
+    @order.TotalCost = @totalcost
+    @order.save!
+    
   end
 
 

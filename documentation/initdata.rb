@@ -7,10 +7,12 @@ Driver.create :user_id => 2
 Driver.create :user_id => 3
 
 Category.create :Name => "12 Inch Pizzas", :Splits => true
+Category.create :Name => "14 Inch Pizzas", :Splits => false
 Category.create :Name => "16 Inch Pizzas", :Splits => true
 Category.create :Name => "18 Inch Pizzas", :Splits => true
 Category.create :Name => "24 Inch Pizzas", :Splits => true
-Category.create :Name => "Sides", :Splits => false
+Category.create :Name => "Deep Dish Pizzas", :Splits => false
+Category.create :Name => "Appetizers", :Splits => false
 Category.create :Name => "Drinks", :Splits => false
 Category.create :Name => "Subs", :Splits => false
 Category.create :Name => "Salads", :Splits => false
