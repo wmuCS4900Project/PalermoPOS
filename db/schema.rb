@@ -11,15 +11,14 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20170111203011) do
-
-  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Name"
     t.boolean  "Splits"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "customers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "customers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Phone"
     t.string   "LastName"
     t.string   "FirstName"
@@ -31,25 +30,25 @@ ActiveRecord::Schema.define(version: 20170111203011) do
     t.string   "Directions"
     t.integer  "LastOrderNumber"
     t.datetime "FirstOrderDate"
+    t.decimal  "TotalOrderDollars", precision: 10
     t.integer  "TotalOrderCount"
-    t.decimal  "TotalOrderDollars", precision: 8, scale: 2
-    t.integer  "BadCkCount"
-    t.decimal  "BadCkTotal",        precision: 8, scale: 2
+    t.integer  "BadCkAmt"
+    t.decimal  "BadCkCount",        precision: 10
     t.boolean  "LongDelivery"
     t.datetime "LastOrderDate"
     t.string   "Notes"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
-  create_table "drivers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "drivers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_drivers_on_user_id", using: :btree
   end
 
-  create_table "options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Name"
     t.decimal  "Cost",         precision: 8, scale: 2
     t.integer  "category_id"
@@ -59,7 +58,7 @@ ActiveRecord::Schema.define(version: 20170111203011) do
     t.index ["category_id"], name: "index_options_on_category_id", using: :btree
   end
 
-  create_table "orderlines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "orderlines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.decimal  "ItemTotalCost", precision: 8, scale: 2
     t.integer  "product_id"
     t.integer  "order_id"
@@ -74,7 +73,7 @@ ActiveRecord::Schema.define(version: 20170111203011) do
     t.index ["product_id"], name: "index_orderlines_on_product_id", using: :btree
   end
 
-  create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "TimeOrdered"
     t.decimal  "TotalCost",     precision: 8, scale: 2
     t.boolean  "PaidFor"
@@ -96,7 +95,7 @@ ActiveRecord::Schema.define(version: 20170111203011) do
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
 
-  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Name"
     t.decimal  "Cost",         precision: 8, scale: 2
     t.string   "freeoptions"
@@ -107,7 +106,17 @@ ActiveRecord::Schema.define(version: 20170111203011) do
     t.index ["category_id"], name: "index_products_on_category_id", using: :btree
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.string   "resource_type"
+    t.integer  "resource_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+    t.index ["name"], name: "index_roles_on_name", using: :btree
+  end
+
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Name"
     t.string   "Password"
     t.boolean  "Driver"
@@ -116,6 +125,12 @@ ActiveRecord::Schema.define(version: 20170111203011) do
     t.datetime "updated_at",      null: false
     t.string   "password_digest"
     t.string   "username"
+  end
+
+  create_table "users_roles", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.integer "role_id"
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
   add_foreign_key "drivers", "users"

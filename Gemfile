@@ -11,6 +11,9 @@ gem 'mysql2'
 
 
 
+# Used for maintaining and enforcing roles
+gem "rolify"
+
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
