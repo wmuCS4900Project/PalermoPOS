@@ -207,8 +207,8 @@ DEPENDENCIES
   mysql2
   puma (~> 3.0)
   rails (~> 5.0.0, >= 5.0.0.1)
-  rolify
   rails-controller-testing
+  rolify
   rspec-rails
   sass-rails (~> 5.0)
   spring
