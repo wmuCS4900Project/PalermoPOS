@@ -9,15 +9,7 @@
   }
 </style>
 
-<h3>Today's Orders</h3><br>
-
-<br>
-<h2>
-<%= link_to 'New Order', orders_custsearch_path %>
-</h2>
-<br>
-
-<%= link_to 'View all Orders', orders_all_path %>
+<h3>All Orders</h3><br>
 
 
 <h1>Pending Orders</h1>
@@ -28,14 +20,15 @@
       <th><%= "Order Number" %></th>
       <th><%= "Ordered by" %></th>
       <th><%= "Ordered at" %></th>
+      <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @pending.each do |order| %>
       <tr>
-        <td><%= order.id %> <br>
-        <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br></td>
+        <td><%= order.id %>
+        <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> </td>
         <td><%= order.created_at %> </td>
         <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ) %></td>
         <td><%= link_to 'Show', order %></td>
@@ -52,6 +45,9 @@
 <table>
   <thead>
     <tr>
+      <th><%= "Order Number" %></th>
+      <th><%= "Ordered by" %></th>
+      <th><%= "Ordered at" %></th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -59,9 +55,9 @@
   <tbody>
     <% @completed.each do |order| %>
       <tr>
-        <td>Order # <%= order.id %> <br>
-        Ordered by: <%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br>
-        Order time: <%= order.created_at %> </td>
+        <td><%= order.id %> </td>
+        <td><%= @customers.find(order.customer_id).FirstName %><%= @customers.find(order.customer_id).LastName %> </td>
+        <td><%= order.created_at %> </td>
         <td><%= link_to 'Show', order %></td>
         <td><%= link_to 'Edit', edit_order_path(order) %></td>
         <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -76,16 +72,18 @@
 <table>
   <thead>
     <tr>
+      <th><%= "Order Number" %></th>
+      <th><%= "Ordered by" %></th>
+      <th><%= "Ordered at" %></th>
       <th colspan="3"></th>
     </tr>
   </thead>
-
   <tbody>
     <% @cancelled.each do |order| %>
       <tr>
-        <td>Order # <%= order.id %> <br>
-        Ordered by: <%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br>
-        Order time: <%= order.created_at %> </td>
+        <td><%= order.id %>
+        <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
+        <td><%= order.created_at %> </td>
         <td><%= link_to 'Show', order %></td>
         <td><%= link_to 'Edit', edit_order_path(order) %></td>
         <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -99,6 +97,9 @@
 <table>
   <thead>
     <tr>
+      <th><%= "Order Number" %></th>
+      <th><%= "Ordered by" %></th>
+      <th><%= "Ordered at" %></th>
       <th colspan="3"></th>
     </tr>
   </thead>
