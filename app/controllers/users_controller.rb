@@ -45,8 +45,8 @@ class UsersController < ApplicationController
         flash[:success] = "User successfully added"
         redirect_to @user
       else
-        flash[:error] = "Could not add user" # TODO: More meaningful message
-        redirect_to "user#new"
+        flash[:danger] = "Error: Could not add user" # TODO: More meaningful message
+        redirect_to '/users'
       end
   end
 
