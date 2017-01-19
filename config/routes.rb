@@ -5,18 +5,20 @@ Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
-  root 'application#hello'
+  root 'application#home'
   resources :users
-  resources :orders
   resources :products
   resources :categories
-  #resource :sessions, only: [:new, :create, :destroy] 
-   
-  get "orders/new"
-  post "/orders/new"
-  post "/orders/pickoptions"
-  post "/orders/confirmorder"
 
+  get "default/index" 
+  post "orders/pickoptions" => 'orders#pickoptions'
+  get "orders/cashout" => 'orders#cashout'
+  post "orders/confirmorder" => 'orders#confirmorder'
+  get "orders/custsearch" => 'orders#custsearch'
+  get "orders/startorder" => 'orders#startorder'
+  get "orders/pending" => 'orders#pending'
+  resources :orders
+  
   # Route Signup to new users page
   get  '/signup',  to: 'users#new'
 

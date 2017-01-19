@@ -1,4 +1,5 @@
 <%= form_tag("/orders/pickoptions", :method=>'post', :multipart => true) do %>
+<h1>New Order</h1>
 
   Pick a User:
   <select name = "user">
@@ -10,15 +11,17 @@
   </select>
   <br><br>
 
-  Pick a Customer:
-  <select name = "customer">
-    <% @customers.each do |a| %>
-      <tr>
-        <option value="<%= a.id %>"><%= a.FirstName %>&nbsp;<%= a.LastName %></option>
-      </tr>
-    <% end %>
-  </select>
-  <br><br>
+  <% if !defined?(@custid) %>
+    Pick a Customer:
+    <select name = "customer">
+      <% @customers.each do |a| %>
+        <tr>
+          <option value="<%= a.id %>"><%= a.FirstName %>&nbsp;<%= a.LastName %></option>
+        </tr>
+      <% end %>
+    </select>
+    <br><br>
+  <% end %>
   
   <% for c in 1..5 do %>
     <select name="items[]">
@@ -38,4 +41,10 @@
     <%= submit_tag "Start New Order" %>
   </div>
   
-<% end %>
+  <%= link_to 'Back', orders_path %>
+  
+  <%= params.inspect %>
+
+  
+<% end %><br>
+

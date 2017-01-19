@@ -48,7 +48,7 @@ class UsersController < ApplicationController
         flash[:error] = "Could not add user" # TODO: More meaningful message
         redirect_to "user#new"
       end
-    end
+  end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json

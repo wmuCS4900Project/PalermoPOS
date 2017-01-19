@@ -1,0 +1,8 @@
+Silent printing from the browser can be done from chrome using the following:
+
+chrome shortcut launches using kiosk printing mode
+example:
+"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --kiosk-printing "https://pizzapro-swhc.c9users.io/orders/custsearch"
+
+the print dialog will appear and then immediately disappear
+this does require having the default printer set to the receipt printer
