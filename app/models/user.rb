@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+	rolify
 	# before_save { self.username = username.downcase }
     has_many :orders, :dependent => :destroy
     has_many :drivers, :dependent => :destroy
