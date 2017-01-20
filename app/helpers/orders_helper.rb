@@ -60,4 +60,37 @@ module OrdersHelper
     
     end
   end
+  
+  def calc_taxes(orderid)
+    
+    order = Order.find(orderid)
+    
+    subtotal2 = order.Subtotal.to_f - order.Discounts
+    cashsplit = subtotal2.divmod 1
+    taxes = 0.0
+    centstax = 0.0
+    taxes = (cashsplit[0] * 0.06)
+    
+    if((0.10 >= cashsplit[1]) && (cashsplit[1] >= 0.00))
+      centstax = 0.0
+    elsif((0.24 >= cashsplit[1]) && (cashsplit[1] >= 0.11))
+      centstax = 0.01
+    elsif((0.41 >= cashsplit[1]) && (cashsplit[1] >= 0.25))
+      centstax = 0.02
+    elsif((0.58 >= cashsplit[1]) && (cashsplit[1] >= 0.42))
+      centstax = 0.03    
+    elsif((0.74 >= cashsplit[1]) && (cashsplit[1] >= 0.59))
+      centstax = 0.04    
+    elsif((0.91 >= cashsplit[1]) && (cashsplit[1] >= 0.75))
+      centstax = 0.05
+    elsif((0.99 >= cashsplit[1]) && (cashsplit[1] >= 0.92))
+      centstax = 0.06      
+    end
+    
+    taxes = taxes + centstax
+    
+    order.Tax = taxes
+    order.TotalCost = order.Subtotal.to_f - order.Discounts + order.Tax
+    order.save!
+  end
 end

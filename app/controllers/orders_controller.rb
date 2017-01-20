@@ -134,8 +134,7 @@ class OrdersController < ApplicationController
     @orderlines = Orderline.where("order_id = ?",@order.id).all
     
     @items = @orderlines.where(order_id: @ordernum).ids
-    puts @items
-    
+
     @subtotal = 0.0
     
     @items.each do |orderlineid|
@@ -158,8 +157,29 @@ class OrdersController < ApplicationController
     end
     
     @order.Subtotal = @subtotal
+    
     @order.save!
     
+    calc_taxes(@order.id)
+
+    redirect_to orders_receipt_url(id: @order.id)
+    
+  end
+  
+  def receipt
+    @order = Order.find(params[:id])
+    @products = Product.all
+    @options = Option.all
+    @categories = Category.all
+    
+    if params[:print].present?
+      @print = false
+    else
+      @print = true
+    end
+    
+    @customers = Customer.all
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
   end
 
   def cashout
@@ -168,13 +188,11 @@ class OrdersController < ApplicationController
       redirect_to orders_url
     end
 
-    
     @id = params[:id]
     
     @order = Order.find(@id)
     @products = Product.all
 
-    
     if params[:discount].present?
       @order.Discounts = params[:discount]
     else
@@ -184,33 +202,7 @@ class OrdersController < ApplicationController
     @customer = Customer.find(@order.customer_id)
     @orderlines = Orderline.where(order_id: @id)
     
-    @subtotal2 = @order.Subtotal.to_f - @order.Discounts
-    @cashsplit = @subtotal2.divmod 1
-    @taxes = 0.0
-    @centstax = 0.0
-    @taxes = (@cashsplit[0] * 0.06)
-    
-    if((0.10 >= @cashsplit[1]) && (@cashsplit[1] >= 0.00))
-      @centstax = 0.0
-    elsif((0.24 >= @cashsplit[1]) && (@cashsplit[1] >= 0.11))
-      @centstax = 0.01
-    elsif((0.41 >= @cashsplit[1]) && (@cashsplit[1] >= 0.25))
-      @centstax = 0.02
-    elsif((0.58 >= @cashsplit[1]) && (@cashsplit[1] >= 0.42))
-      @centstax = 0.03    
-    elsif((0.74 >= @cashsplit[1]) && (@cashsplit[1] >= 0.59))
-      @centstax = 0.04    
-    elsif((0.91 >= @cashsplit[1]) && (@cashsplit[1] >= 0.75))
-      @centstax = 0.05
-    elsif((0.99 >= @cashsplit[1]) && (@cashsplit[1] >= 0.92))
-      @centstax = 0.06      
-    end
-    
-    @taxes = @taxes + @centstax
-    
-    @order.Tax = @taxes
-    @order.TotalCost = @order.Subtotal.to_f - @order.Discounts + @order.Tax
-    @order.save!
+    calc_taxes(@order.id)
       
   end
   
