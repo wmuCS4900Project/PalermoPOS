@@ -10,6 +10,7 @@ class Order < ApplicationRecord
     self.PaidCash ||= false if self.PaidCash.nil?
     self.Cancelled ||= false if self.Cancelled.nil?
     self.Refunded ||= false if self.Refunded.nil?
+    self.Discounts = 0.0
   end
   
 end

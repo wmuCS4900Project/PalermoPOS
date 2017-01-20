@@ -6,13 +6,19 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
-    @products = Product.all
     @customers = Customer.all
-    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false")
+    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
     @cancelled = Order.where("Cancelled IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
     @completed = Order.where("PaidFor IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
     @refunded = Order.where("Refunded IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+  end
+  
+  def all
+    @customers = Customer.all
+    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false")
+    @cancelled = Order.where("Cancelled IS true")
+    @completed = Order.where("PaidFor IS true")
+    @refunded = Order.where("Refunded IS true")
   end
 
   # GET /orders/1
@@ -27,19 +33,6 @@ class OrdersController < ApplicationController
     puts @orderlines.inspect
   end
 
-  # GET /orders/startorder
-  def startorder
-    if params[:custid].present?
-      @custid = params[:custid]
-      @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => @custid
-    else
-      @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => 1
-    end
-    @ordernum = @order.id
-    @products = Product.all
-    @customers = Customer.all
-    @users = User.all
-  end
   
   # GET /orders/custsearch
   def custsearch
@@ -71,61 +64,28 @@ class OrdersController < ApplicationController
     @products = Product.all
   end
   
-  #deprecated?
-  def pending
-    @orders = Order.where('created_at BETWEEN ? AND ?', DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
-    @customers = Customer.all
-    @products = Product.all
-    @options = Option.all
-    @orderlines = Orderline.all
-  end
 
   # GET /orders/1/edit
   def edit
   end
   
-  def cashout
-    
-    if !params[:id].present?
-      redirect_to orders_url
+  
+  
+  # GET /orders/startorder
+  def startorder
+    if params[:custid].present?
+      @custid = params[:custid]
+      @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => @custid
+    else
+      @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => 1
     end
-    
-    @id = params[:id]
-    
-    @order = Order.find(@id)
-    
-    @customer = Customer.find(@order.customer_id)
-    @orderlines = Orderline.where(order_id: @id)
-    
-    @cashsplit = @order.TotalCost.divmod 1
-    @taxes = 0.0
-    @centstax = 0.0
-    @taxes = (@cashsplit[0] * 0.06)
-    
-    if((0.10 >= @cashsplit[1]) && (@cashsplit[1] >= 0.00))
-      @centstax = 0.0
-    elsif((0.24 >= @cashsplit[1]) && (@cashsplit[1] >= 0.11))
-      @centstax = 0.01
-    elsif((0.41 >= @cashsplit[1]) && (@cashsplit[1] >= 0.25))
-      @centstax = 0.02
-    elsif((0.58 >= @cashsplit[1]) && (@cashsplit[1] >= 0.42))
-      @centstax = 0.03    
-    elsif((0.74 >= @cashsplit[1]) && (@cashsplit[1] >= 0.59))
-      @centstax = 0.04    
-    elsif((0.91 >= @cashsplit[1]) && (@cashsplit[1] >= 0.75))
-      @centstax = 0.05
-    elsif((0.99 >= @cashsplit[1]) && (@cashsplit[1] >= 0.92))
-      @centstax = 0.06      
-    end
-    
-    @taxes = @taxes + @centstax
-    
-    @order.Tax = @taxes
-    @order.save!
-      
+    @ordernum = @order.id
+    @products = Product.all
+    @customers = Customer.all
+    @users = User.all
   end
   
-  # POST /orders/getoptions
+  # POST /orders/pickoptions
   def pickoptions
     @order = Order.find(params[:ordernum])
     @ordernum = params[:ordernum]
@@ -174,9 +134,8 @@ class OrdersController < ApplicationController
     @orderlines = Orderline.where("order_id = ?",@order.id).all
     
     @items = @orderlines.where(order_id: @ordernum).ids
-    puts @items
-    
-    @totalcost = 0.0
+
+    @subtotal = 0.0
     
     @items.each do |orderlineid|
       thisorderline = @orderlines.find(orderlineid)
@@ -194,19 +153,91 @@ class OrdersController < ApplicationController
         thisorderline.splitstyle = :whole
         line_saver(thisorderline, params[orderlineid.to_s + "options"], nil, nil, nil)
       end
-      @totalcost = @totalcost + thisorderline.ItemTotalCost
+      @subtotal = @subtotal + thisorderline.ItemTotalCost
     end
     
-    @order.TotalCost = @totalcost
+    @order.Subtotal = @subtotal
+    
+    @order.save!
+    
+    calc_taxes(@order.id)
+
+    redirect_to orders_receipt_url(id: @order.id)
+    
+  end
+  
+  def receipt
+    @order = Order.find(params[:id])
+    @products = Product.all
+    @options = Option.all
+    @categories = Category.all
+    
+    if params[:print].present?
+      @print = false
+    else
+      @print = true
+    end
+    
+    @customers = Customer.all
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
+  end
+
+  def cashout
+    
+    if !params[:id].present?
+      redirect_to orders_url
+    end
+
+    @id = params[:id]
+    
+    @order = Order.find(@id)
+    @products = Product.all
+
+    if params[:discount].present?
+      @order.Discounts = params[:discount]
+    else
+      @order.Discounts = 0.0
+    end
+    
+    @customer = Customer.find(@order.customer_id)
+    @orderlines = Orderline.where(order_id: @id)
+    
+    calc_taxes(@order.id)
+      
+  end
+  
+  def cashedout
+    
+    if !params[:id].present?
+      redirect_to orders_url
+    end
+    
+    @id = params[:id]
+    
+    @order = Order.find(@id)
+    @customer = Customer.find(@order.customer_id)
+    @orderlines = Orderline.where(order_id: @id)
+    @products = Product.all
+
+
+    if params[:amountpaid].present?
+      @paid = params[:amountpaid]
+    else
+      @paid = @order.TotalCost
+    end
+    
+    @order.AmountPaid = @paid
+    
+    if(@order.AmountPaid > @order.TotalCost.to_f)
+      @order.ChangeDue = @order.AmountPaid - @order.TotalCost.to_f
+    end
+    
+    @order.PaidCash = params[:cashorcredit]
+    @order.PaidFor = true
     @order.save!
     
   end
-
-
-  # POST /orders
-  # POST /orders.json
-  def create
-  end
+  
 
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json

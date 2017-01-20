@@ -1,0 +1,119 @@
+<%= render 'bars/top' %>
+
+<style>
+  h3 {
+    font-size: 30px;
+  }
+  h2 {
+    font-size: 24px;
+  }
+</style>
+
+<h3>All Orders</h3><br>
+
+
+<h1>Pending Orders</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th><%= "Order Number" %></th>
+      <th><%= "Ordered by" %></th>
+      <th><%= "Ordered at" %></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pending.each do |order| %>
+      <tr>
+        <td><%= order.id %>
+        <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> </td>
+        <td><%= order.created_at %> </td>
+        <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ) %></td>
+        <td><%= link_to 'Show', order %></td>
+        <td><%= link_to 'Edit', edit_order_path(order) %></td>
+        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<h1>Completed Orders</h1>
+ 
+<table>
+  <thead>
+    <tr>
+      <th><%= "Order Number" %></th>
+      <th><%= "Ordered by" %></th>
+      <th><%= "Ordered at" %></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @completed.each do |order| %>
+      <tr>
+        <td><%= order.id %> </td>
+        <td><%= @customers.find(order.customer_id).FirstName %><%= @customers.find(order.customer_id).LastName %> </td>
+        <td><%= order.created_at %> </td>
+        <td><%= link_to 'Show', order %></td>
+        <td><%= link_to 'Edit', edit_order_path(order) %></td>
+        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<h1>Cancelled Orders</h1>
+ 
+<table>
+  <thead>
+    <tr>
+      <th><%= "Order Number" %></th>
+      <th><%= "Ordered by" %></th>
+      <th><%= "Ordered at" %></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cancelled.each do |order| %>
+      <tr>
+        <td><%= order.id %>
+        <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
+        <td><%= order.created_at %> </td>
+        <td><%= link_to 'Show', order %></td>
+        <td><%= link_to 'Edit', edit_order_path(order) %></td>
+        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h1>Refunded Orders</h1>
+ 
+<table>
+  <thead>
+    <tr>
+      <th><%= "Order Number" %></th>
+      <th><%= "Ordered by" %></th>
+      <th><%= "Ordered at" %></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @refunded.each do |order| %>
+      <tr>
+        <td>Order # <%= order.id %> <br>
+        Ordered by: <%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br>
+        Order time: <%= order.created_at %> </td>
+        <td><%= link_to 'Show', order %></td>
+        <td><%= link_to 'Edit', edit_order_path(order) %></td>
+        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

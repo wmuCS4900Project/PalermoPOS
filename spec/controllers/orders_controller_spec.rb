@@ -62,6 +62,14 @@ RSpec.describe OrdersController, :type => :controller do
       get :startorder
       expect(Order.last.customer_id == 1)
     end
+  end
+  
+  describe 'GET #pickoptions' do
+    let!(:c1) { create :customer, :one }
+    let!(:o1) { create :order, :one }
+    
+    
+    
     
     
   end
