@@ -28,6 +28,8 @@
       <th><%= "Order Number" %></th>
       <th><%= "Ordered by" %></th>
       <th><%= "Ordered at" %></th>
+      <th colspan="4"></th>
+
     </tr>
   </thead>
 
@@ -40,6 +42,7 @@
         <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ) %></td>
         <td><%= link_to 'Show', order %></td>
         <td><%= link_to 'Edit', edit_order_path(order) %></td>
+        <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no") %></td>
         <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
