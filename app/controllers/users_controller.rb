@@ -12,25 +12,41 @@ class UsersController < ApplicationController
   def show
   end
 
+
   # GET /users/new
   def new
     @user = User.new
+    @roles = {:admin => "Administrator", :driver => "Driver"}
   end
 
   # GET /users/1/edit
   def edit
+    @roles = {:admin => "Administrator", :driver => "Driver"}
   end
 
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
-
+    puts params[:user]
+    # Get roles from params 
+    args = { :Name => params[:user][:Name] , :username => params[:user][:username], :password => params[:user][:password] }
+    puts args
+    @user = User.new( args )
+    roles = params["roles"]
+    puts "--------------------"
+    puts roles
       if @user.save
+        # Add Roles
+        roles.each do |role|
+          puts role
+          @user.add_role(role)
+        end
+
         flash[:success] = "User successfully added"
         redirect_to @user
       else
-        render 'new'
+        flash[:danger] = "Error: Could not add user" # TODO: More meaningful message
+        redirect_to '/users'
       end
   end
 
@@ -65,7 +81,7 @@ class UsersController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:Name, :username, :password)    
-    end
+   def user_params
+     params.require(:user).permit(:Name, :username, :password)    
+   end
 end

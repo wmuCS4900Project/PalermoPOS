@@ -64,14 +64,6 @@ class OrdersController < ApplicationController
     @products = Product.all
   end
   
-  #deprecated?
-  def pending
-    @orders = Order.where('created_at BETWEEN ? AND ?', DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
-    @customers = Customer.all
-    @products = Product.all
-    @options = Option.all
-    @orderlines = Orderline.all
-  end
 
   # GET /orders/1/edit
   def edit
