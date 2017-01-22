@@ -4,4 +4,5 @@ class Product < ApplicationRecord
     validates :Name, presence: true
     validates :Cost, presence: true
     validates :category_id, presence: true
+    serialize :freeoptions
 end

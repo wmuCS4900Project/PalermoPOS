@@ -110,8 +110,6 @@ class OrdersController < ApplicationController
       @items.push(@newol.id)
     end
     
-    puts @items
-    
     @orderlines = Orderline.all
     @products = Product.all
     @options = Option.all
@@ -140,7 +138,6 @@ class OrdersController < ApplicationController
     @items.each do |orderlineid|
       thisorderline = @orderlines.find(orderlineid)
       if(@categories.find(@products.find(thisorderline.product_id).category_id).Splits == true)
-        puts "insplits"
         thisorderline.splitstyle = params["#{orderlineid.to_s + "split"}"]
         if(thisorderline.whole?)
           line_saver(thisorderline, params[orderlineid.to_s + "options1"], nil, nil, nil)
@@ -235,6 +232,67 @@ class OrdersController < ApplicationController
     @order.PaidCash = params[:cashorcredit]
     @order.PaidFor = true
     @order.save!
+    
+  end
+  
+  def endofday
+    @customers = Customer.all
+    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    @cancelled = Order.where("Cancelled IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    @completed = Order.where("PaidFor IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    @refunded = Order.where("Refunded IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    
+    @subtotals = Array.new(4, 0.0)
+    @taxtotals = Array.new(4, 0.0)
+    @tottotals = Array.new(4, 0.0)
+    @cashtotal = Array.new(4, 0.0)
+    @credittotal = Array.new(4, 0.0)
+    
+    @pending.each do |a|
+      @subtotals[0] += a.Subtotal
+      @taxtotals[0] += a.Tax
+      @tottotals[0] += a.TotalCost
+      if a.PaidCash == true
+        @cashtotal[0] += a.TotalCost
+      else
+        @credittotal[0] += a.TotalCost
+      end
+    end
+    
+    @completed.each do |a|
+      @subtotals[1] += a.Subtotal
+      @taxtotals[1] += a.Tax
+      @tottotals[1] += a.TotalCost
+      if a.PaidCash == true
+        @cashtotal[1] += a.TotalCost
+      else
+        @credittotal[1] += a.TotalCost
+      end
+    end
+    
+    @cancelled.each do |a|
+      @subtotals[2] += a.Subtotal
+      @taxtotals[2] += a.Tax
+      @tottotals[2] += a.TotalCost
+      if a.PaidCash == true
+        @cashtotal[2] += a.TotalCost
+      else
+        @credittotal[2] += a.TotalCost
+      end
+    end
+
+    @completed.each do |a|
+      @subtotals[3] += a.Subtotal
+      @taxtotals[3] += a.Tax
+      @tottotals[3] += a.TotalCost
+      if a.PaidCash == true
+        @cashtotal[3] += a.TotalCost
+      else
+        @credittotal[3] += a.TotalCost
+      end
+    end
+    
+
     
   end
   

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :categories
   resources :options
 
+  get "orders/endofday" => 'orders#endofday'
   get "orders/receipt" => 'orders#receipt'
   get "default/index" 
   post "orders/pickoptions" => 'orders#pickoptions'
