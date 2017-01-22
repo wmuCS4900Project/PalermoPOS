@@ -21,7 +21,14 @@
         <%= b %>
         <% @options.where(category_id: @products.find(@orderlines.find(item).product_id).category_id).each do |e| %>
           <tr>
-            <td><%= check_box_tag @opslist[b], e.id %></td>
+            <td>
+              <%# box appears checked if its a free option on a specialty product %>
+              <% if (@products.find(@orderlines.find(item).product_id).freeoptions).include?(e.id.to_s) %> 
+                <%= check_box_tag @opslist[b], e.id, checked: true %>
+              <% else %>
+                <%= check_box_tag @opslist[b], e.id %>
+              <% end %>
+            </td>
           </tr>
           <%= e.Name %>
         <% end %>

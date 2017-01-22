@@ -7,4 +7,10 @@ class Orderline < ApplicationRecord
   serialize :Options4
   enum splitstyle: [:whole, :halves, :quarters]
   
+  after_initialize :init
+  
+  def init
+    self.OptionCount = BigDecimal.new("0.0")
+  end
+  
 end
