@@ -1,7 +1,0 @@
-<h1>Pending Orders</h1>
-
-<% @orders.each do |a| %>
-  Order # <%= a.id %> <br>
-  Ordered by: <%= @customers.find(a.customer_id).FirstName %> <%= @customers.find(a.customer_id).LastName %> <br>
-  Order time: <%= a.created_at %>
-<% end %>
