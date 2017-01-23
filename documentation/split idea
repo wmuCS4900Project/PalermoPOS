@@ -1,8 +1,0 @@
-  <div class="item">
-    <% @products.each do |p| %>
-      <% if(p.Splits) %>
-        <%= render 'splits', orderline: @orderline %>
-      <% else %>
-        <%= render 'nosplit', orderline: @orderline %>
-    <% end %>
-  </div>

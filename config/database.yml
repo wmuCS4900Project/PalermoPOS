@@ -6,7 +6,7 @@ default: &default
 development:
   adapter: mysql2
   encoding: utf8
-  database: palermodev2
+  database: palermodev
   username: swhc
   password: 
   host: <%=ENV['IP']%>
@@ -16,7 +16,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: palermotest2
+  database: palermodev
 
 production:
   <<: *default
