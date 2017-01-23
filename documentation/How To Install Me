@@ -1,0 +1,54 @@
+Install ubuntu or ubuntu server
+Open command line
+
+Update apt-get:
+sudo apt-get update
+
+Install git:
+sudo apt-get install git
+
+create a folder for the project
+git init
+git remote add origin https://github.com/wmuCS4900Project/PalermoPOS.git
+git pull
+git checkout release
+
+Install curl:
+sudo apt-get install curl 
+
+get key for rvm
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+
+Install RVM:
+\curl -L https://get.rvm.io | bash -s stable --ruby
+
+run 
+/home/username/.rvm/scripts/rvm
+Reopen command line
+
+Install node.js:
+sudo apt-get install nodejs
+
+Update gems:
+gem update --system
+
+Install bundler:
+gem install bundler
+
+Install nokogiri:
+gem install nokogiri
+
+Install rails:
+gem install rails --version=5.0.0.1
+
+Install other required gems
+bundle install
+
+Install mysql:
+sudo apt-get install mysql-server
+
+Run mysql
+mysql -u root -p
+
+

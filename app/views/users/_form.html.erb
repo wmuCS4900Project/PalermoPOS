@@ -1,0 +1,38 @@
+<%= form_for(user) do |f| %>
+    <%= f.label :Name %>
+    <%= f.text_field :Name %>
+
+    <%= f.label :username %>
+    <%= f.text_field :username %>
+
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+
+    <% 
+    # Add roles--only admins can add roles 
+    if logged_in?
+      puts @roles
+      @roles.each do |key, value| %>
+        <%= f.label( key, value) %>
+        <%= check_box_tag 'roles[]', key, "false" %>
+      <% end
+    end 
+    %>
+
+  <% if user.errors.any? %>
+
+    <div id="error_explanation">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

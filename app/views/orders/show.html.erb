@@ -1,0 +1,99 @@
+<%= render 'bars/top' %>
+
+
+<h1>
+  <%= "Order #" %>
+  <%= @order.id %><br>
+</h1>
+
+<%= "Ordered by:" %>
+<%= @customers.find(@order.customer_id).FirstName %> <%= @customers.find(@order.customer_id).LastName %><br>
+<%= "Order time:" %>
+<%= @order.created_at %><br>
+<%= "Paid for:" %>
+<%= @order.PaidFor %><br>
+<% if @order.PaidFor == true %>
+  <%= "Paid Cash or Credit:" %>
+  <% if @order.PaidCash == true %>
+    <%= "Cash" %>
+  <% else %>
+    <%= "Credit" %>
+  <% end %>
+<% end %>
+  
+
+<br><%= "Items:" %><br>
+<% @orderlines.each do |a| %>
+  <br><%= @products.find(a.product_id).Name %>
+  
+  <% if a.whole? %> <%#list the options if the product is whole %>
+    <br><%= "all" %>
+    <% if a.Options1.nil? %> 
+      <%= "Plain" %>
+    <% else %>
+      <% a.Options1.each do |b| %>
+        <%= @options.find(b).Name %>
+      <% end %>
+    <% end %>
+    
+  <% elsif a.halves? %> <%#list the options if the product is split in halves %>
+    <br><%= "half" %>
+    <% if a.Options1.nil? %> 
+      <%= "Plain" %>
+    <% else %>
+      <% a.Options1.each do |b| %>
+        <%= @options.find(b).Name %>
+      <% end %>
+    <% end %>
+    <br><%= "half" %>
+    <% if a.Options2.nil? %> 
+      <%= "Plain" %>
+    <% else %>
+      <% a.Options2.each do |b| %>
+        <%= @options.find(b).Name %>
+      <% end %>
+    <% end %>
+    
+  <% elsif a.quarters? %> <%#list the options if the product is split in halves %>
+    <br><%= "quarter" %>
+    <% if a.Options1.nil? %> 
+      <%= "Plain" %>
+    <% else %>
+      <% a.Options1.each do |b| %>
+        <%= @options.find(b).Name %>
+      <% end %>
+    <% end %>
+    <br><%= "quarter" %>
+    <% if a.Options2.nil? %> 
+      <%= "Plain" %>
+    <% else %>
+      <% a.Options2.each do |b| %>
+        <%= @options.find(b).Name %>
+      <% end %>
+    <% end %>
+    <br><%= "quarter" %>
+    <% if a.Options3.nil? %> 
+      <%= "Plain" %>
+    <% else %>
+      <% a.Options3.each do |b| %>
+        <%= @options.find(b).Name %>
+      <% end %>
+    <% end %>
+    <br><%= "quarter" %>
+    <% if a.Options4.nil? %> 
+      <%= "Plain" %>
+    <% else %>
+      <% a.Options4.each do |b| %>
+        <%= @options.find(b).Name %>
+      <% end %>
+    <% end %>
+  <% end %>
+  
+
+<% end %><br><br>
+
+
+
+
+<%= link_to 'Edit', edit_order_path(@order) %> |
+<%= link_to 'Back', orders_path %>

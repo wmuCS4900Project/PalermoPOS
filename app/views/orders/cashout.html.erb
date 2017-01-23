@@ -1,0 +1,51 @@
+<%= render 'bars/top' %>
+
+<h1>Cash Out Order <%= @order.id %></h1>
+
+
+<body>
+  
+  <% @orderlines.each do |a| %>
+    <%= @products.find(a.product_id).Name %>
+    <%= a.ItemTotalCost %><br>
+  <% end %><br>
+  
+  <%= "Subtotal:" %>
+  <%= @order.Subtotal %><br>
+  <% if @order.Discounts > 0.0 %>
+    <%= "Discount:"%>
+    <%= @order.Discounts %><br>
+  <% end %>
+  <%= "Taxes:" %>
+  <%= @order.Tax %><br>
+  <%= "Total Due" %>
+  <%= @order.TotalCost %>
+  
+</body>
+
+
+<br>
+<br>
+<%= form_tag("/orders/cashedout", :method=>'post', :multipart => true) do %>
+  <%= "Cash or Credit: " %>
+  <%= radio_button_tag 'cashorcredit', 'cash', true %> <%= "Cash" %>
+  <%= radio_button_tag 'cashorcredit', 'credit' %> <%= "Credit" %><br>
+  <%= "Amount being paid:" %>
+  <%= text_field_tag 'amountpaid', @order.TotalCost %>
+  <%= hidden_field_tag :id, @id %>
+  <div class="actions">
+    <%= submit_tag "Cash This Order Out" %>
+  </div>
+<% end %>
+
+<br>
+<br>
+<br>
+<%= "Discount Amount:" %>
+<%= form_tag("/orders/cashout", :method=>'get', :multipart => true) do %>
+    <%= text_field_tag 'discount' %>
+    <%= hidden_field_tag :id, @id %>
+  <div class="actions">
+    <%= submit_tag "Adjust for Discount" %>
+  </div>
+<% end %>

@@ -1,0 +1,44 @@
+<%= form_for(product) do |f| %>
+  <% if product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(customer.errors.count, "error") %> prohibited this customer from being saved:</h2>
+
+      <ul>
+      <% customer.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :Name %>
+    <%= f.text_field :Name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Cost %>
+    <%= f.text_field :Cost %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :freeoptions %>
+    <%= f.collection_check_boxes(:freeoptions, @options.each, :id, :Name, checked: @product.freeoptions) do |b| %>
+    <%= b.label(class: "my-#{ b.object.class.name.parameterize }", 'data-value': b.value) { b.check_box + b.text } %>
+    <% end %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :category_id %>
+    <%= f.collection_select(:category_id, Category.all, :id, :Name) %>
+  </div>
+    
+  <div class="field">
+    <%= f.label :Abbreviation %>
+    <%= f.text_field :Abbreviation %>
+  </div>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
