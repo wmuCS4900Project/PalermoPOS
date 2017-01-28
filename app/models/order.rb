@@ -10,7 +10,13 @@ class Order < ApplicationRecord
     self.PaidCash ||= false if self.PaidCash.nil?
     self.Cancelled ||= false if self.Cancelled.nil?
     self.Refunded ||= false if self.Refunded.nil?
-    self.Discounts = 0.0
+    self.Discounts = 0.0 if self.Discounts.nil?
+    self.Subtotal = 0.0 if self.Subtotal.nil?
+    self.Tax = 0.0 if self.Tax.nil?
+    self.Tip = 0.0 if self.Tip.nil?
+    self.AmountPaid = 0.0 if self.AmountPaid.nil?
+    self.ChangeDue = 0.0 if self.ChangeDue.nil?
+    self.RefundedTotal = 0.0 if self.RefundedTotal.nil?
   end
   
 end

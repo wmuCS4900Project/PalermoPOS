@@ -1,131 +1,123 @@
-<%= render 'bars/top' %>
+<%= render 'bars/top2' %>
 
-<style>
-  h3 {
-    font-size: 30px;
-  }
-  h2 {
-    font-size: 24px;
-  }
-</style>
-
-
-<br>
-  <h2>
-    <%= link_to 'New Order', orders_custsearch_path %>
-  </h2>
-<br>
-
-<%= link_to 'View all Orders', orders_all_path %>
-
-<%= link_to 'Print end of day', orders_endofday_path %>
-
-<h3>Today's Orders</h3><br>
-
-<h1>Pending Orders</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th><%= "Order Number" %></th>
-      <th><%= "Ordered by" %></th>
-      <th><%= "Ordered at" %></th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @pending.each do |order| %>
-      <tr>
-        <td><%= order.id %> <br>
-        <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br></td>
-        <td><%= order.created_at %> </td>
-        <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ) %></td>
-        <td><%= link_to 'Show', order %></td>
-        <td><%= link_to 'Edit', edit_order_path(order) %></td>
-        <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no") %></td>
-        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-
-<h1>Completed Orders</h1>
- 
-<table>
-  <thead>
-    <tr>
-      <th><%= "Order Number" %></th>
-      <th><%= "Ordered by" %></th>
-      <th><%= "Ordered at" %></th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @completed.each do |order| %>
-      <tr>
-        <td>Order # <%= order.id %> <br>
-        Ordered by: <%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br>
-        Order time: <%= order.created_at %> </td>
-        <td><%= link_to 'Show', order %></td>
-        <td><%= link_to 'Edit', edit_order_path(order) %></td>
-        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-
-<h1>Cancelled Orders</h1>
- 
-<table>
-  <thead>
-    <tr>
-      <th><%= "Order Number" %></th>
-      <th><%= "Ordered by" %></th>
-      <th><%= "Ordered at" %></th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @cancelled.each do |order| %>
-      <tr>
-        <td>Order # <%= order.id %> <br>
-        Ordered by: <%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br>
-        Order time: <%= order.created_at %> </td>
-        <td><%= link_to 'Show', order %></td>
-        <td><%= link_to 'Edit', edit_order_path(order) %></td>
-        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<h1>Refunded Orders</h1>
- 
-<table>
-  <thead>
-    <tr>
-      <th><%= "Order Number" %></th>
-      <th><%= "Ordered by" %></th>
-      <th><%= "Ordered at" %></th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @refunded.each do |order| %>
-      <tr>
-        <td>Order # <%= order.id %> <br>
-        Ordered by: <%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br>
-        Order time: <%= order.created_at %> </td>
-        <td><%= link_to 'Show', order %></td>
-        <td><%= link_to 'Edit', edit_order_path(order) %></td>
-        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/orderside' %>
+    <div class="container main-content">
+      
+      <p id="notice"><%= flash[:notice] %></p>
+      
+      <h1>Pending Orders</h1>
+      <div class="table" %>
+        <table>
+          <thead>
+            <tr>
+              <th><%= "Order Number" %></th>
+              <th><%= "Ordered by" %></th>
+              <th><%= "Ordered at" %></th>
+              <th colspan="5"></th>
+            </tr>
+          </thead>
+        
+          <tbody>
+            <% if !@pending.empty? %>
+              <% @pending.each do |order| %>
+                <tr>
+                  <td><%= order.id %> <br>
+                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br></td>
+                  <td><%= order.created_at %> </td>
+                  <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ), class: "btn btn-primary" %></td>
+                  <td><%= link_to 'Edit', orders_selectproduct_path(order_id: order.id), class: "btn btn-primary" %></td>
+                  <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" %></td>
+                  <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" %></td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+        
+      
+      <h1>Completed Orders</h1>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th><%= "Order Number" %></th>
+              <th><%= "Ordered by" %></th>
+              <th><%= "Ordered at" %></th>
+              <th colspan="4"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @completed.each do |order| %>
+              <tr>
+                <td>Order # <%= order.id %> <br>
+                Ordered by: <%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br>
+                Order time: <%= order.created_at %> </td>
+                <td><%= link_to 'Show', order %></td>
+                <td><%= link_to 'Edit', edit_order_path(order) %></td>
+                <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      
+      <h1>Cancelled Orders</h1>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th><%= "Order Number" %></th>
+              <th><%= "Ordered by" %></th>
+              <th><%= "Ordered at" %></th>
+              <th colspan="4"></th>
+            </tr>
+          </thead>
+        
+          <tbody>
+            <% @cancelled.each do |order| %>
+              <tr>
+                <td>Order # <%= order.id %> <br>
+                Ordered by: <%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br>
+                Order time: <%= order.created_at %> </td>
+                <td><%= link_to 'Show', order %></td>
+                <td><%= link_to 'Edit', edit_order_path(order) %></td>
+                <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      
+      <h1>Refunded Orders</h1>
+       
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th><%= "Order Number" %></th>
+              <th><%= "Ordered by" %></th>
+              <th><%= "Ordered at" %></th>
+              <th colspan="4"></th>
+            </tr>
+          </thead>
+        
+          <tbody>
+            <% @refunded.each do |order| %>
+              <tr>
+                <td>Order # <%= order.id %> <br>
+                Ordered by: <%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br>
+                Order time: <%= order.created_at %> </td>
+                <td><%= link_to 'Show', order %></td>
+                <td><%= link_to 'Edit', edit_order_path(order), class: "btn btn-primary" %></td>
+                <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>

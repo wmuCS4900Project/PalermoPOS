@@ -10,7 +10,12 @@ Rails.application.routes.draw do
   resources :products
   resources :categories
   resources :options
-
+  
+  post "orders/addoptions" => 'orders#addoptions'
+  get "orders/chooseoptions" => 'orders#chooseoptions'
+  post "orders/addproducttoorder" => 'orders#addproducttoorder'
+  get "orders/selectproduct" => 'orders#selectproduct'
+  get "orders/pickup" => 'orders#pickup'
   get "orders/endofday" => 'orders#endofday'
   get "orders/receipt" => 'orders#receipt'
   get "default/index" 
@@ -23,6 +28,7 @@ Rails.application.routes.draw do
   get "orders/startorder" => 'orders#startorder'
   get "orders/pending" => 'orders#pending'
   resources :orders
+  resources :orderlines
   
   # Route Signup to new users page
   get  '/signup',  to: 'users#new'

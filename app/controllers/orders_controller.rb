@@ -13,6 +13,94 @@ class OrdersController < ApplicationController
     @refunded = Order.where("Refunded IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
   end
   
+  def pickup
+    @customers = Customer.all
+    @orders = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND IsDelivery IS false AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+  end
+  
+  def selectproduct
+    if !params[:order_id].present?
+      redirect_to orders_path, :flash => { :notice => "No current order!" }
+      return
+    end
+    @order = Order.find(params[:order_id])
+    @categories = Category.all
+  end
+  
+  #creates a new product when selected on the orders page
+  def addproducttoorder
+    puts params.inspect
+    if !params[:order_id].present?
+      redirect_to orders_path, :flash => { :notice => "No current order!" }
+      return
+    elsif !params[:product_id].present?
+      redirect_to orders_path, :flash => { :notice => "No product selected!" }
+      return
+    end
+    @order = Order.find(params[:order_id])
+    @product = Product.find(params[:product_id])
+    @orderline = Orderline.create :product_id => @product.id, :order_id => @order.id
+    redirect_to orders_chooseoptions_path(order_id: @order.id, orderline_id: @orderline.id)
+  end
+  
+  #view handles selection of options for an orderline
+  def chooseoptions
+    if !params[:order_id].present?
+      redirect_to orders_path, :flash => { :notice => "No current order!" }
+    elsif !params[:orderline_id].present?
+      redirect_to orders_path, :flash => { :notice => "No line selected!" }
+    end
+    @order = Order.find(params[:order_id])
+    @orderline = Orderline.find(params[:orderline_id])
+    @product = Product.find(@orderline.product_id)
+    @options = Option.where("category_id = ?", @product.category_id).all
+    @ops1 = "options1[]"
+    @ops2 = "options2[]"
+    @ops3 = "options3[]"
+    @ops4 = "options4[]"
+  end
+  
+  #saves 
+  def addoptions
+    
+    if !params[:order_id].present?
+      redirect_to orders_path, :flash => { :notice => "No current order!" }
+    elsif !params[:orderline_id].present?
+      redirect_to orders_path, :flash => { :notice => "No line selected!" }
+    end
+      
+    @order = Order.find(params[:order_id])
+    @orderline = Orderline.find(params[:orderline_id])
+    
+    puts "THIS IS A THING"
+    puts params.inspect
+    
+    if(Category.find(Product.find(@orderline.product_id).category_id).Splits == false)
+      @orderline.splitstyle = :whole
+    elsif params[:splitstyle] == "whole"
+      @orderline.splitstyle = :whole
+    elsif params[:splitstyle] == "halves"
+      @orderline.splitstyle = :halves
+    elsif params[:splitstyle] == "quarters"
+      @orderline.splitstyle = :quarters
+    end
+    @orderline.save!
+    
+    if(@orderline.whole?)
+      line_saver(@orderline, params[:options1], nil, nil, nil)
+    elsif(@orderline.halves?)
+      line_saver(@orderline, params[:options1], params[:options2], nil, nil)
+    elsif(@orderline.quarters?)
+      line_saver(@orderline, params[:options1], params[:options2], params[:options3], params[:options4])
+    end
+
+    @order.Subtotal += @orderline.ItemTotalCost
+    @order.save!
+      
+    calc_taxes(@order.id)
+    redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "Item saved!" }
+  end
+  
   def all
     @customers = Customer.all
     @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false")
@@ -74,17 +162,17 @@ class OrdersController < ApplicationController
   # GET /orders/startorder
   def startorder
     if params[:custid].present?
-      @custid = params[:custid]
-      @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => @custid
+      @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => params[:custid]
+      puts @order.inspect
+      redirect_to orders_selectproduct_path(order_id: @order.id)
+      return
     else
-      @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => 1
+      redirect_to orders_path, :flash => { :notice => "No customer selected!" }    
+      return
     end
-    @ordernum = @order.id
-    @products = Product.all
-    @customers = Customer.all
-    @users = User.all
   end
   
+  #deprecated
   # POST /orders/pickoptions
   def pickoptions
     @order = Order.find(params[:ordernum])
@@ -183,6 +271,7 @@ class OrdersController < ApplicationController
     
     if !params[:id].present?
       redirect_to orders_url
+      return
     end
 
     @id = params[:id]
@@ -207,6 +296,7 @@ class OrdersController < ApplicationController
     
     if !params[:id].present?
       redirect_to orders_url
+      return
     end
     
     @id = params[:id]

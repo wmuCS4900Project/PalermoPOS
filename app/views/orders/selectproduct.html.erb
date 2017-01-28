@@ -1,0 +1,38 @@
+<%= render 'bars/top2' %>
+
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/orderside' %>
+    <div class="container main-content">
+      
+      <% if flash[:notice].present? %>
+        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
+      <% end %>
+      
+      <h1>Current Order</h1>
+      <%= render 'currentorderbox', order: @order %>
+      
+      <div>
+        <ul class="nav nav-tabs">
+          <% @categories.each do |cat| %>
+            <li><%= link_to cat.Name, ("#" + cat.Name.gsub(/\s+/, "")), { 'data-toggle' => 'tab' } %></li>
+          <% end %>
+        </ul>
+        
+      
+        <div class="tab-content">
+          <% @categories.each do |cat| %>
+            <%= content_tag :div, :class => "tab-pane", :id => cat.Name.gsub(/\s+/, "") do -%>
+              <p>
+                <% Product.where("category_id = ?", cat.id).each do |p| %>
+                  <%= link_to p.Name, orders_addproducttoorder_path(order_id: @order.id, product_id: p.id), method: :post, class: "btn btn-product" %>
+                <% end %>
+              </p>
+            <% end -%>
+          <% end %>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+</body>
