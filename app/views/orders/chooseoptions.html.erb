@@ -5,6 +5,10 @@
     <%= render 'sidebars/orderside' %>
     <div class="container main-content">
       
+      <% if flash[:notice].present? %>
+        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
+      <% end %>
+      
       <h1>Current Order</h1>
       <%= render 'currentorderbox', order: @order %>
       
@@ -12,67 +16,91 @@
         <h2><%= Product.find(@orderline.product_id).Name %> Options</h2>
   
         <ul class="nav nav-tabs">
-          <li><%= link_to "Whole", "#whole", { 'data-toggle' => 'tab' } %></li>
-          <li><%= link_to "Halves", "#halves", { 'data-toggle' => 'tab' } %></li>
-          <li><%= link_to "Quarters", "#quarters", { 'data-toggle' => 'tab' } %></li>
+          <% if @orderline.whole? || (@orderline.splitstyle == nil) %>
+            <li class="active"><a href="#whole" data-toggle="tab">Whole</a></li>
+          <% else %>
+            <li><a href="#whole" data-toggle="tab">Whole</a></li>
+          <% end %>
+          <% if @orderline.halves? %>
+            <li class="active"><a href="#halves" data-toggle="tab">Halves</a></li>
+          <% else %>
+            <li><a href="#halves" data-toggle="tab">Halves</a></li>
+          <% end %>
+          <% if @orderline.quarters? || (@orderline.splitstyle == nil) %>
+            <li class="active"><a href="#quarters" data-toggle="tab">Quarters</a></li>
+          <% else %>
+            <li><a href="#quarters" data-toggle="tab">Quarters</a></li>
+          <% end %>
         </ul>
         
         <div class="tab-content">
           <%# WHOLE %>
-          <%= content_tag :div, :class => "tab-pane active", :id => "whole" do -%>
+          <% if @orderline.whole? || (@orderline.splitstyle == nil) %>
+            <div class="tab-pane active" id="whole">
+          <% else %>
+            <div class="tab-pane" id="whole">
+          <% end %>
             <%= form_tag("/orders/addoptions", :method=>'post', :multipart => true) do %>
               Whole Pizza
               <div class="panel panel-default">
-                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options %>
+                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options, currentops: @orderline.Options1 %>
               </div>
               <%= hidden_field_tag :order_id, @order.id %>
               <%= hidden_field_tag :orderline_id, @orderline.id %>
               <%= hidden_field_tag :splitstyle, "whole" %>
               <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
             <% end %>
-          <% end -%>
+          </div>
           <%# HALVES %>
-          <%= content_tag :div, :class => "tab-pane", :id => "halves" do -%>
+          <% if @orderline.halves? || (@orderline.splitstyle == nil) %>
+            <div class="tab-pane active" id="halves">
+          <% else %>
+            <div class="tab-pane" id="halves">
+          <% end %>            
             <%= form_tag("/orders/addoptions", :method=>'post', :multipart => true) do %>
               Top Half
               <div class="panel panel-default">
-                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options %>
+                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options, currentops: @orderline.Options1 %>
               </div>
               Bottom Half
               <div class="panel panel-default">
-                <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options %>
+                <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options, currentops: @orderline.Options2 %>
               </div>
               <%= hidden_field_tag :order_id, @order.id %>
               <%= hidden_field_tag :orderline_id, @orderline.id %>        
               <%= hidden_field_tag :splitstyle, "halves" %>
               <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
             <% end %>
-          <% end -%>
+          </div>
           <%# QUARTERS %>
-          <%= content_tag :div, :class => "tab-pane", :id => "quarters" do -%>
+          <% if @orderline.quarters? || (@orderline.splitstyle == nil) %>
+            <div class="tab-pane active" id="quarters">
+          <% else %>
+            <div class="tab-pane" id="quarters">
+          <% end %>            
             <%= form_tag("/orders/addoptions", :method=>'post', :multipart => true) do %>
               Quarter 1
               <div class="panel panel-default">
-                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options %>
+                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options, currentops: @orderline.Options1 %>
               </div>
               Quarter 2
               <div class="panel panel-default">
-                <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options %>
+                <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options, currentops: @orderline.Options2 %>
               </div>
               Quarter 3
               <div class="panel panel-default">
-                <%= render 'optionscheckbox', ops: @ops3, product: @product, options: @options %>
+                <%= render 'optionscheckbox', ops: @ops3, product: @product, options: @options, currentops: @orderline.Options3 %>
               </div>
               Quarter 4
               <div class="panel panel-default">
-                <%= render 'optionscheckbox', ops: @ops4, product: @product, options: @options %>
+                <%= render 'optionscheckbox', ops: @ops4, product: @product, options: @options, currentops: @orderline.Options4 %>
               </div>
               <%= hidden_field_tag :order_id, @order.id %>
               <%= hidden_field_tag :orderline_id, @orderline.id %>            
               <%= hidden_field_tag :splitstyle, "quarters" %>
-              <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
+              <%= submit_tag "Save Item", class: "btn btn-lg-orange"%>
             <% end %>        
-          <% end -%>
+          </div>
         </div>
       
       </div>

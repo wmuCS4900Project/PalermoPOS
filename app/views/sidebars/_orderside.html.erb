@@ -10,6 +10,20 @@
         <% end %>
       </li>
       <li>
+        <% if request.path == "/orders/pickup" %>
+            <%= link_to "Pickup Orders", orders_pickup_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "Pickup Orders", orders_pickup_path, class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/orders/delivery" %>
+            <%= link_to "Delivery Orders", orders_delivery_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "Delivery Orders", orders_delivery_path, class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
         <% if request.path == "/orders" %>
             <%= link_to "Today's Orders", orders_path, class: "active nav-item" %><span class="active-arrow"></span>
           <% else %>
@@ -17,12 +31,13 @@
         <% end %>          
       </li>
       <li>
-        <% if request.path == "/orders/pickup" %>
-            <%= link_to "Pickup Orders", orders_pickup_path, class: "active nav-item" %><span class="active-arrow"></span>
+        <% if request.path == "/orders/oldorders" %>
+            <%= link_to "Old Orders", orders_oldorders_path, class: "active nav-item" %><span class="active-arrow"></span>
           <% else %>
-            <%= link_to "Pickup Orders", orders_pickup_path, class: "nav-item" %>
-        <% end %>
+            <%= link_to "Old Orders", orders_oldorders_path, class: "nav-item" %>
+        <% end %>          
       </li>
+  
     </ul>
   </div>
 </div>

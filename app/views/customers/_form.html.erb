@@ -11,97 +11,97 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :Phone %>
-    <%= f.text_field :Phone %>
+  <div class="form-group">
+    <%= f.label :Phone, class: "form-group-header" %>
+    <%= f.text_field :Phone, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :LastName %>
-    <%= f.text_field :LastName %>
+  <div class="form-group">
+    <%= f.label :LastName, class: "form-group-header" %>
+    <%= f.text_field :LastName, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :FirstName %>
-    <%= f.text_field :FirstName %>
+  <div class="form-group">
+    <%= f.label :FirstName, class: "form-group-header" %>
+    <%= f.text_field :FirstName, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :AddressNumber %>
-    <%= f.text_field :AddressNumber %>
+  <div class="form-group">
+    <%= f.label :AddressNumber, class: "form-group-header" %>
+    <%= f.text_field :AddressNumber, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :StreetName %>
-    <%= f.text_field :StreetName %>
+  <div class="form-group">
+    <%= f.label :StreetName, class: "form-group-header" %>
+    <%= f.text_field :StreetName, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :City %>
-    <%= f.text_field :City %>
+  <div class="form-group">
+    <%= f.label :City, class: "form-group-header" %>
+    <%= f.text_field :City, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :State %>
-    <%= f.text_field :State %>
+  <div class="form-group">
+    <%= f.label :State, class: "form-group-header" %>
+    <%= f.text_field :State, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :Zip %>
-    <%= f.number_field :Zip %>
+  <div class="form-group">
+    <%= f.label :Zip, class: "form-group-header" %>
+    <%= f.number_field :Zip, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :Directions %>
-    <%= f.text_field :Directions %>
+  <div class="form-group">
+    <%= f.label :Directions, class: "form-group-header" %>
+    <%= f.text_field :Directions, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :LastOrderNumber %>
-    <%= f.number_field :LastOrderNumber %>
+  <div class="form-group">
+    <%= f.label :LastOrderNumber, class: "form-group-header" %>
+    <%= f.number_field :LastOrderNumber, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :FirstOrderDate %>
-    <%= f.datetime_select :FirstOrderDate %>
+  <div class="form-group">
+    <%= f.label :FirstOrderDate, class: "form-group-header" %>>
+    <%= f.datetime_select :FirstOrderDate, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :TotalOrderCount %>
-    <%= f.number_field :TotalOrderCount %>
+  <div class="form-group">
+    <%= f.label :TotalOrderCount, class: "form-group-header" %>
+    <%= f.number_field :TotalOrderCount, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :TotalOrderDollars %>
-    <%= f.text_field :TotalOrderDollars %>
+  <div class="form-group">
+    <%= f.label :TotalOrderDollars, class: "form-group-header" %>
+    <%= f.text_field :TotalOrderDollars, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :BadCkCount %>
-    <%= f.number_field :BadCkCount %>
+  <div class="form-group">
+    <%= f.label :BadCkCount, class: "form-group-header" %>
+    <%= f.number_field :BadCkCount, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :BadCkTotal %>
-    <%= f.text_field :BadCkTotal %>
+  <div class="form-group">
+    <%= f.label :BadCkTotal, class: "form-group-header" %>
+    <%= f.text_field :BadCkTotal, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :LongDelivery %>
-    <%= f.check_box :LongDelivery %>
+  <div class="form-group">
+    <%= f.label :LongDelivery, class: "form-group-header" %>
+    <%= f.check_box :LongDelivery, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :LastOrderDate %>
-    <%= f.datetime_select :LastOrderDate %>
+  <div class="form-group">
+    <%= f.label :LastOrderDate, class: "form-group-header" %>
+    <%= f.datetime_select :LastOrderDate, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :Notes %>
-    <%= f.text_field :Notes %>
+  <div class="form-group">
+    <%= f.label :Notes, class: "form-group-header" %>
+    <%= f.text_field :Notes, class: "form-control" %>
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Save Customer", class: "btn btn-primary" %>
   </div>
 <% end %>

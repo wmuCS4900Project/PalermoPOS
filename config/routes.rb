@@ -11,11 +11,14 @@ Rails.application.routes.draw do
   resources :categories
   resources :options
   
+  post "orders/commitorder" => 'orders#commitorder'
   post "orders/addoptions" => 'orders#addoptions'
   get "orders/chooseoptions" => 'orders#chooseoptions'
   post "orders/addproducttoorder" => 'orders#addproducttoorder'
   get "orders/selectproduct" => 'orders#selectproduct'
   get "orders/pickup" => 'orders#pickup'
+  get "orders/delivery" => 'orders#delivery'
+  get "orders/oldorders" => 'orders#oldorders'
   get "orders/endofday" => 'orders#endofday'
   get "orders/receipt" => 'orders#receipt'
   get "default/index" 
