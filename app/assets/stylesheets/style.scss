@@ -34,7 +34,11 @@ h1 {
 	border-radius: 0;
 	font-size: 24px; 
 	font-weight: bold;
+	max-width: 380px;
+    margin: 30px 0;
+    display: block;
 }
+
 .btn-lg-orange{
 	padding: 8px;
 	width: 20%;
@@ -79,12 +83,12 @@ h1 {
 .btn-primary.alt:hover, .btn-primary.alt:active, .btn-primary {
 	background-color: #D44D13;
 	border-color: #fff;
-	color: #fff;
+	color: #fff !important;
 }
 .btn-primary:hover, .btn-primary:active, .btn-primary.alt, .btn-primary.alt:visited, .btn-primary.alt:active {
 	background-color: #fff;
 	border-color: #D44D13;
-	color: #D44D13;
+	color: #D44D13 !important;
 }
 .btn:visited, .btn:active {
 	color: #fff;
@@ -98,6 +102,7 @@ a:hover {
 .sidebar-left .navbar {
 	margin-top: 30px;
 	border-top: 1px solid #888;
+	border-right: 0;
 }
 .sidebar-left a.nav-item, .sidebar-left a.nav-item:hover {
 	background-color: #524E4E;
