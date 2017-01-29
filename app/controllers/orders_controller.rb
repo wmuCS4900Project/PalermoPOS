@@ -73,7 +73,8 @@ class OrdersController < ApplicationController
 
     orders_options_update(@orderid, @pickup, @discount, @user, @driver, @comments)
 
-    redirect_to orders_path, :flash => { :notice => "Order saved!" }
+    redirect_to orders_receipt_url(id: @order.id)
+
   end
   
   #view handles selection of options for an orderline

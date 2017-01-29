@@ -31,18 +31,18 @@ Install node.js:
 sudo apt-get install nodejs
 
 Update gems:
-gem update --system
+sudo gem update --system
 
 Install bundler:
-gem install bundler
+sudo gem install bundler
 
 Install nokogiri:
-gem install nokogiri
+sudo gem install nokogiri
 
 Install rails:
-gem install rails --version=5.0.0.1
+sudo gem install rails --version=5.0.0.1
 
-Install other required gems
+Install other required gems (in the install folder)
 bundle install
 
 Install mysql:
@@ -51,4 +51,5 @@ sudo apt-get install mysql-server
 Run mysql
 mysql -u root -p
 
-
+Run rails (in another window from the install folder) in development mode:
+rails s

@@ -1,3 +1,16 @@
+<style>
+  .form-control {
+    width: 30%;
+  }
+  .btn-lg {
+    width: 30%;
+    margin-top: 5px;
+  }
+  .btn-group {
+    margin-bottom: 15px;
+  }
+</style>
+
 <%= render 'bars/top2' %>
 
 <body>
@@ -7,42 +20,33 @@
       <%= form_tag("/orders/custsearch", :method=>'get', :multipart => true) do %>
       
         <h1>Customer Search</h1>
-        Enter a search criteria: <br>
-        <%= text_field_tag 'criteria' %> <br><br>
-        Search by: <br>
-        <%= radio_button_tag 'searchcriteria', 'phone', true %>Phone<br> 
-        <%= radio_button_tag 'searchcriteria', 'name' %>Name<br>
-        <%= radio_button_tag 'searchcriteria', 'address' %>Address<br>
-        <%= radio_button_tag 'searchcriteria', 'city' %>City<br>
-        <%= radio_button_tag 'searchcriteria', 'zip' %>Zip<br>
-        <br>
+        <div class="btn-group" data-toggle="buttons">
+
+          <label class="btn btn-option active"><%= radio_button_tag 'searchcriteria', 'phone', true %>Phone</label>
+          <label class="btn btn-option"><%= radio_button_tag 'searchcriteria', 'name' %>Name</label>
+          <label class="btn btn-option"><%= radio_button_tag 'searchcriteria', 'address' %>Address</label>
+          <label class="btn btn-option"><%= radio_button_tag 'searchcriteria', 'city' %>City</label>
+          <label class="btn btn-option"><%= radio_button_tag 'searchcriteria', 'zip' %>Zip</label>
+
+        </div>
+        
+        <div class="form-group">
+          <%= text_field_tag 'criteria', nil, class: "form-control" %>
+        </div>
         
         <div class="actions">
-          <%= submit_tag "Search" %>
+          <%= submit_tag "Search", class: "btn btn-lg" %>
         </div>
         
         
       <% end %>
       
-      <div class = "results" >
-        <%= form_tag("/orders/startorder", :method=>'get', :multipart => true) do %>
-          <% if defined?(@results) %>
-            <h2>Results</h2>
-            <% @results.each do |a| %>
-              <%= radio_button_tag 'custid', a.id %>
-              <%= a.FirstName %>
-              <%= a.LastName %>
-              <br>
-            <% end %>
-            <br>
-            <%= submit_tag "Start New Order" %>
-          <% end %>
+      <% if defined?(@results) %>
+        <h1>Results</h1>
+        <% @results.each do |a| %>
+          <%= link_to (a.FirstName.to_s + " " + a.LastName.to_s + " - " + a.Phone.to_s + " - " + a.AddressNumber.to_s + " " + a.StreetName.to_s), orders_startorder_path(custid: a.id), class: "btn btn-primary" %> <br>
         <% end %>
-      </div>
-      
-        
-      
-      <br>
+      <% end %>
 
     </div>
   </div>
