@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170121222758) do
+ActiveRecord::Schema.define(version: 20170125022258) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "Name"
@@ -77,7 +77,6 @@ ActiveRecord::Schema.define(version: 20170121222758) do
   end
 
   create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.datetime "TimeOrdered"
     t.decimal  "TotalCost",     precision: 8, scale: 2
     t.boolean  "PaidFor"
     t.integer  "DriverID"
@@ -95,6 +94,7 @@ ActiveRecord::Schema.define(version: 20170121222758) do
     t.boolean  "Refunded"
     t.decimal  "RefundedTotal", precision: 8, scale: 2
     t.decimal  "Subtotal",      precision: 8, scale: 2
+    t.boolean  "IsDelivery"
     t.index ["customer_id"], name: "index_orders_on_customer_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end

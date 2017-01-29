@@ -1,0 +1,165 @@
+<style>
+.orderinfo1 {
+	float: left;
+	width: 40%;
+	height: 200px;
+	border: 2px solid black;
+	overflow: auto;
+
+}
+.orderinfo2 {
+	float: left;
+	width: 40%;
+	height: 200px;
+	border: 2px solid black;
+	overflow: auto;
+	padding: 3px;
+}
+.orderinfo3{
+	float: left;
+	height: 200px;
+	width: 19%;
+	border: 2px solid black;
+}
+.item{
+	border: 1px dotted black;
+	margin: 1px 1px;
+  font-size: 16px;
+}
+.itemleft {
+  width: 77px;
+  float: left;
+  text-align: right;
+  border-right: 1px solid black;
+  padding-right: 6px;
+}
+.itemcenter {
+  float: left;
+  padding-left: 6px;
+}
+.itembuttons {
+  float: right;
+  padding-right: 2px;
+  padding-top: 2px;
+  padding-left: 4px;
+  border-left: 1px solid black;
+}
+.itemcost {
+  float: right;
+  padding-right: 6px;
+}
+</style>
+
+<div class="orderinfo1">
+
+  <% Orderline.where("order_id = ?", @order.id).each do |orderline| %>
+    <div class="item">
+      <span class="itemleft">PRODUCT</span>
+      <span class="itemcenter"><%= Product.find(orderline.product_id).Name %></span>
+      <span class="itembuttons">
+        <%= link_to "Modify", orders_chooseoptions_path(order_id: @order.id, orderline_id: orderline.id), class: "btn btn-primary" %>
+        <%= link_to "Delete", orderline, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
+      </span>   
+        <span class="itemcost"><%= number_to_currency(orderline.ItemTotalCost) %></span>
+      <br>
+      
+      <% if orderline.whole? %> <%#list the options if the product is whole %>
+        <span class="itemleft">ALL</span>
+        <span class="itemcenter">
+          <% if orderline.Options1.nil? %> 
+            <%= "Plain" %>
+          <% else %>
+            <% orderline.Options1.each do |b| %>
+              <%= Option.find(b).Abbreviation %>
+            <% end %>
+          <% end %>
+        </span>
+        
+      <% elsif orderline.halves? %> <%#list the options if the product is split in halves %>
+        <span class="itemleft">TOP</span>
+        <span class="itemcenter">
+          <% if orderline.Options1.nil? %> 
+            <%= "Plain" %>
+          <% else %>
+            <% orderline.Options1.each do |b| %>
+              <%= Option.find(b).Abbreviation %>
+            <% end %>
+          <% end %>
+        </span>
+        <br>
+        <span class="itemleft">BOTTOM</span>
+        <span class="itemcenter">
+          <% if orderline.Options2.nil? %> 
+            <%= "Plain" %>
+          <% else %>
+            <% orderline.Options2.each do |b| %>
+              <%= Option.find(b).Abbreviation %>
+            <% end %>
+          <% end %>
+        </span>
+        
+      <% elsif orderline.quarters? %> <%#list the options if the product is split in quarters %>
+        <span class="itemleft">Quarter 1</span>
+        <span class="itemcenter">
+          <% if orderline.Options1.nil? %> 
+            <%= "Plain" %>
+          <% else %>
+            <% orderline.Options1.each do |b| %>
+              <%= Option.find(b).Abbreviation %>
+            <% end %>
+          <% end %>
+        </span><br>
+        <span class="itemleft">Quarter 2</span>
+        <span class="itemcenter">
+          <% if orderline.Options2.nil? %> 
+            <%= "Plain" %>
+          <% else %>
+            <% orderline.Options2.each do |b| %>
+              <%= Option.find(b).Abbreviation %>
+            <% end %>
+          <% end %>
+        </span><br>
+        <span class="itemleft">Quarter 3</span>
+        <span class="itemcenter">
+          <% if orderline.Options3.nil? %> 
+            <%= "Plain" %>
+          <% else %>
+            <% orderline.Options3.each do |b| %>
+              <%= Option.find(b).Abbreviation %>
+            <% end %>
+          <% end %>
+        </span><br>
+        <span class="itemleft">Quarter 4</span>
+        <span class="itemcenter">
+          <% if orderline.Options4.nil? %> 
+            <%= "Plain" %>
+          <% else %>
+            <% orderline.Options4.each do |b| %>
+              <%= Option.find(b).Abbreviation %>
+            <% end %>
+          <% end %>
+        </span>
+      <% end %>
+      <br>
+      
+
+    </div>
+    
+  <% end %>
+</div>
+
+
+<div class="orderinfo2">
+  <div class="orderitems">
+    <% if !@order.nil? %>
+      Order For: 
+      <%= Customer.find(@order.customer_id).FirstName + " " + Customer.find(@order.customer_id).LastName %>
+    <% else %>
+      <%= "no current order" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="orderinfo3">
+  
+</div>

@@ -1,0 +1,42 @@
+<%= render 'bars/top2' %>
+
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/orderside' %>
+    <div class="container main-content">
+      
+      <h1>Pickup Orders</h1>
+      <% if !@orders.empty? %>
+        <div class="table" %>
+          <table>
+            <thead>
+              <tr>
+                <th><%= "Order Number" %></th>
+                <th><%= "Ordered by" %></th>
+                <th><%= "Ordered at" %></th>
+                <th colspan="5"></th>
+              </tr>
+            </thead>
+          
+            <tbody>
+              <% @orders.each do |order| %>
+                <tr>
+                  <td><%= order.id %> <br>
+                  <td><%= Customer.find(order.customer_id).FirstName %> <%= Customer.find(order.customer_id).LastName %> <br></td>
+                  <td><%= order.created_at %> </td>
+                  <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ), class: "btn btn-primary" %></td>
+                  <td><%= link_to 'Show', order, class: "btn btn-primary" %></td>
+                  <td><%= link_to 'Edit', edit_order_path(order), class: "btn btn-primary" %></td>
+                  <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" %></td>
+                  <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <h2>No pickup orders found</h2>
+      <% end %>
+    </div>
+  </div>
+</body>
