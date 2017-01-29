@@ -18,6 +18,19 @@ class OrdersController < ApplicationController
     @orders = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND IsDelivery IS false AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
   end
   
+  def delivery
+    @customers = Customer.all
+    @orders = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND IsDelivery IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+  end
+  
+  def oldorders
+    @customers = Customer.all
+    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND created_at < ?", DateTime.now.beginning_of_day).all
+    @cancelled = Order.where("Cancelled IS true AND created_at < ?", DateTime.now.beginning_of_day).all
+    @completed = Order.where("PaidFor IS true AND created_at < ?", DateTime.now.beginning_of_day).all
+    @refunded = Order.where("Refunded IS true AND created_at < ?", DateTime.now.beginning_of_day).all
+  end
+  
   def selectproduct
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
@@ -29,7 +42,6 @@ class OrdersController < ApplicationController
   
   #creates a new product when selected on the orders page
   def addproducttoorder
-    puts params.inspect
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
       return
@@ -37,10 +49,31 @@ class OrdersController < ApplicationController
       redirect_to orders_path, :flash => { :notice => "No product selected!" }
       return
     end
+      
+    puts "THIS IS A THING"
+    puts params.inspect
+    
     @order = Order.find(params[:order_id])
     @product = Product.find(params[:product_id])
     @orderline = Orderline.create :product_id => @product.id, :order_id => @order.id
     redirect_to orders_chooseoptions_path(order_id: @order.id, orderline_id: @orderline.id)
+  end
+  
+  def commitorder
+    if !params[:order_id].present?
+      redirect_to orders_path, :flash => { :notice => "No current order!" }
+    end 
+    
+    @orderid = params[:order_id]
+    @pickup = params[:pickupordeliveryouter]
+    @discount = params[:discount]
+    @user = params[:user_id]
+    @driver = params[:driver_id]
+    @comments = params[:comments]
+
+    orders_options_update(@orderid, @pickup, @discount, @user, @driver, @comments)
+
+    redirect_to orders_path, :flash => { :notice => "Order saved!" }
   end
   
   #view handles selection of options for an orderline
@@ -50,6 +83,7 @@ class OrdersController < ApplicationController
     elsif !params[:orderline_id].present?
       redirect_to orders_path, :flash => { :notice => "No line selected!" }
     end
+    
     @order = Order.find(params[:order_id])
     @orderline = Orderline.find(params[:orderline_id])
     @product = Product.find(@orderline.product_id)
@@ -68,7 +102,7 @@ class OrdersController < ApplicationController
     elsif !params[:orderline_id].present?
       redirect_to orders_path, :flash => { :notice => "No line selected!" }
     end
-      
+
     @order = Order.find(params[:order_id])
     @orderline = Orderline.find(params[:orderline_id])
     
@@ -93,8 +127,15 @@ class OrdersController < ApplicationController
     elsif(@orderline.quarters?)
       line_saver(@orderline, params[:options1], params[:options2], params[:options3], params[:options4])
     end
+    
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
+    
+    @subtotal = 0.0
+    @orderlines.each do |a|
+       @subtotal += a.ItemTotalCost
+    end
 
-    @order.Subtotal += @orderline.ItemTotalCost
+    @order.Subtotal = @subtotal
     @order.save!
       
     calc_taxes(@order.id)
@@ -117,8 +158,6 @@ class OrdersController < ApplicationController
     @orderlines = Orderline.where("order_id = ?",@order.id).all
     @products = Product.all
     @options = Option.all
-    puts @order.inspect
-    puts @orderlines.inspect
   end
 
   
@@ -158,7 +197,6 @@ class OrdersController < ApplicationController
   end
   
   
-  
   # GET /orders/startorder
   def startorder
     if params[:custid].present?
@@ -172,7 +210,7 @@ class OrdersController < ApplicationController
     end
   end
   
-  #deprecated
+  # deprecated
   # POST /orders/pickoptions
   def pickoptions
     @order = Order.find(params[:ordernum])
@@ -205,7 +243,7 @@ class OrdersController < ApplicationController
     
   end
   
-  
+  # deprecated
   # POST /orders/confirmorder
   def confirmorder
   
@@ -281,14 +319,16 @@ class OrdersController < ApplicationController
 
     if params[:discount].present?
       @order.Discounts = params[:discount]
-    else
-      @order.Discounts = 0.0
     end
+    
+    @order.save!
     
     @customer = Customer.find(@order.customer_id)
     @orderlines = Orderline.where(order_id: @id)
     
     calc_taxes(@order.id)
+    
+    @order = Order.find(@id)
       
   end
   

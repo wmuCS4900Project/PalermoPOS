@@ -116,4 +116,39 @@ module OrdersHelper
     order.TotalCost = order.Subtotal.to_f - order.Discounts + order.Tax
     order.save!
   end
+  
+  def orders_options_update(orderid, pickupordelivery, discount, user, driver, comments)
+    
+    puts "orders_options_update called"
+    
+    @order = Order.find(orderid)
+    
+    if !pickupordelivery.nil? 
+      if pickupordelivery == "delivery"
+        @order.IsDelivery = true
+      elsif pickupordelivery == "pickup"
+        @order.IsDelivery = false
+      end
+      
+    end
+    
+    if !discount.nil?
+      @order.Discounts = discount
+    end
+    
+    if !user.nil?
+      @order.user_id = user
+    end
+    
+    if !driver.nil?
+      @order.DriverID = driver
+    end
+    
+    if !comments.nil?
+      @order.Comments = comments
+    end
+    
+    @order.save!
+    
+  end
 end

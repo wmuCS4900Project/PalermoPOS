@@ -1,8 +1,59 @@
 <%= render 'bars/top2' %>
 
-<h1>Editing Product</h1>
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/productside' %>
+    <div class="container main-content">
 
-<%= render 'formedit', product: @product %>
-
-<%= link_to 'Show', @product %> |
-<%= link_to 'Back', products_path %>
+      <h1>Editing Product</h1>
+      
+      <%= form_for(@product) do |f| %>
+        <% if @product.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@customer.errors.count, "error") %> prohibited this customer from being saved:</h2>
+      
+            <ul>
+            <% customer.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+      
+        <div class="form-group">
+          <%= f.label :Name, class: "form-group-header" %>
+          <%= f.text_field :Name, class: "form-control" %>
+        </div>
+        
+        <div class="form-group">
+          <%= f.label :Cost, class: "form-group-header" %>
+          <%= f.text_field :Cost, class: "form-control" %>
+        </div>
+        
+        <div class="form-group">
+          <%= f.label "Free Options", class: "form-group-header" %><br>
+          <div class="form-checkboxes">
+            <%= f.collection_check_boxes(:freeoptions, @options.each, :id, :Name, checked: @product.freeoptions) do |b| %>
+              <%= b.label(class: "my-#{ b.object.class.name.parameterize }", 'data-value': b.value) { b.check_box + b.text } %>
+            <% end %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <%= f.label :category_id, class: "form-group-header" %><br>
+          <%= f.collection_select(:category_id, Category.all, :id, :Name) %>
+        </div>
+        
+        <div class="form-group">
+          <%= f.label :Abbreviation, class: "form-group-header" %>
+          <%= f.text_field :Abbreviation, class: "form-control" %>
+        </div>
+        
+        <div class="form-group">
+          <%= f.submit "Commit Changes", class: "btn btn-primary" %>
+        </div>
+        
+      <% end %>
+    </div>
+  </div>
+</body>

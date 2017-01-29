@@ -1,30 +1,35 @@
-<%= render 'bars/top' %>
-
-<h1><%= "Paid: Order" %> <%= @order.id %></h1>
-
+<%= render 'bars/top2' %>
 
 <body>
-  
-  <% @orderlines.each do |a| %>
-    <%= @products.find(a.product_id).Name %>
-    <%= a.ItemTotalCost %><br>
-  <% end %><br>
-  
-  <%= "Subtotal:" %>
-  <%= @order.Subtotal %><br>
-  <% if @order.Discounts > 0.0 %>
-    <%= "Discount:"%>
-    <%= @order.Discounts %><br>
-  <% end %>
-  <%= "Taxes:" %>
-  <%= @order.Tax %><br>
-  <%= "Total Due" %>
-  <%= @order.TotalCost %>
-  
-  <%= "Paid: " %>
-  <%= @order.AmountPaid %>
-  <%= "Change due: " %>
-  <%= @order.ChangeDue %>
-  
-  
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/orderside' %>
+    <div class="container main-content">
+      
+      <h1><%= "Paid: Order" %> <%= @order.id %></h1>
+        
+        <% @orderlines.each do |a| %>
+          <%= @products.find(a.product_id).Name %>
+          <%= a.ItemTotalCost %><br>
+        <% end %><br>
+        
+        <%= "Comments: " %>
+        <%= @order.Comments %><br>
+        <%= "Subtotal:" %>
+        <%= @order.Subtotal %><br>
+        <% if @order.Discounts > 0.0 %>
+          <%= "Discount:"%>
+          <%= @order.Discounts %><br>
+        <% end %>
+        <%= "Taxes:" %>
+        <%= @order.Tax %><br>
+        <%= "Total Due" %>
+        <%= @order.TotalCost %><br>
+        
+        <%= "Paid: " %>
+        <%= @order.AmountPaid %><br>
+        <%= "Change due: " %>
+        <%= @order.ChangeDue %>
+        
+    </div>
+  </div>
 </body>

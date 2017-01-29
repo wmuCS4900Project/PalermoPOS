@@ -11,6 +11,8 @@
         <%= a.ItemTotalCost %><br>
       <% end %><br>
       
+      <%= "Comments: " %>
+      <%= @order.Comments %><br>
       <%= "Subtotal:" %>
       <%= @order.Subtotal %><br>
       <% if @order.Discounts > 0.0 %>

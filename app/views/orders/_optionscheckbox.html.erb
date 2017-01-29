@@ -1,14 +1,26 @@
 <div class="option">
   <div class="btn-group" data-toggle="buttons">
     <% @options.each do |a| %>
-      <% if (@product.freeoptions).include?(a.id.to_s) %> 
-        <label class="btn btn-option active">
+      <% if !currentops.nil? %>
+        <% if currentops.include?(a.id.to_s) %>
+          <label class="btn btn-option active">
           <%= check_box_tag ops, a.id, true %><%= a.Name %>
-        </label>
+          </label>
+        <% else %>
+          <label class="btn btn-option">
+            <%= check_box_tag ops, a.id, false %><%= a.Name%>
+          </label>
+        <% end %>
       <% else %>
-        <label class="btn btn-option">
-          <%= check_box_tag ops, a.id, false %><%= a.Name%>
-        </label>
+        <% if (@product.freeoptions).include?(a.id.to_s) %>
+          <label class="btn btn-option active">
+            <%= check_box_tag ops, a.id, true %><%= a.Name %>
+          </label>
+        <% else %>
+          <label class="btn btn-option">
+            <%= check_box_tag ops, a.id, false %><%= a.Name%>
+          </label>
+        <% end %>
       <% end %>
     <% end %>
   </div>

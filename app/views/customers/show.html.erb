@@ -1,96 +1,104 @@
-<%= render 'bars/top' %>
+<%= render 'bars/top2' %>
 
-<p id="notice"><%= notice %></p>
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/custside' %>
+    <div class="container main-content">
+      <p id="notice"><%= notice %></p>
+      
+      <p>
+        <strong>Phone:</strong>
+        <%= @customer.Phone %>
+      </p>
+      
+      <p>
+        <strong>Lastname:</strong>
+        <%= @customer.LastName %>
+      </p>
+      
+      <p>
+        <strong>Firstname:</strong>
+        <%= @customer.FirstName %>
+      </p>
+      
+      <p>
+        <strong>Addressnumber:</strong>
+        <%= @customer.AddressNumber %>
+      </p>
+      
+      <p>
+        <strong>Streetname:</strong>
+        <%= @customer.StreetName %>
+      </p>
+      
+      <p>
+        <strong>City:</strong>
+        <%= @customer.City %>
+      </p>
+      
+      <p>
+        <strong>State:</strong>
+        <%= @customer.State %>
+      </p>
+      
+      <p>
+        <strong>Zip:</strong>
+        <%= @customer.Zip %>
+      </p>
+      
+      <p>
+        <strong>Directions:</strong>
+        <%= @customer.Directions %>
+      </p>
+      
+      <p>
+        <strong>Lastordernumber:</strong>
+        <%= @customer.LastOrderNumber %>
+      </p>
+      
+      <p>
+        <strong>Firstorderdate:</strong>
+        <%= @customer.FirstOrderDate %>
+      </p>
+      
+      <p>
+        <strong>Totalordercount:</strong>
+        <%= @customer.TotalOrderCount %>
+      </p>
+      
+      <p>
+        <strong>Totalorderdollars:</strong>
+        <%= @customer.TotalOrderDollars %>
+      </p>
+      
+      <p>
+        <strong>Badckcount:</strong>
+        <%= @customer.BadCkCount %>
+      </p>
+      
+      <p>
+        <strong>Badcktotal:</strong>
+        <%= @customer.BadCkTotal %>
+      </p>
+      
+      <p>
+        <strong>Longdelivery:</strong>
+        <%= @customer.LongDelivery %>
+      </p>
+      
+      <p>
+        <strong>Lastorderdate:</strong>
+        <%= @customer.LastOrderDate %>
+      </p>
+      
+      <p>
+        <strong>Notes:</strong>
+        <%= @customer.Notes %>
+      </p>
+      
+      <td><%= link_to 'Edit', edit_customer_path(@customer) %></td>
 
-<p>
-  <strong>Phone:</strong>
-  <%= @customer.Phone %>
-</p>
-
-<p>
-  <strong>Lastname:</strong>
-  <%= @customer.LastName %>
-</p>
-
-<p>
-  <strong>Firstname:</strong>
-  <%= @customer.FirstName %>
-</p>
-
-<p>
-  <strong>Addressnumber:</strong>
-  <%= @customer.AddressNumber %>
-</p>
-
-<p>
-  <strong>Streetname:</strong>
-  <%= @customer.StreetName %>
-</p>
-
-<p>
-  <strong>City:</strong>
-  <%= @customer.City %>
-</p>
-
-<p>
-  <strong>State:</strong>
-  <%= @customer.State %>
-</p>
-
-<p>
-  <strong>Zip:</strong>
-  <%= @customer.Zip %>
-</p>
-
-<p>
-  <strong>Directions:</strong>
-  <%= @customer.Directions %>
-</p>
-
-<p>
-  <strong>Lastordernumber:</strong>
-  <%= @customer.LastOrderNumber %>
-</p>
-
-<p>
-  <strong>Firstorderdate:</strong>
-  <%= @customer.FirstOrderDate %>
-</p>
-
-<p>
-  <strong>Totalordercount:</strong>
-  <%= @customer.TotalOrderCount %>
-</p>
-
-<p>
-  <strong>Totalorderdollars:</strong>
-  <%= @customer.TotalOrderDollars %>
-</p>
-
-<p>
-  <strong>Badckcount:</strong>
-  <%= @customer.BadCkCount %>
-</p>
-
-<p>
-  <strong>Badcktotal:</strong>
-  <%= @customer.BadCkTotal %>
-</p>
-
-<p>
-  <strong>Longdelivery:</strong>
-  <%= @customer.LongDelivery %>
-</p>
-
-<p>
-  <strong>Lastorderdate:</strong>
-  <%= @customer.LastOrderDate %>
-</p>
-
-<p>
-  <strong>Notes:</strong>
-  <%= @customer.Notes %>
-</p>
-
-<%= link_to 'Edit', edit_customer_path(@customer) %> |
-<%= link_to 'Back', customers_path %>
+      
+    </div>
+  </div>
+</body>
