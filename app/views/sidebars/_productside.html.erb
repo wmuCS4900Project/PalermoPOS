@@ -1,0 +1,20 @@
+<div class="sidebar-left">
+  <div class="navbar">
+    <ul class="nav">
+      <li>
+        <% if request.path == new_product_path %>
+          <%= link_to "New Product", new_product_path, class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "New Product", new_product_path, class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == products_path %>
+            <%= link_to "All Products", products_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "All Products", products_path, class: "nav-item" %>
+        <% end %>          
+      </li>
+    </ul>
+  </div>
+</div>

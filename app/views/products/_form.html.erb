@@ -11,27 +11,27 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field form-group">
     <%= f.label :Name %>
-    <%= f.text_field :Name %>
+    <%= f.text_field :Name, :class => "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="field form-group">
     <%= f.label :Cost %>
-    <%= f.text_field :Cost %>
+    <%= f.text_field :Cost, :class => "form-control" %>
   </div>
   
-  <div class="field">
+  <div class="field form-group">
     <%= f.label :category_id %>
-    <%= f.collection_select(:category_id, Category.all, :id, :Name) %>
+    <%= f.collection_select(:category_id, Category.all, :id, :Name, {}, {:class => "form-control"}) %>
   </div>
     
-  <div class="field">
+  <div class="field form-group">
     <%= f.label :Abbreviation %>
-    <%= f.text_field :Abbreviation %>
+    <%= f.text_field :Abbreviation, :class => "form-control" %>
   </div>
   
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Add Product", :class => "btn btn-lg btn-primary" %>
   </div>
 <% end %>
