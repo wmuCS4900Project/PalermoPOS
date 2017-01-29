@@ -1,8 +1,15 @@
-<%= render 'bars/top' %>
+<%= render 'default/head' %>
+<%= render 'bars/top2' %>
 
-<h1>Editing Customer</h1>
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/custside' %>
+    <div class="container main-content">
 
-<%= render 'form', customer: @customer %>
-
-<%= link_to 'Show', @customer %> |
-<%= link_to 'Back', customers_path %>
+      <h1>Editing Customer</h1>
+      
+      <%= render 'form', customer: @customer %>
+      
+    </div>
+  </div>
+</body>

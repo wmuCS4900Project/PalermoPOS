@@ -1,0 +1,82 @@
+<%= render 'bars/top2' %>
+
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/orderside' %>
+    <div class="container main-content">
+      
+      <h1>Current Order</h1>
+      <%= render 'currentorderbox', order: @order %>
+      
+      <div>
+        <h2><%= Product.find(@orderline.product_id).Name %> Options</h2>
+  
+        <ul class="nav nav-tabs">
+          <li><%= link_to "Whole", "#whole", { 'data-toggle' => 'tab' } %></li>
+          <li><%= link_to "Halves", "#halves", { 'data-toggle' => 'tab' } %></li>
+          <li><%= link_to "Quarters", "#quarters", { 'data-toggle' => 'tab' } %></li>
+        </ul>
+        
+        <div class="tab-content">
+          <%# WHOLE %>
+          <%= content_tag :div, :class => "tab-pane active", :id => "whole" do -%>
+            <%= form_tag("/orders/addoptions", :method=>'post', :multipart => true) do %>
+              Whole Pizza
+              <div class="panel panel-default">
+                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options %>
+              </div>
+              <%= hidden_field_tag :order_id, @order.id %>
+              <%= hidden_field_tag :orderline_id, @orderline.id %>
+              <%= hidden_field_tag :splitstyle, "whole" %>
+              <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
+            <% end %>
+          <% end -%>
+          <%# HALVES %>
+          <%= content_tag :div, :class => "tab-pane", :id => "halves" do -%>
+            <%= form_tag("/orders/addoptions", :method=>'post', :multipart => true) do %>
+              Top Half
+              <div class="panel panel-default">
+                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options %>
+              </div>
+              Bottom Half
+              <div class="panel panel-default">
+                <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options %>
+              </div>
+              <%= hidden_field_tag :order_id, @order.id %>
+              <%= hidden_field_tag :orderline_id, @orderline.id %>        
+              <%= hidden_field_tag :splitstyle, "halves" %>
+              <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
+            <% end %>
+          <% end -%>
+          <%# QUARTERS %>
+          <%= content_tag :div, :class => "tab-pane", :id => "quarters" do -%>
+            <%= form_tag("/orders/addoptions", :method=>'post', :multipart => true) do %>
+              Quarter 1
+              <div class="panel panel-default">
+                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options %>
+              </div>
+              Quarter 2
+              <div class="panel panel-default">
+                <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options %>
+              </div>
+              Quarter 3
+              <div class="panel panel-default">
+                <%= render 'optionscheckbox', ops: @ops3, product: @product, options: @options %>
+              </div>
+              Quarter 4
+              <div class="panel panel-default">
+                <%= render 'optionscheckbox', ops: @ops4, product: @product, options: @options %>
+              </div>
+              <%= hidden_field_tag :order_id, @order.id %>
+              <%= hidden_field_tag :orderline_id, @orderline.id %>            
+              <%= hidden_field_tag :splitstyle, "quarters" %>
+              <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
+            <% end %>        
+          <% end -%>
+        </div>
+      
+      </div>
+  
+    </div>
+  </div>
+</body>

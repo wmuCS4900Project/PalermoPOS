@@ -1,0 +1,9 @@
+under /lib/tasks/import.rake (included)
+
+Adjust as needed task name, and file name and path
+
+in the command line do:
+rake import:import1
+
+
+
