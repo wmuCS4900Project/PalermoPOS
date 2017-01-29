@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
-
+  include SessionsHelper
+  
   def new
   end
 
@@ -19,5 +20,10 @@ class SessionsController < ApplicationController
 	redirect_to :back
   rescue ActionController::RedirectBackError
  	redirect_to root_path
+  end
+
+  # Logs in the given user.
+  def log_in(user)
+    session[:user_id] = user.id
   end
 end
