@@ -1,8 +1,12 @@
-<%= render 'bars/top' %>
+<%= render 'bars/top2' %>
 
+<div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/productside' %>
+    <div class="main-content container">
+		<h1>New Product</h1>
 
-<h1>New Product</h1>
+		<%= render 'form', product: @product %>
 
-<%= render 'form', product: @product %>
-
-<%= link_to 'Back', products_path %>
+		<%= link_to 'Back', products_path %>
+	</div>
+</div>
