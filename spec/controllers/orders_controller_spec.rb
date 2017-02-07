@@ -2,6 +2,20 @@ require "rails_helper"
 
 RSpec.describe OrdersController, :type => :controller do
   
+  let(:o1) { create :order, :one, :new, :pending }
+  let(:o2) { create :order, :one, :new, :completed }
+  let(:o3) { create :order, :one, :new, :refunded }
+  let(:o4) { create :order, :one, :new, :cancelled }
+  let(:o5) { create :order, :one, :old, :pending }
+  let(:o6) { create :order, :one, :old, :completed }
+  let(:o7) { create :order, :one, :old, :refunded }
+  let(:o8) { create :order, :one, :old, :cancelled }
+  
+  
+  describe 'GET #index' do
+
+  end
+
   describe 'GET #custsearch' do
     
     let!(:first) { create :customer, :one }
@@ -54,7 +68,7 @@ RSpec.describe OrdersController, :type => :controller do
     end
     
     it "should create a new order with customer 1" do
-      get :startorder, params: { custid: first.id }
+      expect(get :startorder, params: { custid: first.id }).to change(Order, :count).by(1)
       expect(Order.last.customer_id == first.id)
     end
     
@@ -64,13 +78,4 @@ RSpec.describe OrdersController, :type => :controller do
     end
   end
   
-  describe 'GET #pickoptions' do
-    let!(:c1) { create :customer, :one }
-    let!(:o1) { create :order, :one }
-    
-    
-    
-    
-    
-  end
 end
