@@ -63,6 +63,8 @@ namespace :freeoptionsload do
             @alfredo.each do |item|
               @array.push(Option.where("category_id = ? AND Name like ? AND Name NOT LIKE ?", cat, item, "extra").ids.to_s.delete! '[]')
             end 
+          else
+            @array = ['']
           end
           
           if !@array.empty?
@@ -169,7 +171,9 @@ namespace :freeoptionsload do
           elsif a.Name.include? "Barbecue Chicken"
             @bbq.each do |item|
               @array.push(Option.where("category_id = ? AND Name like ? AND Name NOT LIKE ?", cat, item, "extra").ids.to_s.delete! '[]')
-            end 
+            end
+          else
+            @array = ['']
           end
           
           if !@array.empty?
@@ -223,7 +227,19 @@ namespace :freeoptionsload do
             @partygarden.each do |item|
               @array.push(Option.where("category_id = ? AND Name like ? AND Name NOT LIKE ?", cat, item, "extra").ids.to_s.delete! '[]')
             end
+          else
+            @array = ['']
           end
+          
+          if !@array.empty?
+            a.freeoptions = @array
+            a.save!
+          end
+        end
+      else
+        Product.where("category_id = ?", cat).each do |a|
+          
+          @array = ['']
           
           if !@array.empty?
             a.freeoptions = @array

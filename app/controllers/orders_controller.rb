@@ -25,10 +25,10 @@ class OrdersController < ApplicationController
   
   def oldorders
     @customers = Customer.all
-    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND created_at < ?", DateTime.now.beginning_of_day).all
-    @cancelled = Order.where("Cancelled IS true AND created_at < ?", DateTime.now.beginning_of_day).all
-    @completed = Order.where("PaidFor IS true AND created_at < ?", DateTime.now.beginning_of_day).all
-    @refunded = Order.where("Refunded IS true AND created_at < ?", DateTime.now.beginning_of_day).all
+    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
+    @cancelled = Order.where("Cancelled IS true AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
+    @completed = Order.where("PaidFor IS true AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
+    @refunded = Order.where("Refunded IS true AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
   end
   
   def selectproduct
@@ -54,8 +54,20 @@ class OrdersController < ApplicationController
     puts params.inspect
     
     @order = Order.find(params[:order_id])
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
+    
+    @subtotal = 0.0
+    @orderlines.each do |a|
+       @subtotal += a.ItemTotalCost
+    end
+
+    @order.Subtotal = @subtotal
+    @order.save!
+      
+    calc_taxes(@order.id)
+    
     @product = Product.find(params[:product_id])
-    @orderline = Orderline.create :product_id => @product.id, :order_id => @order.id
+    @orderline = Orderline.create :product_id => @product.id, :order_id => @order.id, :ItemTotalCost => @product.Cost
     redirect_to orders_chooseoptions_path(order_id: @order.id, orderline_id: @orderline.id)
   end
   
@@ -63,6 +75,20 @@ class OrdersController < ApplicationController
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
     end 
+    
+    @order = Order.find(params[:order_id])
+    
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
+    
+    @subtotal = 0.0
+    @orderlines.each do |a|
+       @subtotal += a.ItemTotalCost
+    end
+
+    @order.Subtotal = @subtotal
+    @order.save!
+      
+    calc_taxes(@order.id)
     
     @orderid = params[:order_id]
     @pickup = params[:pickupordeliveryouter]
@@ -73,7 +99,11 @@ class OrdersController < ApplicationController
 
     orders_options_update(@orderid, @pickup, @discount, @user, @driver, @comments)
 
-    redirect_to orders_receipt_url(id: @order.id)
+    if params['commit'] == "Submit Order"
+      redirect_to orders_receipt_url(id: @order.id)
+    else
+      redirect_to orders_url
+    end
 
   end
   
@@ -167,19 +197,20 @@ class OrdersController < ApplicationController
     c = params[:criteria]
     crit = params[:searchcriteria]
     if crit == "phone"
-      @results = Customer.where("Phone like ?", "%#{c}%")
+      @results = Customer.where("Phone like ?", "%#{c}%").limit(100)
     elsif crit == "name"
-      r1 = Customer.where("FirstName like ?", "%#{c}%")
-      r2 = Customer.where("LastName like ?", "%#{c}%")
+      #@results = Customer.find_by_sql("SELECT DISTINCT * FROM CUSTOMERS WHERE FirstName LIKE ? UNION SELECT * FROM CUSTOMERS WHERE LastName LIKE ?", "%#{c}%", "%#{c}%")
+      r1 = Customer.where("FirstName like ?", "%#{c}%").limit(100)
+      r2 = Customer.where("LastName like ?", "%#{c}%").limit(100)
       @results = r1 + r2
     elsif crit == "address"
-      r1 = Customer.where("AddressNumber like ?", "%#{c}%")
-      r2 = Customer.where("StreetName like ?", "%#{c}%")
+      r1 = Customer.where("AddressNumber like ?", "%#{c}%").limit(100)
+      r2 = Customer.where("StreetName like ?", "%#{c}%").limit(100)
       @results = r1 + r2
     elsif crit == "city"
-      @results = Customer.where("City like ?", "%#{c}%")
+      @results = Customer.where("City like ?", "%#{c}%").limit(100)
     elsif crit == "zip"
-      @results = Customer.where("Zip like ?", "%#{c}%")
+      @results = Customer.where("Zip like ?", "%#{c}%").limit(100)
     end
   end
   
