@@ -43,7 +43,7 @@ class OptionsController < ApplicationController
   def update
     respond_to do |format|
       if @option.update(option_params)
-        format.html { redirect_to @option, notice: 'Option was successfully updated.' }
+        format.html { redirect_to options_url, notice: 'Option was successfully updated.' }
         format.json { render :show, status: :ok, location: @option }
       else
         format.html { render :edit }
@@ -70,6 +70,6 @@ class OptionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def option_params
-      params.fetch(:option, {})
+      params.require(:option).permit(:Name,:Cost,:category_id,:Abbreviation,:DoubleOf)
     end
 end
