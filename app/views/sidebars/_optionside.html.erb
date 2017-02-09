@@ -1,0 +1,22 @@
+<div class="sidebar-left">
+  <div class="navbar">
+    <ul class="nav">
+      
+      <li>
+        <% if request.path == "/options" %>
+          <%= link_to "View All Options", options_path, class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "View All Options", options_path, class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path.include? "edit" %>
+            <%= link_to "Editting Option", edit_option_path, class: "active nav-item" %><span class="active-arrow"></span>
+        <% end %>
+      </li>
+
+
+  
+    </ul>
+  </div>
+</div>
