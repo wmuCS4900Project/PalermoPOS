@@ -194,8 +194,11 @@ class OrdersController < ApplicationController
   
   # GET /orders/custsearch
   def custsearch
+    @users = User.all
     c = params[:criteria]
     crit = params[:searchcriteria]
+    @selected_user_id = params[:user_id]
+
     if crit == "phone"
       @results = Customer.where("Phone like ?", "%#{c}%").limit(100)
     elsif crit == "name"
