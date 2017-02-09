@@ -9,6 +9,7 @@ class Product < ApplicationRecord
   
   def init
     self.Cost ||= 0.0 if self.Cost.nil?
+    self.freeoptions ||= [''] if self.freeoptions.nil?
   end
     
 end
