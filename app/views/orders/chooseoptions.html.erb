@@ -47,10 +47,10 @@
             
             $('#whole input:checked').each(function() {
               var val = $(this).attr('value');
-              $("#halves .option-1 input[value='" + val+"']").prop('checked', true);
+              $("#halves input[value='" + val+"']").prop('checked', true);
 
               // Add active class
-              $("#halves .option-1 input[value='" + val+"']").closest("label").addClass("active");
+              $("#halves input[value='" + val+"']").closest("label").addClass("active");
             });
           });
 
@@ -63,21 +63,21 @@
             // Add active class
             $("#halves .option-1 input[value='" + val+"']").closest("label").addClass("active");
           });
-                        // Check from whole
+          // Check from whole
           $('#halves .option-1 input:checked').each(function() {
             var val = $(this).attr('value');
-            $("#quarters .option-1 input[value='" + val+"']").prop('checked', true);
+            $("#quarters .option-1 input[value='" + val+"'], #quarters .option-2 input[value='" + val+"']").prop('checked', true);
 
             // Add active class
-            $("#quarters .option-1 input[value='" + val+"']").closest("label").addClass("active");
+            $("#quarters .option-1 input[value='" + val+"'], #quarters .option-2 input[value='" + val+"']").closest("label").addClass("active");
          });
 
           $('#halves .option-2 input:checked').each(function() {
             var val = $(this).attr('value');
-            $("#quarters .option-2 input[value='" + val+"']").prop('checked', true);
+            $("#quarters .option-3 input[value='" + val+"'], #quarters .option-4 input[value='" + val+"']").prop('checked', true);
 
             // Add active class
-            $("#quarters .option-2 input[value='" + val+"']").closest("label").addClass("active");
+            $("#quarters .option-3 input[value='" + val+"'], #quarters .option-4 input[value='" + val+"']").closest("label").addClass("active");
          });
         });
       });
