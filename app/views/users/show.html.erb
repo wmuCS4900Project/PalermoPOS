@@ -1,6 +1,13 @@
+<%= render 'bars/top2' %>
+<div class="wrapper has-sidebar-left">
+  <%= render 'sidebars/loginside' %>
+      <div class="container main-content">
 <p id="notice"><%= notice %></p>
-<% if flash[:danger] %>
-  <div class="danger"><%= flash[:danger] %></div>
+<% if flash[:danger].present? %>
+  <div class="alert alert-danger"><%= flash[:danger] %></div>
+<% end %>
+<% if flash[:success].present? %>
+  <div class="alert alert-success"><%= flash[:success] %></div>
 <% end %>
 <p>
   <strong>Name:</strong>
@@ -28,3 +35,5 @@
 </p>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
+  </div>
+</div

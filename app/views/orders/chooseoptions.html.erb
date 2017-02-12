@@ -32,9 +32,59 @@
             <li><a href="#quarters" data-toggle="tab">Quarters</a></li>
           <% end %>
         </ul>
+
+        <script type="text/javascript">
+        $(function() {
+          $("#whole").click(function(e) {
+            // do the thing
+
+          });
+
+          $("a[href='#halves']").click(function(e) {
+            // Get selected checkboxes from whole
+            console.log("here");
+            var selected = [];
+            
+            $('#whole input:checked').each(function() {
+              var val = $(this).attr('value');
+              $("#halves input[value='" + val+"']").prop('checked', true);
+
+              // Add active class
+              $("#halves input[value='" + val+"']").closest("label").addClass("active");
+            });
+          });
+
+          $("a[href='#quarters']").click(function(e) {
+            // Check from whole
+            $('#whole input:checked').each(function() {
+            var val = $(this).attr('value');
+            $("#halves .option-1 input[value='" + val+"']").prop('checked', true);
+
+            // Add active class
+            $("#halves .option-1 input[value='" + val+"']").closest("label").addClass("active");
+          });
+          // Check from whole
+          $('#halves .option-1 input:checked').each(function() {
+            var val = $(this).attr('value');
+            $("#quarters .option-1 input[value='" + val+"'], #quarters .option-2 input[value='" + val+"']").prop('checked', true);
+
+            // Add active class
+            $("#quarters .option-1 input[value='" + val+"'], #quarters .option-2 input[value='" + val+"']").closest("label").addClass("active");
+         });
+
+          $('#halves .option-2 input:checked').each(function() {
+            var val = $(this).attr('value');
+            $("#quarters .option-3 input[value='" + val+"'], #quarters .option-4 input[value='" + val+"']").prop('checked', true);
+
+            // Add active class
+            $("#quarters .option-3 input[value='" + val+"'], #quarters .option-4 input[value='" + val+"']").closest("label").addClass("active");
+         });
+        });
+      });
+        </script>
         
         <div class="tab-content">
-          <%# WHOLE %>
+          <!-- WHOLE -->
           <% if @orderline.whole? || (@orderline.splitstyle == nil) %>
             <div class="tab-pane active" id="whole">
           <% else %>
@@ -59,11 +109,11 @@
           <% end %>            
             <%= form_tag("/orders/addoptions", :method=>'post', :multipart => true) do %>
               Top Half
-              <div class="panel panel-default">
+              <div class="panel panel-default option-1">
                 <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options, currentops: @orderline.Options1 %>
               </div>
               Bottom Half
-              <div class="panel panel-default">
+              <div class="panel panel-default option-2">
                 <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options, currentops: @orderline.Options2 %>
               </div>
               <%= hidden_field_tag :order_id, @order.id %>
@@ -80,19 +130,19 @@
           <% end %>            
             <%= form_tag("/orders/addoptions", :method=>'post', :multipart => true) do %>
               Quarter 1
-              <div class="panel panel-default">
+              <div class="panel panel-default option-1">
                 <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options, currentops: @orderline.Options1 %>
               </div>
               Quarter 2
-              <div class="panel panel-default">
+              <div class="panel panel-default option-2">
                 <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options, currentops: @orderline.Options2 %>
               </div>
               Quarter 3
-              <div class="panel panel-default">
+              <div class="panel panel-default option-3">
                 <%= render 'optionscheckbox', ops: @ops3, product: @product, options: @options, currentops: @orderline.Options3 %>
               </div>
               Quarter 4
-              <div class="panel panel-default">
+              <div class="panel panel-default option-4">
                 <%= render 'optionscheckbox', ops: @ops4, product: @product, options: @options, currentops: @orderline.Options4 %>
               </div>
               <%= hidden_field_tag :order_id, @order.id %>

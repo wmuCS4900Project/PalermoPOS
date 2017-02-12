@@ -8,18 +8,20 @@ class SessionsController < ApplicationController
   	user = User.find_by(username: params[:session][:username].downcase)
     if user && user.authenticate(params[:session][:password])
     	log_in user
+      flash[:success] = 'Logged in as ' + :username.to_s
     	redirect_to user
     else
-    	flash.now[:danger] = 'Invalid email/password combination'
+    	flash[:danger] = 'Invalid email/password combination'
     	render 'new'
 	end
   end
 
   def destroy
     log_out
-	redirect_to :back
-  rescue ActionController::RedirectBackError
- 	redirect_to root_path
+    flash[:success] = 'Log out successful'
+	  redirect_to :back
+    rescue ActionController::RedirectBackError
+ 	    redirect_to root_path
   end
 
   # Logs in the given user.
