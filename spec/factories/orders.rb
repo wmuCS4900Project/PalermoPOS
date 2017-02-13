@@ -2,17 +2,15 @@ FactoryGirl.define do
   factory :order do
     
     trait :one do
-      customer_id "1"
-      user_id "1"
+
     end
     
     trait :two do
-      customer_id "2"
-      user_id "1"
+
     end
     
     trait :new do
-      created_at { Datetime.now }
+      created_at { DateTime.now }
     end
     
     trait :old do

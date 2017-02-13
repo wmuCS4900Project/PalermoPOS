@@ -1,6 +1,8 @@
 FactoryGirl.define do
   factory :customer do
+
     trait :one do
+      id "1"
       Phone "1112223333"
       LastName "Smith"
       FirstName "Jim"
@@ -12,6 +14,7 @@ FactoryGirl.define do
       created_at { DateTime.now }
     end
     trait :two do
+      id "2"
       Phone "4445556666"
       LastName "Brown"
       FirstName "Bob"
@@ -23,6 +26,7 @@ FactoryGirl.define do
       created_at { DateTime.now }
     end
     trait :three do
+      id "3"
       Phone "1119998888"
       LastName "Archer"
       FirstName "Sterling"
