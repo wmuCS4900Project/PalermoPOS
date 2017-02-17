@@ -98,6 +98,12 @@
               <%= hidden_field_tag :order_id, @order.id %>
               <%= hidden_field_tag :orderline_id, @orderline.id %>
               <%= hidden_field_tag :splitstyle, "whole" %>
+              <cooking style="float: right;">
+                Cooking special?
+                <%= select_tag :howcooked, options_for_select(Orderline.HowCookeds.keys.to_a, @orderline.HowCooked) %>
+                Notes:
+                <%= text_field_tag :comments, @orderline.Comments %>
+              </cooking>
               <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
             <% end %>
           </div>
@@ -119,6 +125,12 @@
               <%= hidden_field_tag :order_id, @order.id %>
               <%= hidden_field_tag :orderline_id, @orderline.id %>        
               <%= hidden_field_tag :splitstyle, "halves" %>
+              <cooking style="float: right;">
+                Cooking special?
+                <%= select_tag :howcooked, options_for_select(Orderline.HowCookeds.keys.to_a), selected: @orderline.HowCooked %>
+                Notes:
+                <%= text_field_tag :comments, value: @orderline.Comments %>
+              </cooking>
               <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
             <% end %>
           </div>
@@ -148,7 +160,13 @@
               <%= hidden_field_tag :order_id, @order.id %>
               <%= hidden_field_tag :orderline_id, @orderline.id %>            
               <%= hidden_field_tag :splitstyle, "quarters" %>
-              <%= submit_tag "Save Item", class: "btn btn-lg-orange"%>
+              <cooking style="float: right;">
+                Cooking special?
+                <%= select_tag :howcooked, options_for_select(Orderline.HowCookeds.keys.to_a), selected: @orderline.HowCooked %>
+                Notes:
+                <%= text_field_tag :comments, value: @orderline.Comments %>
+              </cooking>
+              <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
             <% end %>        
           </div>
         </div>

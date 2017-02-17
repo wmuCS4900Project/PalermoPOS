@@ -61,14 +61,26 @@
       <span class="itembuttons">
         <%= link_to "Modify", orders_chooseoptions_path(order_id: @order.id, orderline_id: orderline.id), class: "btn btn-primary" %>
         <%= link_to "Delete", orderline, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
-      </span>   
+      </span>
         <span class="itemcost"><%= number_to_currency(orderline.ItemTotalCost) %></span>
       <br>
+      
+      <% if orderline.HowCooked != "normal" %>
+        <span class="itemleft">COOK IT</span>
+        <span class="itemcenter"><%= orderline.HowCooked.humanize %></span>
+        <br>
+      <% end %>
+      
+      <% if orderline.Comments.length > 1 %>
+        <span class="itemleft">NOTES</span>
+        <span class="itemcenter"><%= orderline.Comments %></span>
+        <br>
+      <% end %>
       
       <% if orderline.whole? %> <%#list the options if the product is whole %>
         <span class="itemleft">ALL</span>
         <span class="itemcenter">
-          <% if orderline.Options1.nil? %> 
+          <% if orderline.Options1.nil? %>  <%# tried to move this block to an html partial and for some reason the Options1 array will NOT pass in %>
             <%= "Plain" %>
           <% else %>
             <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options1 %> <%# grab any removed free items %>

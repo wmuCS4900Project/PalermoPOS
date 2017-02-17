@@ -102,8 +102,9 @@
       </span>
       
       <br>
+      
       <% if a.whole? %> <%# list options if orderline is whole %>
-        <% if a.Options1.nil? %> 
+        <% if a.Options1.nil? %> <%# tried to move this block to an html partial and for some reason the Options1 array will NOT pass in %>
           <%= "Plain" %>
         <% else %>
           <% @dif = Product.find(a.product_id).freeoptions - a.Options1 %> <%# grab any removed free items %>
@@ -219,6 +220,19 @@
             <% end %>
           <% end %>
         <% end %>
+      <% end %>
+      <br> 
+      
+      <% if a.HowCooked != "normal" %>
+        Cooked: 
+        <%= a.HowCooked.humanize %>
+        <br>
+      <% end %>
+      
+      <% if a.Comments.length > 1 %>
+        Notes: 
+        <i><%= a.Comments %></i>
+        <br>
       <% end %>
     </div>
   <% end %>

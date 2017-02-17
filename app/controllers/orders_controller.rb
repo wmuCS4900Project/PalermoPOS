@@ -133,6 +133,12 @@ class OrdersController < ApplicationController
     elsif !params[:orderline_id].present?
       redirect_to orders_path, :flash => { :notice => "No line selected!" }
     end
+    
+    if params[:howcooked].present?
+      puts "found it"
+    else
+      puts "didnt find it"
+    end
 
     @order = Order.find(params[:order_id])
     @orderline = Orderline.find(params[:orderline_id])
@@ -197,6 +203,7 @@ class OrdersController < ApplicationController
     @users = User.all
     c = params[:criteria]
     crit = params[:searchcriteria]
+    
     @selected_user_id = params[:user_id]
 
     if crit == "phone"
