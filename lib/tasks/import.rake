@@ -21,6 +21,11 @@ namespace :import do
         Option.create!(row.to_hash)
       end
   end
-  
-  
+
+  desc "Imports default customers, for example Walk In Customer "
+    task :customers, [:filename] => :environment do  
+      if !Customer.exists?(lastname: 'Customer', firstname:  'Walk In')
+        Customer.create :Phone => 9999999999, :LastName => "Customer", :FirstName => "Walk In", :LongDelivery => false
+      end
+  end 
 end

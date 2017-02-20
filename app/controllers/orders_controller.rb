@@ -231,7 +231,17 @@ class OrdersController < ApplicationController
   def edit
   end
   
-  
+  # GET /orders/walkin
+  def walkin
+    if Customer.exists?(lastname: 'Customer', firstname:  'Walk In')
+      walk_in = Customer.where(lastname: 'Customer', firstname:  'Walk In')
+      params[:custid] = walk_in[0].id
+      startorder
+    else
+      redirect_to orders_custsearch_path, :flash => {:danger => "No walk in customer in database"}
+    end
+  end
+
   # GET /orders/startorder
   def startorder
     if params[:custid].present?

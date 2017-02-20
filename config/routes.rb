@@ -30,6 +30,8 @@ Rails.application.routes.draw do
   get "orders/custsearch" => 'orders#custsearch'
   get "orders/startorder" => 'orders#startorder'
   get "orders/pending" => 'orders#pending'
+  get "orders/walkin" => 'orders#walkin'
+  
   resources :orders
   resources :orderlines
   

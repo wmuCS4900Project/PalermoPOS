@@ -10,6 +10,9 @@
         <% end %>
       </li>
       <li>
+        <%= link_to "Walk In Customer", orders_walkin_path, class: "nav-item" %>
+      </li>
+      <li>
         <% if request.path == "/orders/pickup" %>
             <%= link_to "Pickup Orders", orders_pickup_path, class: "active nav-item" %><span class="active-arrow"></span>
           <% else %>
