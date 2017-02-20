@@ -22,7 +22,7 @@
           <h1>Select Employee</h1>
           <p class="form-group">
           <%= label_tag :user_id %>
-          <%= select_tag :user_id, options_from_collection_for_select(@users, "id", "username", @selected_user_id ? @selected_user_id : @current_user.id ), {:class => 'form-control'}
+          <%= select_tag :user_id, options_from_collection_for_select(@users, "id", "username", @selected_user_id ? @selected_user_id : @current_user ? @current_user.id : ''), {:class => 'form-control'}
            %>
           </p>
         </div>
