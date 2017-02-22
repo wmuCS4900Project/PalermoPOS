@@ -84,6 +84,8 @@
         </script>
         
         <div class="tab-content">
+          
+          
           <!-- WHOLE -->
           <% if @orderline.whole? || (@orderline.splitstyle == nil) %>
             <div class="tab-pane active" id="whole">
@@ -93,7 +95,7 @@
             <%= form_tag("/orders/addoptions", :method=>'post', :multipart => true) do %>
               Whole Pizza
               <div class="panel panel-default">
-                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options, currentops: @orderline.Options1 %>
+                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options, currentops: @orderline.Options1, lead: "w" %>
               </div>
               <%= hidden_field_tag :order_id, @order.id %>
               <%= hidden_field_tag :orderline_id, @orderline.id %>
@@ -107,6 +109,8 @@
               <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
             <% end %>
           </div>
+          
+          
           <%# HALVES %>
           <% if @orderline.halves? || (@orderline.splitstyle == nil) %>
             <div class="tab-pane active" id="halves">
@@ -116,24 +120,26 @@
             <%= form_tag("/orders/addoptions", :method=>'post', :multipart => true) do %>
               Top Half
               <div class="panel panel-default option-1">
-                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options, currentops: @orderline.Options1 %>
+                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options, currentops: @orderline.Options1, lead: "h1" %>
               </div>
               Bottom Half
               <div class="panel panel-default option-2">
-                <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options, currentops: @orderline.Options2 %>
+                <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options, currentops: @orderline.Options2, lead: "h2" %>
               </div>
               <%= hidden_field_tag :order_id, @order.id %>
               <%= hidden_field_tag :orderline_id, @orderline.id %>        
               <%= hidden_field_tag :splitstyle, "halves" %>
               <cooking style="float: right;">
                 Cooking special?
-                <%= select_tag :howcooked, options_for_select(Orderline.HowCookeds.keys.to_a), selected: @orderline.HowCooked %>
+                <%= select_tag :howcooked, options_for_select(Orderline.HowCookeds.keys.to_a, @orderline.HowCooked) %>
                 Notes:
-                <%= text_field_tag :comments, value: @orderline.Comments %>
+                <%= text_field_tag :comments, @orderline.Comments %>
               </cooking>
               <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
             <% end %>
           </div>
+          
+          
           <%# QUARTERS %>
           <% if @orderline.quarters? || (@orderline.splitstyle == nil) %>
             <div class="tab-pane active" id="quarters">
@@ -143,36 +149,36 @@
             <%= form_tag("/orders/addoptions", :method=>'post', :multipart => true) do %>
               Quarter 1
               <div class="panel panel-default option-1">
-                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options, currentops: @orderline.Options1 %>
+                <%= render 'optionscheckbox', ops: @ops1, product: @product, options: @options, currentops: @orderline.Options1, lead: "q1" %>
               </div>
               Quarter 2
               <div class="panel panel-default option-2">
-                <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options, currentops: @orderline.Options2 %>
+                <%= render 'optionscheckbox', ops: @ops2, product: @product, options: @options, currentops: @orderline.Options2, lead: "q2" %>
               </div>
               Quarter 3
               <div class="panel panel-default option-3">
-                <%= render 'optionscheckbox', ops: @ops3, product: @product, options: @options, currentops: @orderline.Options3 %>
+                <%= render 'optionscheckbox', ops: @ops3, product: @product, options: @options, currentops: @orderline.Options3, lead: "q3" %>
               </div>
               Quarter 4
               <div class="panel panel-default option-4">
-                <%= render 'optionscheckbox', ops: @ops4, product: @product, options: @options, currentops: @orderline.Options4 %>
+                <%= render 'optionscheckbox', ops: @ops4, product: @product, options: @options, currentops: @orderline.Options4, lead: "q4" %>
               </div>
               <%= hidden_field_tag :order_id, @order.id %>
               <%= hidden_field_tag :orderline_id, @orderline.id %>            
               <%= hidden_field_tag :splitstyle, "quarters" %>
               <cooking style="float: right;">
                 Cooking special?
-                <%= select_tag :howcooked, options_for_select(Orderline.HowCookeds.keys.to_a), selected: @orderline.HowCooked %>
+                <%= select_tag :howcooked, options_for_select(Orderline.HowCookeds.keys.to_a, @orderline.HowCooked) %>
                 Notes:
-                <%= text_field_tag :comments, value: @orderline.Comments %>
+                <%= text_field_tag :comments, @orderline.Comments %>
               </cooking>
               <%= submit_tag "Save Item", class: "btn btn-lg-orange" %>
             <% end %>        
           </div>
+          
+          
         </div>
-      
       </div>
-  
     </div>
   </div>
 </body>
