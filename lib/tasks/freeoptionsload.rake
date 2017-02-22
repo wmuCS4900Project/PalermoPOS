@@ -64,7 +64,7 @@ namespace :freeoptionsload do
               @array.push(Option.where("category_id = ? AND Name like ? AND Name NOT LIKE ?", cat, item, "extra").ids.to_s.delete! '[]')
             end 
           else
-            @array = ['']
+            @array = []
           end
           
           if !@array.empty?
@@ -173,7 +173,7 @@ namespace :freeoptionsload do
               @array.push(Option.where("category_id = ? AND Name like ? AND Name NOT LIKE ?", cat, item, "extra").ids.to_s.delete! '[]')
             end
           else
-            @array = ['']
+            @array = []
           end
           
           if !@array.empty?
@@ -228,7 +228,7 @@ namespace :freeoptionsload do
               @array.push(Option.where("category_id = ? AND Name like ? AND Name NOT LIKE ?", cat, item, "extra").ids.to_s.delete! '[]')
             end
           else
-            @array = ['']
+            @array = []
           end
           
           if !@array.empty?
@@ -239,7 +239,7 @@ namespace :freeoptionsload do
       else
         Product.where("category_id = ?", cat).each do |a|
           
-          @array = ['']
+          @array = []
           
           if !@array.empty?
             a.freeoptions = @array
