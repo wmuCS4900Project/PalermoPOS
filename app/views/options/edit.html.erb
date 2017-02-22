@@ -41,8 +41,8 @@
         </div>
         
         <div class="form-group">
-          <%= f.label :DoubleOf, class: "form-group-header" %>
-          <%= f.text_field :DoubleOf, class: "form-control" %>
+          <%= f.label :ChildOf, class: "form-group-header" %>
+          <%= f.collection_select(:ChildOf, Option.where('category_id = ?', @option.category_id), :id, :Name, {:class =>"form-control", :prompt => 'none'} ) %>
         </div>
       
         <div class="actions">
