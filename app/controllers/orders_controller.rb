@@ -49,9 +49,6 @@ class OrdersController < ApplicationController
       redirect_to orders_path, :flash => { :notice => "No product selected!" }
       return
     end
-      
-    puts "THIS IS A THING"
-    puts params.inspect
     
     @order = Order.find(params[:order_id])
     @orderlines = Orderline.where("order_id = ?",@order.id).all
@@ -137,8 +134,13 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:order_id])
     @orderline = Orderline.find(params[:orderline_id])
     
-    puts "THIS IS A THING"
-    puts params.inspect
+    if params[:howcooked].present?
+      @orderline.HowCooked = params[:howcooked]
+    end
+    
+    if params[:comments].present?
+      @orderline.Comments = params[:comments]
+    end
     
     if(Category.find(Product.find(@orderline.product_id).category_id).Splits == false)
       @orderline.splitstyle = :whole
@@ -197,6 +199,7 @@ class OrdersController < ApplicationController
     @users = User.all
     c = params[:criteria]
     crit = params[:searchcriteria]
+    
     @selected_user_id = params[:user_id]
 
     if crit == "phone"

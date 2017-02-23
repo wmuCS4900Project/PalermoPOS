@@ -19,6 +19,8 @@ namespace :wipeandreload do
       Rake::Task["import:options"].invoke
       
       Rake::Task["freeoptionsload:loadall"].invoke
+      
+      Rake::Task["extralightload:loadall"].invoke
 
 
 

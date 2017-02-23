@@ -2,7 +2,7 @@
 
 <body>
   <div class="wrapper has-sidebar-left">
-    <%= render 'sidebars/optionside' %>
+    <%= render 'sidebars/optionside', locals: {category_id: @category_id } %>
     <div class="container main-content">
       
       <p id="notice"><%= flash[:notice] %></p>
@@ -13,6 +13,7 @@
         <table>
           <thead>
             <tr>
+              <th><%= "ID" %></th>
               <th><%= "Option Name" %></th>
               <th><%= "Category" %></th>
               <th><%= "Price" %></th>
@@ -24,10 +25,11 @@
           <tbody>
             <% @options.each do |option| %>
               <tr>
+                <td><%= option.id %></td>
                 <td><%= option.Name %></td>
                 <td><%= @categories.find(option.category_id).Name %></td>
                 <td><%= option.Cost %></td>
-                <td><%= option.DoubleOf %></td>
+                <td><% if !option.ChildOf.nil? %><%= Option.find(option.ChildOf).Name %><% end %></td>
                 <td><%= link_to 'Edit', edit_option_path(option), class: "btn btn-primary" %></td>
                 <td><%= link_to 'Destroy', option, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
               </tr>
