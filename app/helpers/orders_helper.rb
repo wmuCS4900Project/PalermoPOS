@@ -126,6 +126,11 @@ module OrdersHelper
     if !pickupordelivery.nil? 
       if pickupordelivery == "delivery"
         @order.IsDelivery = true
+        if Customer.find(@order.customer_id).LongDelivery == true
+          @order.TotalCost = @order.TotalCost + Rails.configuration.palermo['deliveryLong']
+        else
+          @order.TotalCost = @order.TotalCost + Rails.configuration.palermo['deliveryShort']
+        end
       elsif pickupordelivery == "pickup"
         @order.IsDelivery = false
       end
