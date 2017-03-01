@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   resources :categories
   resources :options
   
+  get "management" => 'management#index'
+  get "management/cashoutdrivers" => 'management#cashoutdrivers'
+  
   post "orders/commitorder" => 'orders#commitorder'
   post "orders/addoptions" => 'orders#addoptions'
   get "orders/chooseoptions" => 'orders#chooseoptions'

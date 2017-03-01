@@ -12,7 +12,7 @@
       <% end %><br>
       
       <%= "Comments: " %>
-      <%= @order.Comments %><br>
+      <%= @order.Comments %><br><br>
       <%= "Subtotal:" %>
       <%= @order.Subtotal %><br>
       <% if @order.Discounts > 0.0 %>
@@ -29,11 +29,16 @@
       <br>
       <br>
       <%= form_tag("/orders/cashedout", :method=>'post', :multipart => true) do %>
+        <% if @order.IsDelivery %>
+          <%= "Select Driver" %>
+          <%= collection_select(:order, :DriverID, User.with_role(:driver), :id, :Name) %><br><br>
+          <%= "Tip: " %><%= text_field_tag 'tip', @order.Tip %><br>
+        <% end %><br>
         <%= "Cash or Credit: " %>
         <%= radio_button_tag 'cashorcredit', 'cash', true %> <%= "Cash" %>
-        <%= radio_button_tag 'cashorcredit', 'credit' %> <%= "Credit" %><br>
+        <%= radio_button_tag 'cashorcredit', 'credit' %> <%= "Credit" %><br><br>
         <%= "Amount being paid:" %>
-        <%= text_field_tag 'amountpaid', @order.TotalCost %>
+        <%= text_field_tag 'amountpaid', @order.TotalCost %><br><br>
         <%= hidden_field_tag :id, @id %>
         <div class="actions">
           <%= submit_tag "Cash This Order Out" %>
