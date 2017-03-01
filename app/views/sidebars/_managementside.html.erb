@@ -1,0 +1,20 @@
+<div class="sidebar-left">
+  <div class="navbar">
+    <ul class="nav">
+      <li>
+        <% if request.path == management_path %>
+          <%= link_to "Management", management_path, class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Management", management_path, class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == management_cashoutdrivers_path %>
+          <%= link_to "Cash out drivers", management_cashoutdrivers_path, class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Cash out drivers", management_cashoutdrivers_path, class: "nav-item" %>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+</div>

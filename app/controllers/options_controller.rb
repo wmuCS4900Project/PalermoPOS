@@ -4,7 +4,12 @@ class OptionsController < ApplicationController
   # GET /options
   # GET /options.json
   def index
-    @options = Option.all
+    if params[:category_id].present?
+      @category_id = params[:category_id]
+      @options = Option.where('category_id = ?', @category_id).all
+    else
+      @options = Option.all
+    end
     @categories = Category.all
   end
 
@@ -70,6 +75,6 @@ class OptionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def option_params
-      params.require(:option).permit(:Name,:Cost,:category_id,:Abbreviation,:DoubleOf)
+      params.require(:option).permit(:Name,:Cost,:category_id,:Abbreviation,:ChildOf)
     end
 end
