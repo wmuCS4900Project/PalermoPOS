@@ -7,4 +7,5 @@ class User < ApplicationRecord
 	# User virtual attributes now include password and password_confirm
     has_secure_password
     validates :password, presence: true, length: { minimum: 6 }
+    
 end

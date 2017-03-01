@@ -256,10 +256,17 @@
     </span>
     <br>
     
-    <%= "Dlv" %>
-    <span class="right">
-    </span>
-    <br>
+    <% if @order.IsDelivery == true %>
+      <%= "Dlv" %>
+      <span class="right">
+        <% if @customers.find(@order.customer_id).LongDelivery == true %>
+          <%= number_to_currency(Rails.configuration.palermo['deliveryLong']) %>
+        <% else %>
+          <%= number_to_currency(Rails.configuration.palermo['deliveryShort']) %>
+        <% end %>
+      </span>
+      <br>
+    <% end %>
     
     
   </div>

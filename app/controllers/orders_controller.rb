@@ -394,6 +394,9 @@ class OrdersController < ApplicationController
     @orderlines = Orderline.where(order_id: @id)
     @products = Product.all
 
+    if params[:tip].present?
+      @order.Tip = params[:tip]
+    end
 
     if params[:amountpaid].present?
       @paid = params[:amountpaid]
@@ -404,11 +407,16 @@ class OrdersController < ApplicationController
     @order.AmountPaid = @paid
     
     if(@order.AmountPaid > @order.TotalCost.to_f)
-      @order.ChangeDue = @order.AmountPaid - @order.TotalCost.to_f
+      @order.ChangeDue = @order.AmountPaid - @order.TotalCost.to_f - @order.Tip
     end
     
     @order.PaidCash = params[:cashorcredit]
     @order.PaidFor = true
+    
+    if params[:order][:DriverID].present?
+      @order.DriverID = params[:order][:DriverID]
+    end
+    
     @order.save!
     
   end
