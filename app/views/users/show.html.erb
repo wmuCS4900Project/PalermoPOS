@@ -21,7 +21,7 @@
 
 <p>
   <strong>Driver:</strong>
-  <%= !! @user.Driver ? 'Yes' : 'No' %>
+  <%= !! @user.has_role?(:driver) ? 'Yes' : 'No' %>
 </p>
 
 <p>
@@ -31,9 +31,14 @@
 
 <p>
   <strong>Manager:</strong>
-  <%= !! @user.IsManager ? 'Yes' : 'No' %>
+  <%= !! @user.has_role?(:admin) ? 'Yes' : 'No' %>
 </p>
 <%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<%= link_to 'Back', users_path %> | 
+<% if logged_in? %>
+    <% if (current_user.has_role? :admin) %>
+      <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
+    <% end %> 
+  <% end %>
   </div>
-</div
+</div>
