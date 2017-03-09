@@ -11,8 +11,17 @@ module OrdersHelper
       if !options1.nil?
         options1.each do |a|
           if !Product.find(thisorderline.product_id).freeoptions.include?(a)
-            addcost = addcost + Option.find(a).Cost
-            optioncount = optioncount + 1.0
+            if Option.find(a).ChildOf == nil
+              puts "found a nil childof"
+              addcost += Option.find(a).Cost
+            elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
+              puts "found a free childof"
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+            else
+              puts "found a nonfree childof"
+              addcost += Option.find(a).Cost
+            end
+            optioncount += 1.0
           end
         end
       end
@@ -21,16 +30,34 @@ module OrdersHelper
       if !options1.nil?
         options1.each do |a|
           if !Product.find(thisorderline.product_id).freeoptions.include?(a)
-            addcost = addcost + Option.find(a).Cost * 0.5
-            optioncount = optioncount + 0.5
+            if Option.find(a).ChildOf == nil
+              puts "found a nil childof"
+              addcost += Option.find(a).Cost
+            elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
+              puts "found a free childof"
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+            else
+              puts "found a nonfree childof"
+              addcost += Option.find(a).Cost
+            end
+            optioncount += 1.0
           end
         end
       end
       if !options2.nil?
-        options2.each do |b|
-          if !Product.find(thisorderline.product_id).freeoptions.include?(b)
-            addcost = addcost + Option.find(b).Cost * 0.5
-            optioncount = optioncount + 0.5
+        options2.each do |a|
+          if !Product.find(thisorderline.product_id).freeoptions.include?(a)
+            if Option.find(a).ChildOf == nil
+              puts "found a nil childof"
+              addcost += Option.find(a).Cost
+            elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
+              puts "found a free childof"
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+            else
+              puts "found a nonfree childof"
+              addcost += Option.find(a).Cost
+            end
+            optioncount += 1.0
           end
         end
       end
@@ -39,32 +66,68 @@ module OrdersHelper
       if !options1.nil?
         options1.each do |a|
           if !Product.find(thisorderline.product_id).freeoptions.include?(a)
-            cost = cost + Option.find(a).Cost * 0.25
-            optioncount = optioncount + 0.25
+            if Option.find(a).ChildOf == nil
+              puts "found a nil childof"
+              addcost += Option.find(a).Cost
+            elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
+              puts "found a free childof"
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+            else
+              puts "found a nonfree childof"
+              addcost += Option.find(a).Cost
+            end
+            optioncount += 1.0
           end
         end
       end
       if !options2.nil?
-        options2.each do |b|
-          if !Product.find(thisorderline.product_id).freeoptions.include?(b)
-            cost = cost + Option.find(b).Cost * 0.25
-            optioncount = optioncount + 0.25
+        options2.each do |a|
+          if !Product.find(thisorderline.product_id).freeoptions.include?(a)
+            if Option.find(a).ChildOf == nil
+              puts "found a nil childof"
+              addcost += Option.find(a).Cost
+            elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
+              puts "found a free childof"
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+            else
+              puts "found a nonfree childof"
+              addcost += Option.find(a).Cost
+            end
+            optioncount += 1.0
           end
         end
       end
       if !options3.nil?
-        options3.each do |c|
-          if !Product.find(thisorderline.product_id).freeoptions.include?(c)
-            cost = cost + Option.find(c).Cost * 0.25
-            optioncount = optioncount + 0.25
+        options3.each do |a|
+          if !Product.find(thisorderline.product_id).freeoptions.include?(a)
+            if Option.find(a).ChildOf == nil
+              puts "found a nil childof"
+              addcost += Option.find(a).Cost
+            elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
+              puts "found a free childof"
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+            else
+              puts "found a nonfree childof"
+              addcost += Option.find(a).Cost
+            end
+            optioncount += 1.0
           end
         end
       end
       if !options4.nil?
-        options4.each do |d|
-          if !Product.find(thisorderline.product_id).freeoptions.include?(d)
-            cost = cost + Option.find(d).Cost * 0.25
-            optioncount = optioncount + 0.25
+        options4.each do |a|
+          if !Product.find(thisorderline.product_id).freeoptions.include?(a)
+            if Option.find(a).ChildOf == nil
+              puts "found a nil childof"
+              addcost += Option.find(a).Cost
+            elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
+              puts "found a free childof"
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+            else
+              puts "found a nonfree childof"
+              addcost += Option.find(a).Cost
+            end
+            optioncount += 1.0
           end
         end
       end
