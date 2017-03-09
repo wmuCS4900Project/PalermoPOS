@@ -7,6 +7,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'capybara/rails'
+require 'capybara/rspec'
 require 'support/spec_test_helper'
 require 'database_cleaner'
 DatabaseCleaner.clean_with :truncation

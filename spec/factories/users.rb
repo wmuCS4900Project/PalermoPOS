@@ -4,5 +4,13 @@ FactoryGirl.define do
     created_at { DateTime.now }
     updated_at { DateTime.now }
     
+    trait :admin do
+        after(:create) {|user| user.add_role(:admin)}
+    end
+    
+    trait :driver do
+      after(:create) {|user| user.add_role(:driver)}
+    end
+    
   end
 end
