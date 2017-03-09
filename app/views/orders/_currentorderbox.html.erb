@@ -77,6 +77,12 @@
         <br>
       <% end %>
       
+      <% if !orderline.OptionCount.nil? %>
+        <span class="itemleft">INGRD#</span>
+        <span class="itemcenter"><%= orderline.OptionCount %></span>
+        <br>
+      <% end %>
+      
       <% if orderline.whole? %> <%#list the options if the product is whole %>
         <span class="itemleft">ALL</span>
         <span class="itemcenter">
