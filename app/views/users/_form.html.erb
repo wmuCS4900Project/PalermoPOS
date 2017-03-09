@@ -20,7 +20,7 @@
       puts @roles
       @roles.each do |key, value| %>
         <%= f.label( key, value) %>
-        <%= check_box_tag 'roles[]', key, "false" %>
+        <%= check_box_tag 'roles[]', key %>
       <% end
     end 
     %>
