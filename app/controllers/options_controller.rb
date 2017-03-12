@@ -26,6 +26,44 @@ class OptionsController < ApplicationController
   # GET /options/1/edit
   def edit
   end
+  
+  def changeall
+    @options = Option.all
+  end
+  
+  def changeallapply
+    if !params[:changeto].present?
+      redirect_to options_changeall_path, :flash => { :notice => "No value included!" }
+      return
+    end
+    
+    if !params[:ids].present?
+      redirect_to options_changeall_path, :flash => { :notice => "No items selected!" }
+      return
+    end
+    
+    @field = params[:field]
+    @changeto = params[:changeto]
+    
+    @optionsSelected = Option.where(id: params[:ids])
+    puts @optionsSelected
+    
+    @optionsSelected.each do |this|
+      if @field == "Name"
+        this.Name = @changeto
+      elsif @field == "Cost"
+        this.Cost = @changeto
+      elsif @field == "category_id"
+        this.category_id = @changeto
+      elsif @field == "Abbreviation"
+        this.Abbreviation = @changeto
+      end
+      this.save!
+    end
+    
+    redirect_to options_path, :flash => { :notice => "Multiple options updated!" }
+    
+  end
 
   # POST /options
   # POST /options.json
