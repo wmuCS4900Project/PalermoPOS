@@ -1,0 +1,59 @@
+<style>
+  tr {
+    padding: .2em;
+  }
+  td {
+    padding: .2em;
+  }
+  
+  
+</style>
+
+<%= render 'bars/top2' %>
+
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/productside' %>
+    <div class="container main-content">
+      
+      <% if flash[:notice].present? %>
+        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
+      <% end %>
+
+      <h1>Editing All Products</h1>
+      
+      <%= form_tag("/products/changeallapply", :method=>'post', :multipart => true) do %>
+      
+        <%= submit_tag "Apply Changes", class: "btn btn-lg-orange" %>
+        
+        <br>
+        Select a field to alter
+        <%= select_tag "field", '<option value = "Name">Name</option><option value = "Cost">Price</option><option value = "category_id">Category</option>'.html_safe %>
+        
+        <br>
+        Change the value to this
+        <%= text_field_tag "changeto" %>
+        
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+          </tr>
+          <% @products.each do |this| %>
+           
+            <tr>
+              <td><%= this.Name %></td>
+              <td><%= this.Cost %></td>
+              <td><%= Category.find(this.category_id).Name %></td>
+              <td><%= check_box_tag "ids[]", this.id %></td>
+            </tr>
+              
+          <% end %>
+        </table>
+        
+      <% end %>
+      
+    </div>
+  </div>
+</body>
