@@ -4,6 +4,9 @@
   <div class="wrapper has-sidebar-left">
     <%= render 'sidebars/orderside' %>
     <div class="container main-content">
+      
+      <p id="notice"><%= notice %></p>
+      
       <h1>Cash Out Order <%= @order.id %></h1>
       
       <% @orderlines.each do |a| %>
@@ -56,7 +59,12 @@
           <%= submit_tag "Adjust for Discount" %>
         </div>
       <% end %>
+      <br>
       
+      <%= "Select coupons:" %>
+      <% Coupon.all.each do |c| %>
+        <%= button_to "Apply " + c.Name, orders_cashout_url, class: 'btn', method: :get, params: { cid: c.id, id: @id  } %>
+      <% end %>
     </div>
   </div>
 </body>

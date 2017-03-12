@@ -2,6 +2,7 @@ class Order < ApplicationRecord
   belongs_to :user
   belongs_to :customer
   has_many :orderlines, :dependent => :destroy
+  serialize :Coupons
   
   after_initialize :init
   
@@ -17,6 +18,7 @@ class Order < ApplicationRecord
     self.AmountPaid = 0.0 if self.AmountPaid.nil?
     self.ChangeDue = 0.0 if self.ChangeDue.nil?
     self.RefundedTotal = 0.0 if self.RefundedTotal.nil?
+    self.ManualDiscount = 0.0 if self.ManualDiscount.nil?
   end
   
 end

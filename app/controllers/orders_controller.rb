@@ -366,7 +366,26 @@ class OrdersController < ApplicationController
     @products = Product.all
 
     if params[:discount].present?
-      @order.Discounts = params[:discount]
+      @order.Manual = params[:discount]
+    end
+    
+    if params[:cid].present?
+      @ret = coupon_processor(params[:cid],@id)
+      
+      if @ret == true
+        if !@order.Coupons.nil?
+          @coupons = @order.Coupons
+        else
+          @coupons = []
+        end
+        
+        @coupons.push(params[:cid])
+        @order.Coupons = @coupons
+        
+        flash.now[:notice] = 'Coupon added!'
+      else
+        flash.now[:notice] = 'Order inelligible for coupon!'
+      end
     end
     
     @order.save!
@@ -413,7 +432,7 @@ class OrdersController < ApplicationController
     @order.PaidCash = params[:cashorcredit]
     @order.PaidFor = true
     
-    if params[:order][:DriverID].present?
+    if params[:order].present?
       @order.DriverID = params[:order][:DriverID]
     end
     
@@ -421,68 +440,7 @@ class OrdersController < ApplicationController
     
   end
   
-  def endofday
-    @customers = Customer.all
-    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
-    @cancelled = Order.where("Cancelled IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
-    @completed = Order.where("PaidFor IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
-    @refunded = Order.where("Refunded IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
-    
-    @subtotals = Array.new(4, 0.0)
-    @taxtotals = Array.new(4, 0.0)
-    @tottotals = Array.new(4, 0.0)
-    @cashtotal = Array.new(4, 0.0)
-    @credittotal = Array.new(4, 0.0)
-    
-    @pending.each do |a|
-      @subtotals[0] += a.Subtotal
-      @taxtotals[0] += a.Tax
-      @tottotals[0] += a.TotalCost
-      if a.PaidCash == true
-        @cashtotal[0] += a.TotalCost
-      else
-        @credittotal[0] += a.TotalCost
-      end
-    end
-    
-    @completed.each do |a|
-      @subtotals[1] += a.Subtotal
-      @taxtotals[1] += a.Tax
-      @tottotals[1] += a.TotalCost
-      if a.PaidCash == true
-        @cashtotal[1] += a.TotalCost
-      else
-        @credittotal[1] += a.TotalCost
-      end
-    end
-    
-    @cancelled.each do |a|
-      @subtotals[2] += a.Subtotal
-      @taxtotals[2] += a.Tax
-      @tottotals[2] += a.TotalCost
-      if a.PaidCash == true
-        @cashtotal[2] += a.TotalCost
-      else
-        @credittotal[2] += a.TotalCost
-      end
-    end
-
-    @completed.each do |a|
-      @subtotals[3] += a.Subtotal
-      @taxtotals[3] += a.Tax
-      @tottotals[3] += a.TotalCost
-      if a.PaidCash == true
-        @cashtotal[3] += a.TotalCost
-      else
-        @credittotal[3] += a.TotalCost
-      end
-    end
-    
-
-    
-  end
   
-
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update

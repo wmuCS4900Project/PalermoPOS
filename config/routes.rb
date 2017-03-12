@@ -7,12 +7,23 @@ Rails.application.routes.draw do
   
   root 'application#home'
   resources :users
+  
+  get "products/changeall" => 'products#changeall'
+  post "products/changeallapply" => 'products#changeallapply'
   resources :products
+  
   resources :categories
+  
+  get "options/changeall" => 'options#changeall'
+  post "options/changeallapply" => 'options#changeallapply'
   resources :options
+  
+  resources :coupons
   
   get "management" => 'management#index'
   get "management/cashoutdrivers" => 'management#cashoutdrivers'
+  get "management/endofday" => 'management#endofday'
+
   
   post "orders/commitorder" => 'orders#commitorder'
   post "orders/addoptions" => 'orders#addoptions'
@@ -22,7 +33,6 @@ Rails.application.routes.draw do
   get "orders/pickup" => 'orders#pickup'
   get "orders/delivery" => 'orders#delivery'
   get "orders/oldorders" => 'orders#oldorders'
-  get "orders/endofday" => 'orders#endofday'
   get "orders/receipt" => 'orders#receipt'
   get "default/index" 
   post "orders/pickoptions" => 'orders#pickoptions'
@@ -36,8 +46,7 @@ Rails.application.routes.draw do
   get "orders/walkin" => 'orders#walkin'
   
   resources :orders
-  resources :orderlines
-  
+
   # Route Signup to new users page
   get  '/signup',  to: 'users#new'
 
