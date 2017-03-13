@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   get "management/cashoutdrivers" => 'management#cashoutdrivers'
   get "management/endofday" => 'management#endofday'
 
-  
+  get "orders/addPreviousOrderItems" => 'orders#addPreviousOrderItems'
   post "orders/commitorder" => 'orders#commitorder'
   post "orders/addoptions" => 'orders#addoptions'
   get "orders/chooseoptions" => 'orders#chooseoptions'
@@ -47,6 +47,8 @@ Rails.application.routes.draw do
   
   resources :orders
 
+  resources :orderlines
+  
   # Route Signup to new users page
   get  '/signup',  to: 'users#new'
 
