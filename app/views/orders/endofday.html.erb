@@ -41,7 +41,7 @@
         <tr>
           <td><%= order.id %></td>
           <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %><br></td>
-          <td><%= order.created_at %></td>
+          <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %></td>
           <td><%= User.find(order.user_id).Name %><br></td>
           <% if order.PaidCash == 0 %>
             <td><%= "Cash" %><br></td>
@@ -94,7 +94,7 @@
         <tr>
           <td><%= order.id %></td>
           <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %><br></td>
-          <td><%= order.created_at %></td>
+          <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %></td>
           <td><%= User.find(order.user_id).Name %><br></td>
           <% if order.PaidCash == 0 %>
             <td><%= "Cash" %><br></td>
@@ -147,7 +147,7 @@
         <tr>
           <td><%= order.id %></td>
           <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %><br></td>
-          <td><%= order.created_at %></td>
+          <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %></td>
           <td><%= User.find(order.user_id).Name %><br></td>
           <% if order.PaidCash == 0 %>
             <td><%= "Cash" %><br></td>
@@ -200,7 +200,7 @@
         <tr>
           <td><%= order.id %></td>
           <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %><br></td>
-          <td><%= order.created_at %></td>
+          <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %></td>
           <td><%= User.find(order.user_id).Name %><br></td>
           <% if order.PaidCash == 0 %>
             <td><%= "Cash" %><br></td>

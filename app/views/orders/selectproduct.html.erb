@@ -8,7 +8,13 @@
       <% if flash[:notice].present? %>
         <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
       <% end %>
-      
+
+    <% # Check capabilities
+    if ( !logged_in? || !current_user.can?("create", "orders")) %>
+      <p> Sorry, you don't have the capabilities to do that </p>
+
+    <% else %>
+
       <h1>Current Order</h1>
       <%= render 'currentorderbox', order: @order %>
       
@@ -32,7 +38,7 @@
           <% end %>
         </div>
       </div>
- 
+  <% end %>
     </div>
   </div>
 </body>

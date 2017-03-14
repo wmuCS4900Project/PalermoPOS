@@ -1,4 +1,10 @@
 <p id="notice"><%= notice %></p>
+	<% # Check capabilities
+	if ( !logged_in? || !current_user.can?("view", "options")) %>
+	<p> Sorry, you don't have the capabilities to do that</p>
+	<% else %>
+	<!-- View Option -->
+	<% end %>
 
 <%= link_to 'Edit', edit_option_path(@option) %> |
 <%= link_to 'Back', options_path %>

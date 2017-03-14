@@ -2,10 +2,7 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-
-      
       <%= link_to "Palermo Pizza", root_path, class: "navbar-brand" %>
-    
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -16,7 +13,13 @@
         <li><%= link_to "Products", products_path %></li>
         <li><%= link_to "Options", options_path %></li>
         <li><%= link_to "Users", users_path %></li>
-        <li><a href="#">Management</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle user-management" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Management <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li> <%= link_to 'Roles', '/roles' %></li>
+            <li> <%= link_to 'Capabilities', caps_path %></li>
+          </ul>
+        </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">

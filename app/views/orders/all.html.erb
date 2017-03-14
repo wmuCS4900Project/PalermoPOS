@@ -29,7 +29,7 @@
       <tr>
         <td><%= order.id %>
         <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> </td>
-        <td><%= order.created_at %> </td>
+        <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
         <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ) %></td>
         <td><%= link_to 'Show', order %></td>
         <td><%= link_to 'Edit', edit_order_path(order) %></td>
@@ -57,7 +57,7 @@
       <tr>
         <td><%= order.id %> </td>
         <td><%= @customers.find(order.customer_id).FirstName %><%= @customers.find(order.customer_id).LastName %> </td>
-        <td><%= order.created_at %> </td>
+        <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
         <td><%= link_to 'Show', order %></td>
         <td><%= link_to 'Edit', edit_order_path(order) %></td>
         <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -83,7 +83,7 @@
       <tr>
         <td><%= order.id %>
         <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
-        <td><%= order.created_at %> </td>
+        <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
         <td><%= link_to 'Show', order %></td>
         <td><%= link_to 'Edit', edit_order_path(order) %></td>
         <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -109,7 +109,7 @@
       <tr>
         <td>Order # <%= order.id %> <br>
         Ordered by: <%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br>
-        Order time: <%= order.created_at %> </td>
+        Order time: <%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
         <td><%= link_to 'Show', order %></td>
         <td><%= link_to 'Edit', edit_order_path(order) %></td>
         <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>

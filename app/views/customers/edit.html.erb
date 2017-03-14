@@ -7,8 +7,12 @@
     <div class="container main-content">
 
       <h1>Editing Customer</h1>
-      
+      <% # Check capabilities
+		  if ( !logged_in? || !current_user.can?("edit", "customers")) %>
+		  <p> Sorry, you don't have the capabilities to do that </p>
+		<% else %>
       <%= render 'form', customer: @customer %>
+    <% end %>
       
     </div>
   </div>

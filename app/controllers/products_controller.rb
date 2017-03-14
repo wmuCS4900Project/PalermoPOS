@@ -28,6 +28,13 @@ class ProductsController < ApplicationController
   # POST /products
   # POST /products.json
   def create
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("create", "products") )
+      redirect_to products_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
+    end
+
     @product = Product.new(product_params)
 
     respond_to do |format|
@@ -44,6 +51,13 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1
   # PATCH/PUT /products/1.json
   def update
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("edit", "products") )
+      redirect_to products_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
+    end
+
     respond_to do |format|
       puts(product_params)
       if @product.update(product_params)
@@ -59,6 +73,13 @@ class ProductsController < ApplicationController
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("edit", "products") )
+      redirect_to products_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
+    end
+
     @product.destroy
     respond_to do |format|
       format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }

@@ -1,0 +1,17 @@
+<%= render 'bars/top2' %>
+
+<div class="wrapper has-sidebar-left">
+  <%= render 'sidebars/rolesside' %>
+  <div class="container main-content">
+	  <p id="notice"><%= notice %></p>
+	 	<h1>New Capability</h1>
+	 	<% # Check capabilities
+		if ( !logged_in? || !current_user.can?("edit", "capabilities")) %>
+		<p> Sorry, you don't have the capabilities to do that </p>
+
+		<% else %>
+		<%= render 'form', cap: @cap %>
+		<% end %>
+		<%= link_to 'Back', caps_path %>
+	</div>
+</div>

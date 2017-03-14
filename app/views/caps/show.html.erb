@@ -1,0 +1,39 @@
+<%= render 'bars/top2' %>
+
+<div class="wrapper has-sidebar-left">
+  <%= render 'sidebars/rolesside' %>
+  <div class="container main-content">
+	  <p id="notice"><%= notice %></p>
+	  <% # Check capabilities
+		if ( !logged_in? || !current_user.can?("view", "customers")) %>
+			<p> Sorry, you don't have the capabilities to do that </p>
+
+		<% else %>
+		<div class="table">
+		    <table>
+		      <thead>
+		        <tr>
+		          <th>Role</th> 
+		          <th>Action</th>
+		          <th>Object</th>
+		          <th colspan="2"></th>
+		        </tr>
+		      </thead>
+
+		      <div class="role-checkboxes">
+		      </div>
+		          <tr>
+		            <td><%= Role.find(@cap.role_id).name %></td>
+		            <td><%= @cap.action %></td>
+		            <td><%= @cap.object %></td>
+		            <td><%= link_to 'Edit', edit_cap_path(@cap), { class: 'btn btn-primary'} %></td>
+		            <td><%= link_to 'Destroy', @cap, method: :delete, data: { confirm: 'Are you sure?'}, class: 'btn btn-primary' %></td>
+		          </tr>
+		      </tbody>
+		    </table>
+		  </div>
+		<%= link_to 'Edit', edit_cap_path(@cap) %>
+		<% end %>
+		<%= link_to 'Back', caps_path %>
+	</div>
+</div>

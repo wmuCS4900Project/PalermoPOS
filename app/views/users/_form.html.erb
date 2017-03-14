@@ -1,26 +1,28 @@
 <%= form_for(user) do |f| %>
   <div class="form-group">
     <%= f.label :Name %>
-    <%= f.text_field :Name %>
+    <%= f.text_field :Name, {:class => 'form-control'}  %>
   </div>
 
   <div class="form-group">
     <%= f.label :username %>
-    <%= f.text_field :username %>
+    <%= f.text_field :username, {:class => 'form-control'} %>
   </div>
 
   <div class="form-group">
     <%= f.label :password %>
-    <%= f.password_field :password %>
+    <%= f.password_field :password, {:class => 'form-control'} %>
+    <p>Password must be at 6-15 characters</p>
   </div>
 
-    <% 
-    # Add roles--only admins can add roles 
-    if logged_in?
-      puts @roles
-      @roles.each do |key, value| %>
-        <%= f.label( key, value) %>
-        <%= check_box_tag 'roles[]', key, "false" %>
+    <h2>Roles</h2>
+    <% # Add roles--only admins can add roles 
+    if current_user.can? "create", "roles"
+      @roles.each do |role| %>
+      <p>
+        <%= f.label role.name %> 
+        <%= check_box_tag 'roles[]', role.name, "false" %>
+      </p>
       <% end
     end 
     %>

@@ -21,52 +21,49 @@
     </p>
 
     <% end %>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Username</th>
-          <th>Driver?</th>
-          <th>Admin?</th>
-          <th>Created Date</th>
-          <th>Updated Date</th>
-          <th colspan="3"></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% 
-        @users.each do |user| %>
+    <div class="table">
+      <table>
+        <thead>
           <tr>
-            <td><%= user.Name %></td>
-            <td><%= user.username %></td>
-            <td><%= (user.has_role? :driver) ? 'Yes' : 'No' %></td>
-            <td><%= (user.has_role? :admin) ? 'Yes' : 'No' %></td>
-            <td><%= user.created_at.strftime("%l:%M %p %B %m, %Y") %></td>
-            <td><%= user.updated_at.strftime("%l:%M %p %B %m, %Y") %></td>
-            <td><%= link_to 'Show', user %></td>
-            <td>
-            <% if logged_in? #TODO Extend has_role for nil to return false 
-              puts user.id
-              puts current_user.id
-              %>
-              <% if ((user.id == current_user.id) || (current_user.has_role? :admin)) %>
-              <%= link_to 'Edit', edit_user_path(user) %>
-              <% end %>
-            <% end %>
-            </td>
-            <td>
-            <% if logged_in? %>
-              <% if (current_user.has_role? :admin) %>
-                <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>
-              <% end %> 
-            <% end; %>
-            </td>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Created Date</th>
+            <th>Updated Date</th>
+            <th colspan="3"></th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+
+        <tbody>
+          <% 
+          @users.each do |user| %>
+            <tr>
+              <td><%= user.Name %></td>
+              <td><%= user.username %></td>
+              <td><%= user.created_at.strftime("%l:%M %p %B %m, %Y") %></td>
+              <td><%= user.updated_at.strftime("%l:%M %p %B %m, %Y") %></td>
+              <td><%= link_to 'More', user, class: 'btn-primary btn' %></td>
+              <td>
+              
+              <% if logged_in? #TODO Extend has_role for nil to return false 
+                %>
+                <% if ( (user.id == current_user.id) || (current_user.can? "edit", "user") ) %>
+                <%= link_to 'Edit', edit_user_path(user), class: 'btn btn-primary' %>
+                <% end %>
+              <% end %>
+              </td>
+              <td>
+
+              <% if logged_in? %>
+                <% if (current_user.can? :delete, :User) %>
+                  <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>
+                <% end %> 
+              <% end; %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
 
     <br>
 

@@ -1,6 +1,12 @@
 <%= render 'bars/top2' %>
+	<p id="notice"><%= notice %></p>
 
-<p id="notice"><%= notice %></p>
+	<% # Check capabilities
+	if ( !logged_in? || !current_user.can?("view", "products")) %>
+	<p> Sorry, you don't have the capabilities to do that</p>
+	<% else %>
+		<!-- View Product -->
+	<% end %>
 
 <%= link_to 'Edit', edit_product_path(@product) %> |
 <%= link_to 'Back', products_path %>

@@ -5,7 +5,11 @@
     <%= render 'sidebars/custside' %>
     <div class="container main-content">
       <p id="notice"><%= notice %></p>
-      
+      <% # Check capabilities
+      if ( !logged_in? || !current_user.can?("view", "customers")) %>
+      <p> Sorry, you don't have the capabilities to do that </p>
+      <% else %> 
+
       <p>
         <strong>Phone:</strong>
         <%= @customer.Phone %>
@@ -97,7 +101,7 @@
       </p>
       
       <td><%= link_to 'Edit', edit_customer_path(@customer) %></td>
-
+      <% end %>
       
     </div>
   </div>

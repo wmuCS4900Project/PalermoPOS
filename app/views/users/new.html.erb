@@ -6,9 +6,12 @@
 		<% if flash[:danger] %>
 		  <div class="alert alert-danger"><%= flash[:danger] %></div>
 		<% end %>
-		<% if logged_in? %>
-
-		<%= render 'form', user: @user %>
+		<% if logged_in? %>	
+		    <% if ( !current_user.can? "create", "users") %>
+		    	<p> Sorry, you don't have the capabilities to do this </p>
+	   		<% else %>
+			<%= render 'form', user: @user %>
+		    <% end %>
 
 		<%= link_to 'Back', users_path %>
 
