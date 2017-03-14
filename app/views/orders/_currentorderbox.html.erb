@@ -241,18 +241,15 @@
 <div class="orderinfo3">
   
   <%= form_tag("/orders/commitorder", :method=>'post', :multipart => true) do %>
-  
+    <div class="btn-group form-group group" data-toggle="buttons">
     <% if @order.IsDelivery.nil? || @order.IsDelivery == false %>
-      <%= label_tag :pickupordelivery_pickup, "Pickup" %>
-      <%= radio_button_tag :pickupordeliveryouter, 'pickup', :checked => true %>
-      <%= label_tag :pickupordelivery_delivery, "Delivery" %>
-      <%= radio_button_tag :pickupordeliveryouter, 'delivery' %>
+      <label class="btn btn-option active"><%= radio_button_tag 'pickupordeliveryouter', 'pickup', true %>Pickup</label>
+      <label class="btn btn-option"><%= radio_button_tag 'pickupordeliveryouter', 'delivery' %>Delivery</label>
     <% elsif @order.IsDelivery == true %>
-      <%= label_tag :pickupordelivery_pickup, "Pickup" %>
-      <%= radio_button_tag :pickupordeliveryouter, 'pickup' %>
-      <%= label_tag :pickupordelivery_delivery, "Delivery" %>
-      <%= radio_button_tag :pickupordeliveryouter, 'delivery', :checked => true %>
+      <label class="btn btn-option"><%= radio_button_tag 'pickupordeliveryouter', 'pickup' %>Pickup</label>
+      <label class="btn btn-option active"><%= radio_button_tag 'pickupordeliveryouter', 'delivery', true %>Delivery</label>
     <% end %>
+    </div>
     <br>
     
     <%= label_tag :discount, "Discount" %>
@@ -261,10 +258,6 @@
     
     <%= label_tag :user_id, "User Creating Order" %>
     <%= select_tag :user_id, options_from_collection_for_select(User.all, "id", "Name", "1") %>
-    <br>
-    
-    <%= label_tag :driver_id, "Driver" %>
-    <%= select_tag :driver_id, options_from_collection_for_select(User.where("Driver IS true").all, "id", "Name", "1") %>
     <br>
     
     <%= label_tag :comments, "Comments" %>
