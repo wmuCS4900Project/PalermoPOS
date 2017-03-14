@@ -77,6 +77,12 @@
         <br>
       <% end %>
       
+      <% if !orderline.OptionCount.nil? %>
+        <span class="itemleft">INGRD#</span>
+        <span class="itemcenter"><%= orderline.OptionCount %></span>
+        <br>
+      <% end %>
+      
       <% if orderline.whole? %> <%#list the options if the product is whole %>
         <span class="itemleft">ALL</span>
         <span class="itemcenter">
@@ -222,10 +228,12 @@
 <div class="orderinfo2">
   <div class="orderitems">
     <% if !@order.nil? %>
-      Order For: 
-      <%= Customer.find(@order.customer_id).FirstName + " " + Customer.find(@order.customer_id).LastName %>
-    <% else %>
-      <%= "no current order" %>
+      <% @cust = Customer.find(@order.customer_id) %>
+      <%= @cust.FirstName %> <%= " " %><%= @cust.LastName %> <br>
+      <%= @cust.AddressNumber %><%= " " %><%= @cust.StreetName %> <br>
+      <%= @cust.City %> <%= ", " %><%= @cust.State %> <br>
+      <%= "Directions: " %><%= @cust.Directions %> <br>
+      <%= link_to "Add previous order", orders_addPreviousOrderItems_url(order_id: @order.id), class: 'btn btn-primary' %>
     <% end %>
   </div>
 </div>

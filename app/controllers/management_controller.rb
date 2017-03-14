@@ -25,9 +25,88 @@ class ManagementController < ApplicationController
       puts "no driver id"
     end
     
+  end
+  
+  
+  #end of day print out page to show sales totals and breakdowns by item
+  def endofday
+    @customers = Customer.all
+    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    @cancelled = Order.where("Cancelled IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    @completed = Order.where("PaidFor IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    @refunded = Order.where("Refunded IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
     
+    productCount = ActiveRecord::Base.connection.exec_query(query)
+    @cols = productCount.columns
+    @rows = productCount.rows
     
+    puts @cols.inspect
+    puts @rows.inspect
     
+    @subtotals = Array.new(4, 0.0)
+    @taxtotals = Array.new(4, 0.0)
+    @tottotals = Array.new(4, 0.0)
+    @cashtotal = Array.new(4, 0.0)
+    @credittotal = Array.new(4, 0.0)
+    
+    @pending.each do |a|
+      @subtotals[0] += a.Subtotal
+      @taxtotals[0] += a.Tax
+      @tottotals[0] += a.TotalCost
+      if a.PaidCash == true
+        @cashtotal[0] += a.TotalCost
+      else
+        @credittotal[0] += a.TotalCost
+      end
+    end
+    
+    @completed.each do |a|
+      @subtotals[1] += a.Subtotal
+      @taxtotals[1] += a.Tax
+      @tottotals[1] += a.TotalCost
+      if a.PaidCash == true
+        @cashtotal[1] += a.TotalCost
+      else
+        @credittotal[1] += a.TotalCost
+      end
+    end
+    
+    @cancelled.each do |a|
+      @subtotals[2] += a.Subtotal
+      @taxtotals[2] += a.Tax
+      @tottotals[2] += a.TotalCost
+      if a.PaidCash == true
+        @cashtotal[2] += a.TotalCost
+      else
+        @credittotal[2] += a.TotalCost
+      end
+    end
+
+    @completed.each do |a|
+      @subtotals[3] += a.Subtotal
+      @taxtotals[3] += a.Tax
+      @tottotals[3] += a.TotalCost
+      if a.PaidCash == true
+        @cashtotal[3] += a.TotalCost
+      else
+        @credittotal[3] += a.TotalCost
+      end
+    end
+    
+
+    
+  end
+  
+  #query to get a count of each product sold during the day
+  def query
+    <<-SQL
+    SELECT product_id, COUNT(*), SUM(ItemTotalCost)
+    FROM orderlines
+    LEFT JOIN orders
+    ON orderlines.order_id = orders.id
+    WHERE Paidfor = 1
+    GROUP BY product_id;
+    SQL
     
   end
 

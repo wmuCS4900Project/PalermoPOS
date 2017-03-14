@@ -108,7 +108,8 @@ a:hover {
 	background-color: #524E4E;
 	color: #d8d8d8;
 	border-bottom: 1px solid #888;
-	font-size: 18px;
+	font-size: 1.2em;
+	left: -32px;
 }
 .sidebar-left a.nav-item.active {
 	background-color: #d8d8d8;
@@ -148,7 +149,7 @@ a:hover {
 	border-bottom: 12px solid transparent;
 	border-right: 12px solid #413d3d;
 	position: absolute;
-	right: 0;
+	right: -2.6em;
 	top: calc(50% - 12px);
 }
 .table th {

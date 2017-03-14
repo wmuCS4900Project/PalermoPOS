@@ -1,126 +1,136 @@
 Name,Cost,freeoptions,category_id,Abbreviation,MinimumOptionCharge
-empty,0,,1,,0.75
-12 Inch Pizza,8.75,,1,,0.75
-12 Inch Deluxe,12.99,,1,,0.75
-12 Inch Meat Lovers,13.49,,1,,0.75
-12 Inch BBQ Chicken,13.49,,1,,0.75
-12 Inch Greek,11.99,,1,,0.75
-12 Inch BLT,11.99,,1,,0.75
-12 Inch Vegetarian,11.99,,1,,0.75
-12 Inch Grilled Chicken,13.49,,1,,0.75
-12 Inch Hawaiian,10.99,,1,,0.75
-12 Inch Super Deluxe,13.99,,1,,0.75
-12 Inch Chicken Bacon Ranch,13.49,,1,,0.75
-12 Inch Chicken Alfredo,13.49,,1,,0.75
-14 Inch Pizza,10.5,,2,,1
-14 Inch Deluxe,14.99,,2,,1
-14 Inch Meat Lovers,15.49,,2,,1
-14 Inch BBQ Chicken,15.49,,2,,1
-14 Inch Greek,13.99,,2,,1
-14 Inch BLT,13.99,,2,,1
-14 Inch Vegetarian,13.99,,2,,1
-14 Inch Grilled Chicken,15.49,,2,,1
-14 Inch Hawaiian,13.49,,2,,1
-14 Inch Super Deluxe,16.49,,2,,1
-14 Inch Chicken Bacon Ranch,15.49,,2,,1
-14 Inch Chicken Alfredo,15.49,,2,,1
-16 Inch Pizza,12.75,,3,,1.25
-16 Inch Deluxe,17.49,,3,,1.25
-16 Inch Meat Lovers,17.99,,3,,1.25
-16 Inch BBQ Chicken,17.99,,3,,1.25
-16 Inch Greek,16.49,,3,,1.25
-16 Inch BLT,16.49,,3,,1.25
-16 Inch Vegetarian,16.49,,3,,1.25
-16 Inch Grilled Chicken,17.99,,3,,1.25
-16 Inch Hawaiian,16.5,,3,,1.25
-16 Inch Super Deluxe,18.99,,3,,1.25
-16 Inch Chicken Bacon Ranch,17.99,,3,,1.25
-16 Inch Chicken Alfredo,17.99,,3,,1.25
-18 Inch Pizza,13.75,,4,,1.5
-18 Inch Deluxe,19.49,,4,,1.5
-18 Inch Meat Lovers,19.99,,4,,1.5
-18 Inch BBQ Chicken,19.99,,4,,1.5
-18 Inch Greek,18.49,,4,,1.5
-18 Inch BLT,18.49,,4,,1.5
-18 Inch Vegetarian,18.49,,4,,1.5
-18 Inch Grilled Chicken,19.99,,4,,1.5
-18 Inch Hawaiian,18.25,,4,,1.5
-18 Inch Super Deluxe,20.99,,4,,1.5
-18 Inch Chicken Bacon Ranch,19.99,,4,,1.5
-18 Inch Chicken Alfredo,19.99,,4,,1.5
-24 Inch Pizza,20.5,,5,,2
-24 Inch Deluxe,28.99,,5,,2
-24 Inch Meat Lovers,29.49,,5,,2
-24 Inch BBQ Chicken,29.49,,5,,2
-24 Inch Greek,27.99,,5,,2
-24 Inch BLT,27.49,,5,,2
-24 Inch Vegetarian,27.49,,5,,2
-24 Inch Grilled Chicken,29.49,,5,,2
-24 Inch Hawaiian,26.49,,5,,2
-24 Inch Super Deluxe,31.49,,5,,2
-24 Inch Chicken Bacon Ranch,29.49,,5,,2
-24 Inch Chicken Alfredo,29.49,,5,,2
-Deep Dish Pizza,10.75,,6,,1
-Deep Dish Deluxe,14.99,,6,,1
-Deep Dish Meat Lovers,15.49,,6,,1
-Deep Dish BBQ Chicken,15.49,,6,,1
-Deep Dish Greek,13.99,,6,,1
-Deep Dish BLT,13.99,,6,,1
-Deep Dish Vegetarian,13.99,,6,,1
-Deep Dish Grilled Chicken,15.49,,6,,1
-Deep Dish Hawaiian,12.99,,6,,1
-Deep Dish Super Deluxe,15.99,,6,,1
-Deep Dish Chicken Bacon Ranch,15.49,,6,,1
-Deep Dish Chicken Alfredo,15.49,,6,,1
-Bread Bites,3.99,,7,,0
-Cinnamon Bites,3.99,,7,,0
-Garlic Bread,2.5,,7,,0
-Garlic Bread w/ Cheese,3,,7,,0
-Cheesy Bread,4.99,,7,,0
-Lunch Slice 1 Topping,1.5,,7,,0
-Lunch Slice All Meat / Deluxe,1.75,,7,,0
-2 Pizza Slices 1 topping + soda,4.25,,7,,0
-2 Pizza Slices all meat or deluxe + soda,4.75,,7,,0
-10 Italian Wings,8.99,,7,,0
-10 BBQ Wings,8.99,,7,,0
-10 Hot Wings,8.99,,7,,0
-20 Italian Wings,16.99,,7,,0
-20 BBQ Wings,16.99,,7,,0
-20 Hot Wings,16.99,,7,,0
-20 oz Pop,1.5,,8,,0
-2 Liter Pop,2.5,,8,,0
-Pepperoni Sub,3.75,,9,,0.5
-Ham and Cheese Sub,5.25,,9,,0.5
-Deluxe Sub,5.75,,9,,0.5
-Italian Sub,5.75,,9,,0.5
-Meatball Sub,5.75,,9,,0.5
-Sausage Sub,5.75,,9,,0.5
-Super Sub,6.25,,9,,0.5
-Palermo Sub,5.99,,9,,0.5
-Vegetarian Sub,5.75,,9,,0.5
-All Meat Sub,5.99,,9,,0.5
-Pizza Sub,5.75,,9,,0.5
-Roast Beef and Cheese Sub,5.75,,9,,0.5
-Roast Beef Deluxe Sub,6.25,,9,,0.5
-Steak Sandwich Sub,6.25,,9,,0.5
-Turkey and Cheese Sub,5.75,,9,,0.5
-Turkey Deluxe Sub,6.25,,9,,0.5
-Chicken Sub,5.99,,9,,0.5
-BLT Sub,5.75,,9,,0.5
-Club Sub,5.99,,9,,0.5
-Barbecue Chicken Sub,5.99,,9,,0.5
-Chef Salad,5.99,,10,,0
-Greek Salad,5.99,,10,,0
-Antipasto Salad,5.99,,10,,0
-Grilled Chicken Salad,5.99,,10,,0
-Caesar Salad,5.99,,10,,0
-Caesar Salad w/ Chicken,7.99,,10,,0
-Garden Salad,4.99,,10,,0
-Party Garden Salad,14.99,,10,,0
-Stromboli,6.25,,11,,0
-Spaghetti with Meatballs,5.99,,11,,0
-Lasagna,6.99,,11,,0
-Manicotti (cheese),6.99,,11,,0
-Manicotti (meat),6.99,,11,,0
-Chicken Fettuccine Alfredo,6.99,,11,,0
-Italian Meatballs,5.99,,11,,0
+empty,0,,1,,0.5
+10 Inch Pizza,6.5,,1,,0.5
+12 Inch Pizza,8.75,,2,,0.75
+12 Inch Deluxe,12.99,,2,,0.75
+12 Inch Meat Lovers,13.49,,2,,0.75
+12 Inch BBQ Chicken,13.49,,2,,0.75
+12 Inch Greek,11.99,,2,,0.75
+12 Inch BLT,11.99,,2,,0.75
+12 Inch Vegetarian,11.99,,2,,0.75
+12 Inch Grilled Chicken,13.49,,2,,0.75
+12 Inch Hawaiian,10.99,,2,,0.75
+12 Inch Super Deluxe,13.99,,2,,0.75
+12 Inch Chicken Bacon Ranch,13.49,,2,,0.75
+12 Inch Chicken Alfredo,13.49,,2,,0.75
+14 Inch Pizza,10.5,,3,,1
+14 Inch Deluxe,14.99,,3,,1
+14 Inch Meat Lovers,15.49,,3,,1
+14 Inch BBQ Chicken,15.49,,3,,1
+14 Inch Greek,13.99,,3,,1
+14 Inch BLT,13.99,,3,,1
+14 Inch Vegetarian,13.99,,3,,1
+14 Inch Grilled Chicken,15.49,,3,,1
+14 Inch Hawaiian,13.49,,3,,1
+14 Inch Super Deluxe,16.49,,3,,1
+14 Inch Chicken Bacon Ranch,15.49,,3,,1
+14 Inch Chicken Alfredo,15.49,,3,,1
+16 Inch Pizza,12.75,,4,,1.25
+16 Inch Deluxe,17.49,,4,,1.25
+16 Inch Meat Lovers,17.99,,4,,1.25
+16 Inch BBQ Chicken,17.99,,4,,1.25
+16 Inch Greek,16.49,,4,,1.25
+16 Inch BLT,16.49,,4,,1.25
+16 Inch Vegetarian,16.49,,4,,1.25
+16 Inch Grilled Chicken,17.99,,4,,1.25
+16 Inch Hawaiian,16.5,,4,,1.25
+16 Inch Super Deluxe,18.99,,4,,1.25
+16 Inch Chicken Bacon Ranch,17.99,,4,,1.25
+16 Inch Chicken Alfredo,17.99,,4,,1.25
+18 Inch Pizza,13.75,,5,,1.5
+18 Inch Deluxe,19.49,,5,,1.5
+18 Inch Meat Lovers,19.99,,5,,1.5
+18 Inch BBQ Chicken,19.99,,5,,1.5
+18 Inch Greek,18.49,,5,,1.5
+18 Inch BLT,18.49,,5,,1.5
+18 Inch Vegetarian,18.49,,5,,1.5
+18 Inch Grilled Chicken,19.99,,5,,1.5
+18 Inch Hawaiian,18.25,,5,,1.5
+18 Inch Super Deluxe,20.99,,5,,1.5
+18 Inch Chicken Bacon Ranch,19.99,,5,,1.5
+18 Inch Chicken Alfredo,19.99,,5,,1.5
+24 Inch Pizza,20.5,,6,,2
+24 Inch Deluxe,28.99,,6,,2
+24 Inch Meat Lovers,29.49,,6,,2
+24 Inch BBQ Chicken,29.49,,6,,2
+24 Inch Greek,27.99,,6,,2
+24 Inch BLT,27.49,,6,,2
+24 Inch Vegetarian,27.49,,6,,2
+24 Inch Grilled Chicken,29.49,,6,,2
+24 Inch Hawaiian,26.49,,6,,2
+24 Inch Super Deluxe,31.49,,6,,2
+24 Inch Chicken Bacon Ranch,29.49,,6,,2
+24 Inch Chicken Alfredo,29.49,,6,,2
+Deep Dish Pizza,10.75,,7,,1
+Deep Dish Deluxe,14.99,,7,,1
+Deep Dish Meat Lovers,15.49,,7,,1
+Deep Dish BBQ Chicken,15.49,,7,,1
+Deep Dish Greek,13.99,,7,,1
+Deep Dish BLT,13.99,,7,,1
+Deep Dish Vegetarian,13.99,,7,,1
+Deep Dish Grilled Chicken,15.49,,7,,1
+Deep Dish Hawaiian,12.99,,7,,1
+Deep Dish Super Deluxe,15.99,,7,,1
+Deep Dish Chicken Bacon Ranch,15.49,,7,,1
+Deep Dish Chicken Alfredo,15.49,,7,,1
+10 Inch Gluten Free Pizza,8,,8,,0.5
+Bread Bites,3.99,,9,,0
+Cinnamon Bites,3.99,,9,,0
+Garlic Bread,2.5,,9,,0
+Garlic Bread w/ Cheese,3,,9,,0
+Cheesy Bread,4.99,,9,,0
+Lunch Slice 1 Topping,1.5,,9,,0
+Lunch Slice All Meat / Deluxe,1.75,,9,,0
+2 Pizza Slices 1 topping + soda,4.25,,9,,0
+2 Pizza Slices all meat or deluxe + soda,4.75,,9,,0
+10 Italian Wings,8.99,,9,,0
+10 BBQ Wings,8.99,,9,,0
+10 Hot Wings,8.99,,9,,0
+20 Italian Wings,16.99,,9,,0
+20 BBQ Wings,16.99,,9,,0
+20 Hot Wings,16.99,,9,,0
+20 oz Pepsi,1.5,,10,,0
+20 oz Diet Pipe,1.5,,10,,0
+20 oz Mountain Dew,1.5,,10,,0
+20 oz Root Beer,1.5,,10,,0
+20 oz Dr Pepper,1.5,,10,,0
+2 Liter Pepsi,2.5,,10,,0
+2 Liter Diet Pepsi,2.5,,10,,0
+2 Liter Mountain Dew,2.5,,10,,0
+2 Liter Root Beer,2.5,,10,,0
+2 Liter Dr Pepper,2.5,,10,,0
+Pepperoni Sub,3.75,,11,,0.5
+Ham and Cheese Sub,5.25,,11,,0.5
+Deluxe Sub,5.75,,11,,0.5
+Italian Sub,5.75,,11,,0.5
+Meatball Sub,5.75,,11,,0.5
+Sausage Sub,5.75,,11,,0.5
+Super Sub,6.25,,11,,0.5
+Palermo Sub,5.99,,11,,0.5
+Vegetarian Sub,5.75,,11,,0.5
+All Meat Sub,5.99,,11,,0.5
+Pizza Sub,5.75,,11,,0.5
+Roast Beef and Cheese Sub,5.75,,11,,0.5
+Roast Beef Deluxe Sub,6.25,,11,,0.5
+Steak Sandwich Sub,6.25,,11,,0.5
+Turkey and Cheese Sub,5.75,,11,,0.5
+Turkey Deluxe Sub,6.25,,11,,0.5
+Chicken Sub,5.99,,11,,0.5
+BLT Sub,5.75,,11,,0.5
+Club Sub,5.99,,11,,0.5
+Barbecue Chicken Sub,5.99,,11,,0.5
+Chef Salad,5.99,,12,,0
+Greek Salad,5.99,,12,,0
+Antipasto Salad,5.99,,12,,0
+Grilled Chicken Salad,5.99,,12,,0
+Caesar Salad,5.99,,12,,0
+Caesar Salad w/ Chicken,7.99,,12,,0
+Garden Salad,4.99,,12,,0
+Party Garden Salad,14.99,,12,,0
+Stromboli,6.25,,13,,0
+Spaghetti with Meatballs,5.99,,13,,0
+Lasagna,6.99,,13,,0
+Manicotti (cheese),6.99,,13,,0
+Manicotti (meat),6.99,,13,,0
+Chicken Fettuccine Alfredo,6.99,,13,,0
+Italian Meatballs,5.99,,13,,0

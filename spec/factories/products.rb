@@ -4,7 +4,7 @@ FactoryGirl.define do
     trait :one do
       id "1"
       Name "Plain Sub"
-      Cost "5"
+      Cost "5.0"
       category_id "7"
       created_at { DateTime.now }
     end
@@ -12,7 +12,7 @@ FactoryGirl.define do
     trait :two do
       id "2"
       Name "12 Inch Pizza"
-      Cost "10"
+      Cost "10.0"
       category_id "1"
       created_at { DateTime.now }
     end

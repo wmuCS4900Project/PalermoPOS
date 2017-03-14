@@ -5,7 +5,9 @@
     <%= render 'sidebars/optionside', locals: {category_id: @category_id } %>
     <div class="container main-content">
       
-      <p id="notice"><%= flash[:notice] %></p>
+      <% if flash[:notice].present? %>
+        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
+      <% end %>
       
       <h1>Options</h1>
       
@@ -17,6 +19,7 @@
               <th><%= "Option Name" %></th>
               <th><%= "Category" %></th>
               <th><%= "Price" %></th>
+              <th><%= "Abbreviation" %></th>
               <th><%= "Double Item For" %></th>
               <th colspan="3"></th>
             </tr>
@@ -29,6 +32,7 @@
                 <td><%= option.Name %></td>
                 <td><%= @categories.find(option.category_id).Name %></td>
                 <td><%= option.Cost %></td>
+                <td><%= option.Abbreviation %></td>
                 <td><% if !option.ChildOf.nil? %><%= Option.find(option.ChildOf).Name %><% end %></td>
                 <td><%= link_to 'Edit', edit_option_path(option), class: "btn btn-primary" %></td>
                 <td><%= link_to 'Destroy', option, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>

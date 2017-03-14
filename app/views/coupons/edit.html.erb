@@ -1,0 +1,14 @@
+<%= render 'bars/top2' %>
+
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/couponside' %>
+    <div class="container main-content">
+      
+      <%= render 'form', coupon: @coupon %>
+      
+      <%= link_to 'Show', @coupon %> |
+      <%= link_to 'Back', coupons_path %>
+    </div>
+  </div>
+</body>

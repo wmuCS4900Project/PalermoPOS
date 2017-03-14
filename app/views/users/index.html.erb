@@ -61,7 +61,7 @@
               <% if (current_user.has_role? :admin) %>
                 <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>
               <% end %> 
-            <% end; %>
+            <% end %>
             </td>
           </tr>
         <% end %>

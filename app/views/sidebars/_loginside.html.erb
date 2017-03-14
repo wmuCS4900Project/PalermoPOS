@@ -3,7 +3,7 @@
     <ul class="nav">
       <li>
         <% if request.path == login_path %>
-          <%= link_to "Log In", new_product_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <%= link_to "Log In", login_path, class: "active nav-item" %><span class="active-arrow"></span>
         <% else %>
           <%= link_to "Login", login_path, class: "nav-item" %>
         <% end %>
