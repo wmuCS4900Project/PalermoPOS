@@ -1,12 +1,131 @@
+<style>
+  .sidebar-left a.nav-item, .sidebar-left a.nav-item:hover {
+	font-size: 1em;
+
+  }
+  
+</style>
 <div class="sidebar-left">
   <div class="navbar">
     <ul class="nav">
       
       <li>
-        <% if request.path == "/options" %>
-          <%= link_to "View All Options", options_path, class: "active nav-item" %><span class="active-arrow"></span>
+        <% if request.path == "/options" && @category_id.nil? %>
+          <%= link_to "All Options", options_path, class: "active nav-item" %><span class="active-arrow"></span>
         <% else %>
-          <%= link_to "View All Options", options_path, class: "nav-item" %>
+          <%= link_to "All Options", options_path, class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options/new" %>
+          <%= link_to "Create New Option", new_option_path, class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Create New Option", new_option_path, class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options/editall" %>
+          <%= link_to "Mass Edit Options", options_changeall_path, class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Mass Edit Options", options_changeall_path, class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 1 %>
+          <%= link_to "10 Inch Pizza Options", options_path(:category_id => 1), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "10 Inch Pizza Options", options_path(:category_id => 1), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 2 %>
+          <%= link_to "12 Inch Pizza Options", options_path(:category_id => 2), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "12 Inch Pizza Options", options_path(:category_id => 2), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 3 %>
+          <%= link_to "14 Inch Pizza Options", options_path(:category_id => 3), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "14 Inch Pizza Options", options_path(:category_id => 3), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 4 %>
+          <%= link_to "16 Inch Pizza Options", options_path(:category_id => 4), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "16 Inch Pizza Options", options_path(:category_id => 4), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 5 %>
+          <%= link_to "18 Inch Pizza Options", options_path(:category_id => 5), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "18 Inch Pizza Options", options_path(:category_id => 5), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 6 %>
+          <%= link_to "24 Inch Pizza Options", options_path(:category_id => 6), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "24 Inch Pizza Options", options_path(:category_id => 6), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 7 %>
+          <%= link_to "Deep Dish Pizza Options", options_path(:category_id => 7), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Deep Dish Pizza Options", options_path(:category_id => 7), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 8 %>
+          <%= link_to "Gluten Free Pizza Options", options_path(:category_id => 8), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Gluten Free Pizza Options", options_path(:category_id => 8), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 9 %>
+          <%= link_to "Appetizer Options", options_path(:category_id => 9), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Appetizer Options", options_path(:category_id => 9), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 10 %>
+          <%= link_to "Drink Options", options_path(:category_id => 10), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Drink Options", options_path(:category_id => 10), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 11 %>
+          <%= link_to "Sub Options", options_path(:category_id => 11), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Sub Options", options_path(:category_id => 11), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 12 %>
+          <%= link_to "Salad Options", options_path(:category_id => 12), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Salad Options", options_path(:category_id => 12), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 13 %>
+          <%= link_to "Dinner Options", options_path(:category_id => 13), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Dinner Options", options_path(:category_id => 13), class: "nav-item" %>
+        <% end %>
+      </li>
+      <li>
+        <% if request.path == "/options" && @category_id.to_i == 14 %>
+          <%= link_to "Dessert Options", options_path(:category_id => 14), class: "active nav-item" %><span class="active-arrow"></span>
+        <% else %>
+          <%= link_to "Dessert Options", options_path(:category_id => 14), class: "nav-item" %>
         <% end %>
       </li>
       <li>
@@ -15,8 +134,6 @@
         <% end %>
       </li>
 
-
-  
     </ul>
   </div>
 </div>

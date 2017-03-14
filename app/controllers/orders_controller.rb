@@ -116,13 +116,20 @@ class OrdersController < ApplicationController
     @orderline = Orderline.find(params[:orderline_id])
     @product = Product.find(@orderline.product_id)
     @options = Option.where("category_id = ?", @product.category_id).all
+    
+    #direct back if there's no options in this category
+    if @options.nil? || @options.size < 1
+      redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "Item added to order!" }
+      return
+    end
+      
     @ops1 = "options1[]"
     @ops2 = "options2[]"
     @ops3 = "options3[]"
     @ops4 = "options4[]"
   end
   
-  #saves 
+  #saves any options selected in the chooseoptions view
   def addoptions
     
     if !params[:order_id].present?
@@ -175,6 +182,54 @@ class OrdersController < ApplicationController
     redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "Item saved!" }
   end
   
+  #adds the orderlines from the previously placed order to the current order. no check for paid/cancelled/refunded status
+  def addPreviousOrderItems
+    
+    if !params[:order_id].present?
+      redirect_to orders_path, :flash => { :notice => "No order selected!" }
+    end
+    
+    @order = Order.find(params[:order_id])
+    @customer = Customer.find(@order.customer_id)
+    
+    @orders = Order.where('customer_id = ?', @customer.id).all
+    @orders = @orders.order(:created_at)
+    @last = @orders[-2]
+    
+    if @last.nil?
+      redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "No previous order!" }
+      return
+    end
+    
+    @orderlines = Orderline.where('order_id = ?', @last.id).all
+    
+    if @orderlines.nil?
+      redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "No previous items!" }
+      return
+    end
+    
+    @orderlines.each do |a|
+      @newline = a.dup
+      @newline.order_id = @order.id
+      @newline.save!
+    end
+    
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
+    
+    @subtotal = 0.0
+    @orderlines.each do |a|
+       @subtotal += a.ItemTotalCost
+    end
+
+    @order.Subtotal = @subtotal
+    @order.save!
+      
+    calc_taxes(@order.id)
+    
+    redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "Items added to order!" }
+    
+  end
+  
   def all
     @customers = Customer.all
     @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false")
@@ -195,17 +250,19 @@ class OrdersController < ApplicationController
 
   
   # GET /orders/custsearch
+  #first step in creating a new order. page includes a "walk in customer" button. calls itself again for a search, displaying results
   def custsearch
     @users = User.all
     c = params[:criteria]
     crit = params[:searchcriteria]
     
     @selected_user_id = params[:user_id]
+    
+    @results = []
 
     if crit == "phone"
       @results = Customer.where("Phone like ?", "%#{c}%").limit(100)
     elsif crit == "name"
-      #@results = Customer.find_by_sql("SELECT DISTINCT * FROM CUSTOMERS WHERE FirstName LIKE ? UNION SELECT * FROM CUSTOMERS WHERE LastName LIKE ?", "%#{c}%", "%#{c}%")
       r1 = Customer.where("FirstName like ?", "%#{c}%").limit(100)
       r2 = Customer.where("LastName like ?", "%#{c}%").limit(100)
       @results = r1 + r2
@@ -218,17 +275,9 @@ class OrdersController < ApplicationController
     elsif crit == "zip"
       @results = Customer.where("Zip like ?", "%#{c}%").limit(100)
     end
+    
+    @results = @results.uniq{|x| x.id}
   end
-  
-  #get receipt
-  def receipt
-    @order_id = params[:order_id]
-    @order = Order.find(@order_id)
-    @customer = Customer.find(@order.customer_id)
-    @options = Option.all
-    @products = Product.all
-  end
-  
 
   # GET /orders/1/edit
   def edit
@@ -246,6 +295,7 @@ class OrdersController < ApplicationController
   end
 
   # GET /orders/startorder
+  #when a customer is selected, this runs to create the order before giving any order options in the selectproduct view
   def startorder
     if params[:custid].present?
       @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => params[:custid]
@@ -258,85 +308,8 @@ class OrdersController < ApplicationController
     end
   end
   
-  # deprecated
-  # POST /orders/pickoptions
-  def pickoptions
-    @order = Order.find(params[:ordernum])
-    @ordernum = params[:ordernum]
-
-    user = params[:user]
-    @order.user_id = user
-    
-    @order.save!
-    
-    is = params[:items]
-    @itemlist = []
-    is.each do |b|
-      if b != "1"
-        @itemlist.push(b)
-      end
-    end
-    
-    @items = []
-    
-    @itemlist.each do |a|
-      @newol = Orderline.create :product_id => a, :order_id => @order.id
-      @items.push(@newol.id)
-    end
-    
-    @orderlines = Orderline.all
-    @products = Product.all
-    @options = Option.all
-    @categories = Category.all
-    
-  end
-  
-  # deprecated
-  # POST /orders/confirmorder
-  def confirmorder
-  
-    @ordernum = params[:ordernum]
-    @order = Order.find(@ordernum)
-    
-    @products = Product.all
-    @options = Option.all
-    @categories = Category.all
-    
-    @customers = Customer.all
-    @orderlines = Orderline.where("order_id = ?",@order.id).all
-    
-    @items = @orderlines.where(order_id: @ordernum).ids
-
-    @subtotal = 0.0
-    
-    @items.each do |orderlineid|
-      thisorderline = @orderlines.find(orderlineid)
-      if(@categories.find(@products.find(thisorderline.product_id).category_id).Splits == true)
-        thisorderline.splitstyle = params["#{orderlineid.to_s + "split"}"]
-        if(thisorderline.whole?)
-          line_saver(thisorderline, params[orderlineid.to_s + "options1"], nil, nil, nil)
-        elsif(thisorderline.halves?)
-          line_saver(thisorderline, params[orderlineid.to_s + "options1"], params[orderlineid.to_s + "options2"], nil, nil)
-        elsif(thisorderline.quarters?)
-          line_saver(thisorderline, params[orderlineid.to_s + "options1"], params[orderlineid.to_s + "options2"], params[orderlineid.to_s + "options3"], params[orderlineid.to_s + "options4"])
-        end
-      else  
-        thisorderline.splitstyle = :whole
-        line_saver(thisorderline, params[orderlineid.to_s + "options"], nil, nil, nil)
-      end
-      @subtotal = @subtotal + thisorderline.ItemTotalCost
-    end
-    
-    @order.Subtotal = @subtotal
-    
-    @order.save!
-    
-    calc_taxes(@order.id)
-
-    redirect_to orders_receipt_url(id: @order.id)
-    
-  end
-  
+  #get receipt
+  #handles display and auto-print for receipt printer
   def receipt
     @order = Order.find(params[:id])
     @products = Product.all
@@ -353,6 +326,7 @@ class OrdersController < ApplicationController
     @orderlines = Orderline.where("order_id = ?",@order.id).all
   end
 
+  #generates the cashout page for an order. calls itself over and over to handle tips, adjustments, or coupons if they are added.
   def cashout
     
     if !params[:id].present?
@@ -366,7 +340,26 @@ class OrdersController < ApplicationController
     @products = Product.all
 
     if params[:discount].present?
-      @order.Discounts = params[:discount]
+      @order.Manual = params[:discount]
+    end
+    
+    if params[:cid].present?
+      @ret = coupon_processor(params[:cid],@id)
+      
+      if @ret == true
+        if !@order.Coupons.nil?
+          @coupons = @order.Coupons
+        else
+          @coupons = []
+        end
+        
+        @coupons.push(params[:cid])
+        @order.Coupons = @coupons
+        
+        flash.now[:notice] = 'Coupon added!'
+      else
+        flash.now[:notice] = 'Order inelligible for coupon!'
+      end
     end
     
     @order.save!
@@ -380,6 +373,7 @@ class OrdersController < ApplicationController
       
   end
   
+  #displays final cashout amounts including change and tip
   def cashedout
     
     if !params[:id].present?
@@ -394,6 +388,9 @@ class OrdersController < ApplicationController
     @orderlines = Orderline.where(order_id: @id)
     @products = Product.all
 
+    if params[:tip].present?
+      @order.Tip = params[:tip]
+    end
 
     if params[:amountpaid].present?
       @paid = params[:amountpaid]
@@ -404,77 +401,21 @@ class OrdersController < ApplicationController
     @order.AmountPaid = @paid
     
     if(@order.AmountPaid > @order.TotalCost.to_f)
-      @order.ChangeDue = @order.AmountPaid - @order.TotalCost.to_f
+      @order.ChangeDue = @order.AmountPaid - @order.TotalCost.to_f - @order.Tip
     end
     
     @order.PaidCash = params[:cashorcredit]
     @order.PaidFor = true
+    
+    if params[:order].present?
+      @order.DriverID = params[:order][:DriverID]
+    end
+    
     @order.save!
     
   end
   
-  def endofday
-    @customers = Customer.all
-    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
-    @cancelled = Order.where("Cancelled IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
-    @completed = Order.where("PaidFor IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
-    @refunded = Order.where("Refunded IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
-    
-    @subtotals = Array.new(4, 0.0)
-    @taxtotals = Array.new(4, 0.0)
-    @tottotals = Array.new(4, 0.0)
-    @cashtotal = Array.new(4, 0.0)
-    @credittotal = Array.new(4, 0.0)
-    
-    @pending.each do |a|
-      @subtotals[0] += a.Subtotal
-      @taxtotals[0] += a.Tax
-      @tottotals[0] += a.TotalCost
-      if a.PaidCash == true
-        @cashtotal[0] += a.TotalCost
-      else
-        @credittotal[0] += a.TotalCost
-      end
-    end
-    
-    @completed.each do |a|
-      @subtotals[1] += a.Subtotal
-      @taxtotals[1] += a.Tax
-      @tottotals[1] += a.TotalCost
-      if a.PaidCash == true
-        @cashtotal[1] += a.TotalCost
-      else
-        @credittotal[1] += a.TotalCost
-      end
-    end
-    
-    @cancelled.each do |a|
-      @subtotals[2] += a.Subtotal
-      @taxtotals[2] += a.Tax
-      @tottotals[2] += a.TotalCost
-      if a.PaidCash == true
-        @cashtotal[2] += a.TotalCost
-      else
-        @credittotal[2] += a.TotalCost
-      end
-    end
-
-    @completed.each do |a|
-      @subtotals[3] += a.Subtotal
-      @taxtotals[3] += a.Tax
-      @tottotals[3] += a.TotalCost
-      if a.PaidCash == true
-        @cashtotal[3] += a.TotalCost
-      else
-        @credittotal[3] += a.TotalCost
-      end
-    end
-    
-
-    
-  end
   
-
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update

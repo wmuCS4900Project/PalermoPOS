@@ -1,0 +1,39 @@
+<%= render 'bars/top2' %>
+
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/couponside' %>
+    <div class="container main-content">
+      
+      <p id="notice"><%= notice %></p>
+      
+      <p>
+        <strong>Name:</strong>
+        <%= @coupon.Name %>
+      </p>
+      
+      <p>
+        <strong>Type:</strong>
+        <%= @coupon.Type %>
+      </p>
+      
+      <p>
+        <strong>Dollarsoff:</strong>
+        <%= @coupon.DollarsOff %>
+      </p>
+      
+      <p>
+        <strong>Percentoff:</strong>
+        <%= @coupon.PercentOff %>
+      </p>
+      
+      <p>
+        <strong>Requirements:</strong>
+        <%= @coupon.Requirements %>
+      </p>
+      
+      <%= link_to 'Edit', edit_coupon_path(@coupon) %> |
+      <%= link_to 'Back', coupons_path %>
+    </div>
+  </div>
+</body>

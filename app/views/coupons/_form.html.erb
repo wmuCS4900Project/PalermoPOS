@@ -1,0 +1,67 @@
+<%= form_for(coupon) do |f| %>
+  <% if coupon.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(coupon.errors.count, "error") %> prohibited this coupon from being saved:</h2>
+
+      <ul>
+      <% coupon.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :Name %>
+    <%= f.text_field :Name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Type %>
+    <%= f.select :Type, [ ["Flat Amount Off",:dollars], ["Percent Off Item",:percent] ] %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Flat Amount Off" %>
+    <%= f.text_field :DollarsOff %>
+  </div>
+
+  <div class="field">
+    <%= f.label :PercentOff %>
+    <%= f.number_field :PercentOff %>
+  </div>
+  
+  <div class="field">
+    <%= label_tag "First required product" %>
+    <%= collection_select(:product1, :id, Product.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements[0] }) %>
+  </div>
+  
+  <div class="field">
+    <%= label_tag "Second required product" %>
+    <%= collection_select(:product2, :id, Product.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements[1] }) %>
+  </div>
+  
+   <div class="field">
+    <%= label_tag "Third required product" %>
+    <%= collection_select(:product3, :id, Product.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements[2] }) %>
+  </div>
+  
+   <div class="field">
+    <%= label_tag "Fourth required product" %>
+    <%= collection_select(:product4, :id, Product.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements[3] }) %>
+  </div>
+  
+  <div class="field">
+    <%= label_tag "First required category" %>
+    <%= collection_select(:cat1, :id, Category.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements2[0] }) %>
+  </div>
+  
+  <div class="field">
+    <%= label_tag "Second required category" %>
+    <%= collection_select(:cat2, :id, Category.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements2[1] }) %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

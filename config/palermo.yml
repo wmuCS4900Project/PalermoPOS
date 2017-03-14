@@ -1,0 +1,12 @@
+default: &default
+  deliveryShort: 1.5
+  deliveryLong: 2.5
+  
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

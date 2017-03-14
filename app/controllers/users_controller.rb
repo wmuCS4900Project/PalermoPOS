@@ -81,7 +81,6 @@ class UsersController < ApplicationController
       # Add Roles that were checked
       roles.each do |role|
         @user.add_role(role)
-      end
 
       flash[:success] = "User successfully updated"
     else

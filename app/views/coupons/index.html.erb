@@ -1,0 +1,50 @@
+<%= render 'bars/top2' %>
+
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/couponside' %>
+    <div class="container main-content">
+
+      <p id="notice"><%= notice %></p>
+      
+      <h1>Coupons</h1>
+      
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Dollarsoff</th>
+              <th>Percentoff</th>
+              <th>Requirements</th>
+              <th>Requirements 2</th>
+              <th colspan="2"></th>
+            </tr>
+          </thead>
+        
+          <tbody>
+            <% @coupons.each do |coupon| %>
+              <tr>
+                <td><%= coupon.id %></td>
+                <td><%= coupon.Name %></td>
+                <td><%= coupon.Type %></td>
+                <td><%= coupon.DollarsOff %></td>
+                <td><%= coupon.PercentOff %></td>
+                <td><%= coupon.Requirements %></td>
+                <td><%= coupon.Requirements2 %></td>
+                <td><%= link_to 'Edit', edit_coupon_path(coupon), :class => "btn btn-primary" %></td>
+                <td><%= link_to 'Destroy', coupon, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      
+      <br>
+      
+      <%= link_to 'New Coupon', new_coupon_path %>
+    </div>
+  </div>
+</body>

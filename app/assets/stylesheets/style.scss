@@ -108,7 +108,8 @@ a:hover {
 	background-color: #524E4E;
 	color: #d8d8d8;
 	border-bottom: 1px solid #888;
-	font-size: 18px;
+	font-size: 1.2em;
+	left: -32px;
 }
 .sidebar-left a.nav-item.active {
 	background-color: #d8d8d8;
@@ -148,7 +149,7 @@ a:hover {
 	border-bottom: 12px solid transparent;
 	border-right: 12px solid #413d3d;
 	position: absolute;
-	right: 0;
+	right: -2.6em;
 	top: calc(50% - 12px);
 }
 .table th {
@@ -215,7 +216,9 @@ a:hover {
 }
 
 .btn-group {
-	box-shadow: 0px;
+	margin: 2px 1px;
+	box-shadow: 3px 2px 3px gray;
+
 }
 .option {
 	font-size: 16px;
@@ -223,11 +226,10 @@ a:hover {
 	box-shadow: 0px;
 }
 .btn-option {
+	font-size: 1.2em;
 	background-color: #fff;
 	border-color: #fff;
 	color: #000;
-	box-shadow: 0px;
-  border: 0px solid transparent;
 }
 .btn-option.focus,
 .btn-option:focus {
@@ -238,6 +240,27 @@ a:hover {
 .btn-option:active,
 .btn-option:hover,
 .btn-option.hover {
+	background-color: #D44D13;
+	border-color: #D44D13;
+	color: #fff;
+	outline: none;
+  outline-offset: 0px;
+}
+.btn-option-small {
+	font-size: 1.2em;
+	background-color: #fff;
+	border-color: #fff;
+	color: #000;
+}
+.btn-option-small.focus,
+.btn-option-small:focus {
+  outline: none;
+  outline-offset: 0px;
+}
+.btn-option-small.active,
+.btn-option-small:active,
+.btn-option-small:hover,
+.btn-option-small.hover {
 	background-color: #D44D13;
 	border-color: #D44D13;
 	color: #fff;

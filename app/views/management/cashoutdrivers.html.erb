@@ -1,0 +1,28 @@
+<%= render 'bars/top2' %>
+
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/managementside' %>
+    <div class="container main-content">
+      
+      <% if defined?(@driver) %>
+        <% @orders.each do |a| %>
+          <%= "Customer: " %><%= Customer.find(a.customer_id).FirstName + " " + Customer.find(a.customer_id).LastName %><br>
+          <%= "Total: " %><%= a.TotalCost %><br>
+          <%= "Tip: " %><%= a.Tip %><br>
+        <% end %>
+        
+        <br>
+        <%= "Total Tips: " %><%= number_to_currency(@tiptotal) %>
+      
+      <% else %>
+      
+        <% @users.each do |a| %>
+          <%= link_to a.Name, management_cashoutdrivers_path(:driver_id => a.id) %>
+        <% end %>
+      <% end %>
+      
+      
+    </div>
+  </div>
+</body>

@@ -1,36 +1,44 @@
 <%= render 'bars/top2' %>
-<div class="wrapper has-sidebar-left">
-    <%= render 'sidebars/productside' %>
-    <div class="container main-content">
 
-    <h1>Products</h1>
-    <div class="table">
-      <table>
-        <thead>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Cost</th>
-            <th>Category</th>
-            <th colspan="2"></th>
-          </tr>
-        </thead>
-        </thead>
-
-        <tbody>
-          <% @products.each do |product| %>
+<body>
+  <div class="wrapper has-sidebar-left">
+      <%= render 'sidebars/productside' %>
+      <div class="container main-content">
+      
+      <% if flash[:notice].present? %>
+        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
+      <% end %>
+  
+      <h1>Products</h1>
+      
+      <div class="table">
+        <table>
+          <thead>
+          <thead>
             <tr>
-              <td><%= product.Name %></td>
-              <td><%= product.Cost %></td>
-              <td><%= @categories.find(product.category_id).Name %></td>
-              <td><%= link_to 'Edit', edit_product_path(product), :class => "btn btn-primary" %></td>
-              <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary" %></td>
+              <th>Name</th>
+              <th>Cost</th>
+              <th>Category</th>
+              <th colspan="2"></th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
+          </thead>
+          </thead>
+  
+          <tbody>
+            <% @products.each do |product| %>
+              <tr>
+                <td><%= product.Name %></td>
+                <td><%= product.Cost %></td>
+                <td><%= @categories.find(product.category_id).Name %></td>
+                <td><%= link_to 'Edit', edit_product_path(product), :class => "btn btn-primary" %></td>
+                <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <br>
     </div>
-    <br>
   </div>
-</div>
+</body>
 

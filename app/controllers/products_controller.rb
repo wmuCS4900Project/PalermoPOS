@@ -24,6 +24,42 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     @options = Option.where("category_id = ?", @product.category_id).all
   end
+  
+  def changeall
+    @products = Product.all
+  end
+  
+  def changeallapply
+    if !params[:changeto].present?
+      redirect_to products_changeall_path, :flash => { :notice => "No value included!" }
+      return
+    end
+    
+    if !params[:ids].present?
+      redirect_to products_changeall_path, :flash => { :notice => "No items selected!" }
+      return
+    end
+    
+    @field = params[:field]
+    @changeto = params[:changeto]
+    
+    @productsSelected = Product.where(id: params[:ids])
+
+    @productsSelected.each do |this|
+      if @field == "Name"
+        this.Name = @changeto
+      elsif @field == "Cost"
+        this.Cost = @changeto
+      elsif @field == "category_id"
+        this.category_id = @changeto
+      end
+      this.save!
+    end
+    
+    redirect_to products_path, :flash => { :notice => "Multiple products updated!" }
+    
+  end
+
 
   # POST /products
   # POST /products.json

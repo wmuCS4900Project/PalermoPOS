@@ -20,7 +20,7 @@
           <strong>Name:</strong>
           <%= @user.Name %>
         </p>
-
+      
         <p>
           <strong>Username:</strong>
           <%= @user.username %>
@@ -42,5 +42,13 @@
         
         <% end %>
         <%= link_to 'Back', users_path %>
-  </div>
-</div
+
+        <%= link_to 'Edit', edit_user_path(@user) %> |
+        <%= link_to 'Back', users_path %> | 
+        <% if logged_in? %>
+            <% if (current_user.can? "destroy", "users") %>
+              <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <% end %> 
+          <% end %>
+   </div>
+</div>
