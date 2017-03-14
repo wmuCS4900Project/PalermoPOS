@@ -24,11 +24,49 @@ class OrdersController < ApplicationController
   end
   
   def oldorders
-    @customers = Customer.all
-    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
-    @cancelled = Order.where("Cancelled IS true AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
-    @completed = Order.where("PaidFor IS true AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
-    @refunded = Order.where("Refunded IS true AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
+    
+    if !params[:startdate].present? && !params[:enddate].present? && !params[:thisdate].present?
+      render :oldorders
+      return
+    end
+    
+    puts params.inspect
+    
+    @customers = []
+    @pending = []
+    @completed = []
+    @refunded = []
+    
+    if params[:thisdate].present?
+      @year = params[:thisdate]['(1i)'].to_s
+      @month = params[:thisdate]['(2i)'].to_s
+      @day = params[:thisdate]['(3i)'].to_s
+      @date = @year + '-' + @month + '-' + @day
+      @customers = Customer.all
+      @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND DATE(created_at) = ?", @date).all.limit(500)
+      @completed = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS false AND DATE(created_at) = ?", @date).all.limit(500)
+      @cancelled = Order.where("PaidFor IS false AND Cancelled IS true AND Refunded IS false AND DATE(created_at) = ?", @date).all.limit(500)
+      @refunded = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS true AND DATE(created_at) = ?", @date).all.limit(500)
+      return
+    end
+    
+    if params[:startdate].present? && params[:enddate].present?
+      @year = params[:startdate]['(1i)'].to_s
+      @month = params[:startdate]['(2i)'].to_s
+      @day = params[:startdate]['(3i)'].to_s
+      @date1 = @year + '-' + @month + '-' + @day
+      @year = params[:enddate]['(1i)'].to_s
+      @month = params[:enddate]['(2i)'].to_s
+      @day = params[:enddate]['(3i)'].to_s
+      @date2 = @year + '-' + @month + '-' + @day
+      @customers = Customer.all
+      @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all.limit(500)
+      @completed = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all.limit(500)
+      @cancelled = Order.where("PaidFor IS false AND Cancelled IS true AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all.limit(500)
+      @refunded = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS true AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all.limit(500)
+      return
+    end
+    
   end
   
   def selectproduct
@@ -344,21 +382,27 @@ class OrdersController < ApplicationController
     end
     
     if params[:cid].present?
-      @ret = coupon_processor(params[:cid],@id)
       
-      if @ret == true
-        if !@order.Coupons.nil?
-          @coupons = @order.Coupons
-        else
-          @coupons = []
-        end
-        
-        @coupons.push(params[:cid])
-        @order.Coupons = @coupons
-        
-        flash.now[:notice] = 'Coupon added!'
+      if params[:cid] == "clear"
+        @order.Coupons = nil
+        flash.now[:notice] = 'Coupons removed!'
       else
-        flash.now[:notice] = 'Order inelligible for coupon!'
+        @ret = coupon_processor(params[:cid],@id)
+        
+        if @ret == true
+          if !@order.Coupons.nil?
+            @coupons = @order.Coupons
+          else
+            @coupons = []
+          end
+          
+          @coupons.push(params[:cid])
+          @order.Coupons = @coupons
+          
+          flash.now[:notice] = 'Coupon added!'
+        else
+          flash.now[:notice] = 'Order inelligible for coupon!'
+        end
       end
     end
     
