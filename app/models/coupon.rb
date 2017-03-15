@@ -1,7 +1,8 @@
 class Coupon < ApplicationRecord
   
   enum Type: [:dollars, :percent]
-  serialize :Requirements
-  serialize :Requirements2
-  
+  serialize :ProductData
+  serialize :ProductType
+  serialize :ProductMinOptions
+
 end

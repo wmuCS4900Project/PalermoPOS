@@ -18,14 +18,20 @@
         <%= a.ItemTotalCost %><br>
       <% end %><br>
       
+      <% if !@order.Coupons.nil? %>
+        <%= "Coupons:" %><br>
+        <% @order.Coupons.each do |b| %>
+          <%= Coupon.find(b).Name %><%= " -" + Coupon.find(b).DollarsOff.to_s %><br>
+        <% end %>
+        <br>
+      <% end %>
+      
       <%= "Comments: " %>
       <%= @order.Comments %><br><br>
       <%= "Subtotal:" %>
       <%= @order.Subtotal %><br>
-      <% if @order.Discounts > 0.0 %>
-        <%= "Discount:"%>
-        <%= @order.Discounts %><br>
-      <% end %>
+      <%= "Discount:"%>
+      <%= @order.Discounts %><br>
       <%= "Taxes:" %>
       <%= @order.Tax %><br>
       <%= "Total Due" %>
@@ -67,8 +73,9 @@
       <br />
       
       <%= "Select coupons:" %>
+      <%= button_to "Clear Coupons", orders_cashout_url, class: 'btn', method: :get, params: { cid: "clear", id: @id  } %><br>
       <% Coupon.all.each do |c| %>
-        <%= button_to "Apply " + c.Name, orders_cashout_url, class: 'btn', method: :get, params: { cid: c.id, id: @id  } %>
+        <%= button_to "Apply " + c.Name, orders_cashout_url, class: 'btn', method: :get, params: { cid: c.id, id: @id  } %><br>
       <% end %>
     </div>
   </div>

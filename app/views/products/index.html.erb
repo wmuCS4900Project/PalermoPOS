@@ -16,6 +16,7 @@
           <thead>
           <thead>
             <tr>
+              <th>ID</th>
               <th>Name</th>
               <th>Cost</th>
               <th>Category</th>
@@ -27,6 +28,7 @@
           <tbody>
             <% @products.each do |product| %>
               <tr>
+                <td><%= product.id %></td>
                 <td><%= product.Name %></td>
                 <td><%= product.Cost %></td>
                 <td><%= @categories.find(product.category_id).Name %></td>
