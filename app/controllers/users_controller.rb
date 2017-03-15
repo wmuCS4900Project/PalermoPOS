@@ -36,15 +36,17 @@ class UsersController < ApplicationController
     # Get roles from params 
     args = { :Name => params[:user][:Name] , :username => params[:user][:username], :password => params[:user][:password] }
     @user = User.new( args )
-    roles = params["roles"]
       if @user.save
         # Add Roles that were checked
+        roles = params["roles"]
+
         roles.each do |role|
           @user.add_role(role)
         end
 
         flash[:success] = "User successfully added"
         redirect_to @user
+
       else
         flash[:danger] = "Error: Could not add user" # TODO: More meaningful message
         redirect_to users_path
@@ -81,6 +83,7 @@ class UsersController < ApplicationController
       # Add Roles that were checked
       roles.each do |role|
         @user.add_role(role)
+      end
 
       flash[:success] = "User successfully updated"
     else
