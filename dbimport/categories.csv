@@ -1,15 +1,15 @@
-id,Name,Splits
-1,10 Inch Pizzas,1
-2,12 Inch Pizzas,1
-3,14 Inch Pizzas,1
-4,16 Inch Pizzas,1
-5,18 Inch Pizzas,1
-6,24 Inch Pizzas,1
-7,Deep Dish Pizzas,1
-8,Gluten Free Pizzas,1
-9,Appetizers,0
-10,Drinks,0
-11,Subs,0
-12,Salads,0
-13,Dinners,0
-14,Desserts,0
+id,Name,Splits,created_at,updated_at,Abbreviation
+1,10 Inch Pizzas,1,,,10 Inch
+2,12 Inch Pizzas,1,,,12 Inch
+3,14 Inch Pizzas,1,,,14 Inch
+4,16 Inch Pizzas,1,,,16 Inch
+5,18 Inch Pizzas,1,,,18 Inch
+6,24 Inch Pizzas,1,,,24 Inch
+7,Deep Dish Pizzas,1,,,Deep Dish
+8,Gluten Free Pizzas,1,,,Gluten Free
+9,Appetizers,0,,,Apps
+10,Drinks,0,,,Drinks
+11,Subs,0,,,Subs
+12,Salads,0,,,Salads
+13,Dinners,0,,,Dinners
+14,Desserts,0,,,Desserts
