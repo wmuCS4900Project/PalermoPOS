@@ -48,7 +48,8 @@ ul {
         <h2>Select Coupons</h2>
         
         <div class="tab-content">
-            <%= link_to "Clear Coupons", orders_addcoupons_url(cid: "clear", order_id: @order.id), method: :post, class: 'btn btn-product' %><br>
+            <%= link_to "Return to Product Selection", orders_selectproduct_url(order_id: @order.id), method: :get, class: 'btn btn-primary' %>
+            <%= link_to "Clear Coupons", orders_addcoupons_url(cid: "clear", order_id: @order.id), method: :post, class: 'btn btn-primary' %><br>
           <% Coupon.all.each do |c| %>
             <%= link_to "Apply " + c.Name, orders_addcoupons_url(cid: c.id, order_id: @order.id), method: :post, class: 'btn btn-product' %>
           <% end %>
