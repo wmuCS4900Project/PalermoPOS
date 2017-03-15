@@ -62,8 +62,9 @@
       <br>
       
       <%= "Select coupons:" %>
+      <%= button_to "Clear Coupons", orders_cashout_url, class: 'btn', method: :get, params: { cid: "clear", id: @id  } %><br>
       <% Coupon.all.each do |c| %>
-        <%= button_to "Apply " + c.Name, orders_cashout_url, class: 'btn', method: :get, params: { cid: c.id, id: @id  } %>
+        <%= button_to "Apply " + c.Name, orders_cashout_url, class: 'btn', method: :get, params: { cid: c.id, id: @id  } %><br>
       <% end %>
     </div>
   </div>
