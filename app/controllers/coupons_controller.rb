@@ -15,14 +15,34 @@ class CouponsController < ApplicationController
   # GET /coupons/new
   def new
     @coupon = Coupon.new
-    @requirements = []
-    @requirements2 = []
   end
 
   # GET /coupons/1/edit
   def edit
-    @requirements = @coupon.Requirements
-    @requirements2 = @coupon.Requirements2
+  end
+  
+  def save
+    
+    if params[:id].present? && !params[:id].nil?
+      @coupon = Coupon.find(params[:id])
+    else
+      @coupon = Coupon.new
+    end
+    
+    @coupon.Name = params[:Name]
+    if params[:Type] == 'dollarsoff'
+      @coupon.Type = :dollars
+    else
+      @coupon.Type = :percent
+    end
+    @coupon.DollarsOff = params[:DollarsOff]
+    @coupon.PercentOff = params[:PercentOff]
+    @coupon.ProductData = params[:ProductData]
+    @coupon.ProductType = params[:ProductType]
+    @coupon.ProductMinOptions = params[:ProductMinOptions]
+    @coupon.save!
+    redirect_to coupons_path, notice: 'Coupon was successfully saved.'
+    
   end
 
   # POST /coupons
@@ -124,6 +144,6 @@ class CouponsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def coupon_params
-      params.require(:coupon).permit(:Name, :Type, :DollarsOff, :PercentOff, :product1, :product2, :product3, :product4)
+      params.require(:coupon).permit(:Name, :Type, :DollarsOff, :PercentOff, :ProductData, :ProductType, :ProductMinOptions, :ProductMinPrice)
     end
 end

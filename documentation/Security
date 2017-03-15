@@ -1,0 +1,5 @@
+enable firewall on ubuntu
+
+sudo ufw enable
+
+sudo ufw allow 3000

@@ -109,7 +109,6 @@ a:hover {
 	color: #d8d8d8;
 	border-bottom: 1px solid #888;
 	font-size: 1.2em;
-	left: -32px;
 }
 .sidebar-left a.nav-item.active {
 	background-color: #d8d8d8;
@@ -149,7 +148,6 @@ a:hover {
 	border-bottom: 12px solid transparent;
 	border-right: 12px solid #413d3d;
 	position: absolute;
-	right: -2.6em;
 	top: calc(50% - 12px);
 }
 .table th {
@@ -217,7 +215,6 @@ a:hover {
 
 .btn-group {
 	margin: 2px 1px;
-	box-shadow: 3px 2px 3px gray;
 
 }
 .option {
@@ -230,6 +227,7 @@ a:hover {
 	background-color: #fff;
 	border-color: #fff;
 	color: #000;
+	border-radius: 4px;
 }
 .btn-option.focus,
 .btn-option:focus {

@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   # Returns true if the user is logged in, false otherwise.
   def logged_in?
     !current_user.nil?  
+  end
   
   def home
     redirect_to '/default/index'
@@ -28,4 +29,5 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
 end

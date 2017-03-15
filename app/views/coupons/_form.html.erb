@@ -1,67 +1,58 @@
-<%= form_for(coupon) do |f| %>
-  <% if coupon.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(coupon.errors.count, "error") %> prohibited this coupon from being saved:</h2>
+<%= form_tag("/coupons/save", :method=>'post', :multipart => true) do %>
+      
+  <%= hidden_field_tag :id, @coupon.id %>
+  
+  <div class="field">
+    <%= label_tag :Name %>
+    <%= text_field_tag :Name, @coupon.Name %>
+  </div>
 
-      <ul>
-      <% coupon.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+  <div class="field">
+    <%= label_tag :Type %>
+    <%= select_tag :Type, "<option value='dollarsoff'>Flat Amount Off
+    </option><option value='percentoff'>Percent Off</option>".html_safe, :selected => @coupon.Type %>
+  </div>
+
+  <div class="field">
+    <%= label_tag "Flat Amount Off" %>
+    <%= text_field_tag :DollarsOff, @coupon.DollarsOff %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :PercentOff %>
+    <%= text_field_tag :PercentOff, @coupon.PercentOff %>
+  </div>
+  
+  <% (0...10).each do |a| %>
+  
+    <div class="field">
+      <% "Product " + a.to_s %>
+      <%= label_tag "Product data" %>
+      <% if !@coupon.ProductData.nil? %>
+        <%= text_field_tag 'ProductData[]', @coupon.ProductData[a] %>
+      <% else %>
+        <%= text_field_tag 'ProductData[]' %>
       <% end %>
-      </ul>
+      
+      <%= label_tag "Match type" %>
+      <% if !@coupon.ProductType.nil? %>
+        <%= select_tag 'ProductType[]', options_for_select({"Exact Product" => 0, "Category Match" => 1, "String Match" => 2}, @coupon.ProductType[a].to_i ) %>
+      <% else %>
+        <%= select_tag 'ProductType[]', options_for_select({"Exact Product" => 0, "Category Match" => 1, "String Match" => 2}) %>
+      <% end %>
+      
+      <%= label_tag "Minimum required options" %>
+      <% if !@coupon.ProductMinOptions.nil? %>
+        <%= text_field_tag 'ProductMinOptions[]', @coupon.ProductMinOptions[a] %>
+      <% else %>
+        <%= text_field_tag 'ProductMinOptions[]' %>
+      <% end %>
+      
     </div>
+  
   <% end %>
 
-  <div class="field">
-    <%= f.label :Name %>
-    <%= f.text_field :Name %>
-  </div>
-
-  <div class="field">
-    <%= f.label :Type %>
-    <%= f.select :Type, [ ["Flat Amount Off",:dollars], ["Percent Off Item",:percent] ] %>
-  </div>
-
-  <div class="field">
-    <%= f.label "Flat Amount Off" %>
-    <%= f.text_field :DollarsOff %>
-  </div>
-
-  <div class="field">
-    <%= f.label :PercentOff %>
-    <%= f.number_field :PercentOff %>
-  </div>
-  
-  <div class="field">
-    <%= label_tag "First required product" %>
-    <%= collection_select(:product1, :id, Product.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements[0] }) %>
-  </div>
-  
-  <div class="field">
-    <%= label_tag "Second required product" %>
-    <%= collection_select(:product2, :id, Product.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements[1] }) %>
-  </div>
-  
-   <div class="field">
-    <%= label_tag "Third required product" %>
-    <%= collection_select(:product3, :id, Product.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements[2] }) %>
-  </div>
-  
-   <div class="field">
-    <%= label_tag "Fourth required product" %>
-    <%= collection_select(:product4, :id, Product.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements[3] }) %>
-  </div>
-  
-  <div class="field">
-    <%= label_tag "First required category" %>
-    <%= collection_select(:cat1, :id, Category.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements2[0] }) %>
-  </div>
-  
-  <div class="field">
-    <%= label_tag "Second required category" %>
-    <%= collection_select(:cat2, :id, Category.all, :id, :Name, {:class =>"form-control", :prompt => 'none', :selected => @requirements2[1] }) %>
-  </div>
-
   <div class="actions">
-    <%= f.submit %>
+    <%= submit_tag "Save" %>
   </div>
 <% end %>

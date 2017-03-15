@@ -246,7 +246,7 @@
     
     <%= "Adj" %>
     <span class="right">
-      <%= number_to_currency(@order.Discounts).delete('$') %>
+      <%= number_to_currency(-@order.Discounts).delete('$') %>
     </span>
     <br>
     

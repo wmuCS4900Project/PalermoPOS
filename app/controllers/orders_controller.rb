@@ -24,11 +24,49 @@ class OrdersController < ApplicationController
   end
   
   def oldorders
-    @customers = Customer.all
-    @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
-    @cancelled = Order.where("Cancelled IS true AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
-    @completed = Order.where("PaidFor IS true AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
-    @refunded = Order.where("Refunded IS true AND created_at < ?", DateTime.now.beginning_of_day).limit(50)
+    
+    if !params[:startdate].present? && !params[:enddate].present? && !params[:thisdate].present?
+      render :oldorders
+      return
+    end
+    
+    puts params.inspect
+    
+    @customers = []
+    @pending = []
+    @completed = []
+    @refunded = []
+    
+    if params[:thisdate].present?
+      @year = params[:thisdate]['(1i)'].to_s
+      @month = params[:thisdate]['(2i)'].to_s
+      @day = params[:thisdate]['(3i)'].to_s
+      @date = @year + '-' + @month + '-' + @day
+      @customers = Customer.all
+      @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND DATE(created_at) = ?", @date).all.limit(500)
+      @completed = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS false AND DATE(created_at) = ?", @date).all.limit(500)
+      @cancelled = Order.where("PaidFor IS false AND Cancelled IS true AND Refunded IS false AND DATE(created_at) = ?", @date).all.limit(500)
+      @refunded = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS true AND DATE(created_at) = ?", @date).all.limit(500)
+      return
+    end
+    
+    if params[:startdate].present? && params[:enddate].present?
+      @year = params[:startdate]['(1i)'].to_s
+      @month = params[:startdate]['(2i)'].to_s
+      @day = params[:startdate]['(3i)'].to_s
+      @date1 = @year + '-' + @month + '-' + @day
+      @year = params[:enddate]['(1i)'].to_s
+      @month = params[:enddate]['(2i)'].to_s
+      @day = params[:enddate]['(3i)'].to_s
+      @date2 = @year + '-' + @month + '-' + @day
+      @customers = Customer.all
+      @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all.limit(500)
+      @completed = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all.limit(500)
+      @cancelled = Order.where("PaidFor IS false AND Cancelled IS true AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all.limit(500)
+      @refunded = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS true AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all.limit(500)
+      return
+    end
+    
   end
   
   def selectproduct
@@ -104,6 +142,73 @@ class OrdersController < ApplicationController
 
   end
   
+  def selectcoupons
+    if !params[:order_id].present?
+      redirect_to orders_path, :flash => { :notice => "No current order!" }
+    end
+    
+    @order = Order.find(params[:order_id])
+  end
+  
+  def addcoupons
+    if !params[:order_id].present?
+      redirect_to orders_path, :flash => { :notice => "No current order!" }
+    end
+    if !params[:cid].present?
+      redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "No coupon selected!" } 
+    end
+    
+    @order = Order.find(params[:order_id])
+    
+    if params[:cid] == "clear"
+      @order.Coupons = nil
+      flash[:notice] = 'Coupons removed!'
+    else
+      @ret = coupon_processor(params[:cid],@order.id)
+      
+      if @ret == true
+        if !@order.Coupons.nil?
+          @coupons = @order.Coupons
+        else
+          @coupons = []
+        end
+        
+        @coupons.push(params[:cid])
+        @order.Coupons = @coupons
+        
+        flash[:notice] = 'Coupon added!'
+      else
+        flash[:notice] = 'Order inelligible for coupon!'
+      end
+      
+    end
+    
+    @order.save!
+    
+    calc_taxes(@order.id)
+    
+    redirect_to orders_selectproduct_path(order_id: @order.id)
+  end
+  
+  #a workaround to recalculate the order total if you delete an orderline
+  def recalcForOrderlineDelete
+    @order = Order.find(params[:order_id])
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
+    
+    @order.Coupons = nil
+    
+    @subtotal = 0.0
+    @orderlines.each do |a|
+       @subtotal += a.ItemTotalCost
+    end
+
+    @order.Subtotal = @subtotal
+    @order.save!
+    puts "recalcing"
+    calc_taxes(@order.id)
+    redirect_to orders_selectproduct_path(:order_id => @order.id), :flash => { :notice => 'Order line deleted and coupons removed!' }
+  end
+  
   #view handles selection of options for an orderline
   def chooseoptions
     if !params[:order_id].present?
@@ -119,6 +224,16 @@ class OrdersController < ApplicationController
     
     #direct back if there's no options in this category
     if @options.nil? || @options.size < 1
+      @orderlines = Orderline.where("order_id = ?",@order.id).all
+      
+      @subtotal = 0.0
+      @orderlines.each do |a|
+         @subtotal += a.ItemTotalCost
+      end
+  
+      @order.Subtotal = @subtotal
+      @order.save!
+      calc_taxes(@order.id)
       redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "Item added to order!" }
       return
     end
@@ -298,7 +413,7 @@ class OrdersController < ApplicationController
   #when a customer is selected, this runs to create the order before giving any order options in the selectproduct view
   def startorder
     if params[:custid].present?
-      @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => params[:custid]
+      @order = Order.create :PaidFor => false, :user_id => User.first.id, :customer_id => params[:custid]
       puts @order.inspect
       redirect_to orders_selectproduct_path(order_id: @order.id)
       return
@@ -344,21 +459,27 @@ class OrdersController < ApplicationController
     end
     
     if params[:cid].present?
-      @ret = coupon_processor(params[:cid],@id)
       
-      if @ret == true
-        if !@order.Coupons.nil?
-          @coupons = @order.Coupons
-        else
-          @coupons = []
-        end
-        
-        @coupons.push(params[:cid])
-        @order.Coupons = @coupons
-        
-        flash.now[:notice] = 'Coupon added!'
+      if params[:cid] == "clear"
+        @order.Coupons = nil
+        flash.now[:notice] = 'Coupons removed!'
       else
-        flash.now[:notice] = 'Order inelligible for coupon!'
+        @ret = coupon_processor(params[:cid],@id)
+        
+        if @ret == true
+          if !@order.Coupons.nil?
+            @coupons = @order.Coupons
+          else
+            @coupons = []
+          end
+          
+          @coupons.push(params[:cid])
+          @order.Coupons = @coupons
+          
+          flash.now[:notice] = 'Coupon added!'
+        else
+          flash.now[:notice] = 'Order inelligible for coupon!'
+        end
       end
     end
     
