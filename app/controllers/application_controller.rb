@@ -27,6 +27,5 @@ class ApplicationController < ActionController::Base
         redirect_to login_path, :flash => { :danger => "You must be logged in!" }
       end
     end
-
-end
+  end
 end
