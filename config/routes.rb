@@ -18,7 +18,11 @@ Rails.application.routes.draw do
   post "options/changeallapply" => 'options#changeallapply'
   resources :options
   
+  post "coupons/save" => 'coupons#save'
   resources :coupons
+  
+  resources :caps
+  resources :roles
   
   get "management" => 'management#index'
   get "management/cashoutdrivers" => 'management#cashoutdrivers'

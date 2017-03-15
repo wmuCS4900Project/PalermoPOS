@@ -8,8 +8,7 @@
       <% if flash[:notice].present? %>
         <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
       <% end %>
-<<<<<<< HEAD
-      
+
       <%= form_tag("/orders/oldorders", :method=>'get', :multipart => true) do %>
         Search a single date: 
         <%= date_select "thisdate", "", selected: Date.today %>
