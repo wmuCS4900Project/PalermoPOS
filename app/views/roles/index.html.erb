@@ -4,6 +4,10 @@
   <%= render 'sidebars/rolesside' %>
   <div class="container main-content">
     <p id="notice"><%= notice %></p>
+    
+    <% if flash[:danger] %>
+      <div class="danger"><%= flash[:danger] %></div>
+    <% end %>
 
     <h1>Roles</h1>
 
