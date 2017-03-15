@@ -1,6 +1,17 @@
-<h1>Editing User</h1>
+<%= render 'bars/top2' %>
+<div class="wrapper has-sidebar-left">
+  <%= render 'sidebars/loginside' %>
+  	<div class="container main-content">
+		<h1>Editing User</h1>
+          <% 
+          # Check capabilities
+          if ( !logged_in? || (!current_user.can?("edit", "users") && current_user != @user)) %>
+          <p> Sorry, you don't have the capabilities to do this </p>
+        <% else %>     
+		<%= render 'form', user: @user %>
+		<% end %>
 
-<%= render 'form', user: @user %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+		<%= link_to 'Show', @user %> |
+		<%= link_to 'Back', users_path %>
+	</div>
+</div>

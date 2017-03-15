@@ -6,7 +6,11 @@
     <div class="container main-content">
 
       <h1>Editing Option</h1>
-            
+      <% # Check capabilities
+      if ( !logged_in? || !current_user.can?("edit", "options")) %>
+      <p> Sorry, you don't have the capabilities to do that</p>
+      <% else %>
+
       <%= form_for(@option) do |f| %>
         <% if @option.errors.any? %>
           <div id="error_explanation">
@@ -48,7 +52,7 @@
         <div class="actions">
           <%= f.submit "Save Changes", class: "btn btn-primary"%>
         </div>
-      
+      <% end %>
       <% end %>      
 
     </div>

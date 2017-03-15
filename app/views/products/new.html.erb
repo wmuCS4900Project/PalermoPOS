@@ -4,9 +4,12 @@
     <%= render 'sidebars/productside' %>
     <div class="main-content container">
 		<h1>New Product</h1>
-
+	  	<% # Check capabilities
+	  	if ( !logged_in? || !current_user.can?("new", "products")) %>
+	  	<p> Sorry, you don't have the capabilities to do that</p>
+	  	<% else %>
 		<%= render 'form', product: @product %>
-
+		<% end %>
 		<%= link_to 'Back', products_path %>
 	</div>
 </div>

@@ -2,43 +2,53 @@
 <div class="wrapper has-sidebar-left">
   <%= render 'sidebars/loginside' %>
       <div class="container main-content">
-<p id="notice"><%= notice %></p>
-<% if flash[:danger].present? %>
-  <div class="alert alert-danger"><%= flash[:danger] %></div>
-<% end %>
-<% if flash[:success].present? %>
-  <div class="alert alert-success"><%= flash[:success] %></div>
-<% end %>
-<p>
-  <strong>Name:</strong>
-  <%= @user.Name %>
-</p>
+        <p id="notice"><%= notice %></p>
+        <% if flash[:danger].present? %>
+          <div class="alert alert-danger"><%= flash[:danger] %></div>
+        <% end %>
+        <% if flash[:success].present? %>
+          <div class="alert alert-success"><%= flash[:success] %></div>
+        <% end %>
 
-<p>
-  <strong>Username:</strong>
-  <%= @user.username %>
-</p>
+          <% 
+          # Check capabilities
+          if ( !logged_in? || (!current_user.can?("view", "users") && current_user != @user )) %>
+          <p> Sorry, you don't have the capabilities to do this </p>
+        <% else %>
 
-<p>
-  <strong>Driver:</strong>
-  <%= !! @user.has_role?(:driver) ? 'Yes' : 'No' %>
-</p>
+        <p>
+          <strong>Name:</strong>
+          <%= @user.Name %>
+        </p>
+      
+        <p>
+          <strong>Username:</strong>
+          <%= @user.username %>
+        </p>
 
-<p>
-  <strong>User Since:</strong>
-  <%= @user.created_at.strftime("%l:%M %p %B %m, %Y") %>
-</p>
+        <p><strong>Roles:</strong></p>
+          <% @user.roles.each do |role| %>
+          <p> <%= role.name %> </p>
+          <% end %>
 
-<p>
-  <strong>Manager:</strong>
-  <%= !! @user.has_role?(:admin) ? 'Yes' : 'No' %>
-</p>
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %> | 
-<% if logged_in? %>
-    <% if (current_user.has_role? :admin) %>
-      <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
-    <% end %> 
-  <% end %>
-  </div>
+        <p>
+          <strong>User Since:</strong>
+          <%= @user.created_at.strftime("%l:%M %p %B %m, %Y") %>
+        </p>
+
+          <% if (current_user.can? "edit", "users") %>
+          <%= link_to 'Edit', edit_user_path(@user) %>
+          <% end %>
+        
+        <% end %>
+        <%= link_to 'Back', users_path %>
+
+        <%= link_to 'Edit', edit_user_path(@user) %> |
+        <%= link_to 'Back', users_path %> | 
+        <% if logged_in? %>
+            <% if (current_user.can? "destroy", "users") %>
+              <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <% end %> 
+          <% end %>
+   </div>
 </div>

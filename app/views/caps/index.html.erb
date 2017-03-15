@@ -1,0 +1,41 @@
+<%= render 'bars/top2' %>
+
+<div class="wrapper has-sidebar-left">
+  <%= render 'sidebars/rolesside' %>
+  <div class="container main-content">
+  <p id="notice"><%= notice %></p>
+
+  <h1>Capabilities</h1>
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Role</th> 
+          <th>Action</th>
+          <th>Object</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <div class="role-checkboxes">
+      </div>
+        <% @caps.each do |cap| %>
+          <tr>
+            <td><%= Role.find(cap.role_id).name %></td>
+            <td><%= cap.action %></td>
+            <td><%= cap.object %></td>
+            <td><%= link_to 'Show', cap, { class: 'btn btn-primary'} %></td>
+            <td><%= link_to 'Edit', edit_cap_path(cap), { class: 'btn btn-primary'} %></td>
+            <td><%= link_to 'Destroy', cap, method: :delete, data: { confirm: 'Are you sure?'}, class: 'btn btn-primary' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <br>
+
+  <%= link_to 'New Capability', new_cap_path, class: 'btn btn-primary'%>
+
+  </div>
+</div>
