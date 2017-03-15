@@ -28,4 +28,6 @@ private
       redirect_to login_path, :flash => { :danger => "You must be logged in!" }
     end
   end
+
+end
 end

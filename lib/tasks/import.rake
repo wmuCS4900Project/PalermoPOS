@@ -28,4 +28,26 @@ namespace :import do
         Customer.create :Phone => 9999999999, :LastName => "Customer", :FirstName => "Walk In", :LongDelivery => false
       end
   end 
+
+  desc "Create admin if not exists, add admin role with all capabilities"
+    task :admin, [:filename] => :environment do
+      # Create admin if needed
+      user = User.where(:username => 'admin')
+
+      if user.empty?
+        # Create active record
+        user = User.new(:username => 'admin', :Name => "Admin", :password => "Palermo123")
+        
+        # Save to database
+        user.save!
+      end
+
+      # Add admin role
+      user.add_role(:admin)
+
+      # Give all capabilities to admin
+      role_id = Role.where(:name => :admin).pluck(:id)
+
+      Cap.new(:role_id => role_id, :action => "all", :object => "all")
+    end 
 end
