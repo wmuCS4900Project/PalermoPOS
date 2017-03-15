@@ -14,7 +14,7 @@
                 <th><%= "Order Number" %></th>
                 <th><%= "Ordered by" %></th>
                 <th><%= "Ordered at" %></th>
-                <th colspan="5"></th>
+                <th colspan="4"></th>
               </tr>
             </thead>
           
@@ -23,10 +23,9 @@
                 <tr>
                   <td><%= order.id %> <br>
                   <td><%= Customer.find(order.customer_id).FirstName %> <%= Customer.find(order.customer_id).LastName %> <br></td>
-                  <td><%= order.created_at %> </td>
+                  <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
                   <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ), class: "btn btn-primary" %></td>
-                  <td><%= link_to 'Show', order, class: "btn btn-primary" %></td>
-                  <td><%= link_to 'Edit', edit_order_path(order), class: "btn btn-primary" %></td>
+                  <td><%= link_to 'Edit', orders_selectproduct_path(order_id: order.id), class: "btn btn-primary" %></td>
                   <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" %></td>
                   <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" %></td>
                 </tr>

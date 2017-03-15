@@ -142,6 +142,73 @@ class OrdersController < ApplicationController
 
   end
   
+  def selectcoupons
+    if !params[:order_id].present?
+      redirect_to orders_path, :flash => { :notice => "No current order!" }
+    end
+    
+    @order = Order.find(params[:order_id])
+  end
+  
+  def addcoupons
+    if !params[:order_id].present?
+      redirect_to orders_path, :flash => { :notice => "No current order!" }
+    end
+    if !params[:cid].present?
+      redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "No coupon selected!" } 
+    end
+    
+    @order = Order.find(params[:order_id])
+    
+    if params[:cid] == "clear"
+      @order.Coupons = nil
+      flash[:notice] = 'Coupons removed!'
+    else
+      @ret = coupon_processor(params[:cid],@order.id)
+      
+      if @ret == true
+        if !@order.Coupons.nil?
+          @coupons = @order.Coupons
+        else
+          @coupons = []
+        end
+        
+        @coupons.push(params[:cid])
+        @order.Coupons = @coupons
+        
+        flash[:notice] = 'Coupon added!'
+      else
+        flash[:notice] = 'Order inelligible for coupon!'
+      end
+      
+    end
+    
+    @order.save!
+    
+    calc_taxes(@order.id)
+    
+    redirect_to orders_selectproduct_path(order_id: @order.id)
+  end
+  
+  #a workaround to recalculate the order total if you delete an orderline
+  def recalcForOrderlineDelete
+    @order = Order.find(params[:order_id])
+    @orderlines = Orderline.where("order_id = ?",@order.id).all
+    
+    @order.Coupons = nil
+    
+    @subtotal = 0.0
+    @orderlines.each do |a|
+       @subtotal += a.ItemTotalCost
+    end
+
+    @order.Subtotal = @subtotal
+    @order.save!
+    puts "recalcing"
+    calc_taxes(@order.id)
+    redirect_to orders_selectproduct_path(:order_id => @order.id), :flash => { :notice => 'Order line deleted and coupons removed!' }
+  end
+  
   #view handles selection of options for an orderline
   def chooseoptions
     if !params[:order_id].present?
@@ -157,6 +224,16 @@ class OrdersController < ApplicationController
     
     #direct back if there's no options in this category
     if @options.nil? || @options.size < 1
+      @orderlines = Orderline.where("order_id = ?",@order.id).all
+      
+      @subtotal = 0.0
+      @orderlines.each do |a|
+         @subtotal += a.ItemTotalCost
+      end
+  
+      @order.Subtotal = @subtotal
+      @order.save!
+      calc_taxes(@order.id)
       redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "Item added to order!" }
       return
     end

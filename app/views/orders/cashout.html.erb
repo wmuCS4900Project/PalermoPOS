@@ -18,8 +18,8 @@
         <%= a.ItemTotalCost %><br>
       <% end %><br>
       
-      Coupons:<br>
       <% if !@order.Coupons.nil? %>
+        <%= "Coupons:" %><br>
         <% @order.Coupons.each do |b| %>
           <%= Coupon.find(b).Name %><%= " -" + Coupon.find(b).DollarsOff.to_s %><br>
         <% end %>

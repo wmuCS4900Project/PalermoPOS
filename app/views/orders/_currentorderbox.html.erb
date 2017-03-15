@@ -50,6 +50,9 @@
   float: right;
   padding-right: 6px;
 }
+.btn-smaller {
+  font-size: 1em;
+}
 </style>
 
 <div class="orderinfo1">
@@ -77,11 +80,11 @@
         <br>
       <% end %>
       
-      <% if !orderline.OptionCount.nil? %>
-        <span class="itemleft">INGRD#</span>
-        <span class="itemcenter"><%= orderline.OptionCount %></span>
+      <%# if !orderline.OptionCount.nil? %>
+        <%#<span class="itemleft">INGRD#</span>
+        <%#<span class="itemcenter"><%#= orderline.OptionCount %><%#</span>
         <br>
-      <% end %>
+      <%# end #%>
       
       <% if orderline.whole? %> <%#list the options if the product is whole %>
         <span class="itemleft">ALL</span>
@@ -228,18 +231,32 @@
 <div class="orderinfo2">
   <div class="orderitems">
     <% if !@order.nil? %>
+      <%= "Order Subtotal: " %><%= @order.Subtotal %><br>
+      <%= "Order Discounts: " %><%= @order.Discounts %><br>
+      <%= "Order Taxes: " %><%= @order.Tax %><br>
+      <%= "Order Total " %><%= @order.TotalCost %><br><br>
+      <% if !@order.Coupons.nil? %>
+        <%= "Coupons: " %><br>
+        <% @order.Coupons.each do |b| %>
+          <%= Coupon.find(b).Name %><%= " -" + Coupon.find(b).DollarsOff.to_s %><br>
+        <% end %>
+        <br>
+      <% end %>
       <% @cust = Customer.find(@order.customer_id) %>
       <%= @cust.FirstName %> <%= " " %><%= @cust.LastName %> <br>
       <%= @cust.AddressNumber %><%= " " %><%= @cust.StreetName %> <br>
       <%= @cust.City %> <%= ", " %><%= @cust.State %> <br>
       <%= "Directions: " %><%= @cust.Directions %> <br>
-      <%= link_to "Add previous order", orders_addPreviousOrderItems_url(order_id: @order.id), class: 'btn btn-primary' %>
+      
     <% end %>
   </div>
 </div>
 
 <div class="orderinfo3">
   
+  <%= link_to "Add previous order", orders_addPreviousOrderItems_url(order_id: @order.id), class: 'btn btn-primary btn-smaller' %>
+  <%= link_to "Add coupons", orders_selectcoupons_url(order_id: @order.id), class: 'btn btn-primary btn-smaller' %>
+
   <%= form_tag("/orders/commitorder", :method=>'post', :multipart => true) do %>
     <div class="btn-group form-group group" data-toggle="buttons">
     <% if @order.IsDelivery.nil? || @order.IsDelivery == false %>
@@ -251,6 +268,8 @@
     <% end %>
     </div>
     <br>
+    
+
     
     <%= label_tag :discount, "Discount" %>
     <%= text_field_tag :discount %>
@@ -266,9 +285,9 @@
     
     <%= hidden_field_tag :order_id, @order.id %>
 
-    <%= submit_tag "Submit Order", class: "btn btn-primary" %>
+    <%= submit_tag "Submit Order & Print", class: "btn btn-primary btn-smaller" %>
     
-    <%= submit_tag "Submit Order No Print", class: "btn btn-primary" %>
+    <%= submit_tag "Submit Only", class: "btn btn-primary btn-smaller" %>
 
   <% end %>
 

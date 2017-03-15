@@ -48,6 +48,9 @@ Rails.application.routes.draw do
   get "orders/startorder" => 'orders#startorder'
   get "orders/pending" => 'orders#pending'
   get "orders/walkin" => 'orders#walkin'
+  get "orders/selectcoupons" => 'orders#selectcoupons'
+  post "orders/addcoupons" => 'orders#addcoupons'
+  get "orders/recalcForOrderlineDelete" => 'orders#recalcForOrderlineDelete'
   
   resources :orders
 

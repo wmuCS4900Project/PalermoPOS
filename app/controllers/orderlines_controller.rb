@@ -6,7 +6,7 @@ class OrderlinesController < ApplicationController
     @order_id = @orderline.order_id
     puts @order_id
     @orderline.destroy
-    redirect_to orders_selectproduct_path(:order_id => @order_id), :flash => { :notice => 'Order line deleted.' }
+    redirect_to orders_recalcForOrderlineDelete_path(:order_id => @order_id)
   end
   
 end
