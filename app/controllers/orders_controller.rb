@@ -336,7 +336,7 @@ class OrdersController < ApplicationController
   #when a customer is selected, this runs to create the order before giving any order options in the selectproduct view
   def startorder
     if params[:custid].present?
-      @order = Order.create :PaidFor => false, :user_id => 1, :customer_id => params[:custid]
+      @order = Order.create :PaidFor => false, :user_id => User.first.id, :customer_id => params[:custid]
       puts @order.inspect
       redirect_to orders_selectproduct_path(order_id: @order.id)
       return

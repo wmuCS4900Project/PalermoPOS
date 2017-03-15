@@ -244,88 +244,185 @@ module OrdersHelper
     puts "called the coupon processor"
     
     @order = Order.find(order_id)
-    items = []
-    Orderline.where('order_id = ?', order_id).each do |this| #add product ids to the items array for use to compare with coupon requirements
-      items.push(this.product_id)
-    end
-    puts "items " + items.inspect
+    @orderlines = Orderline.where('order_id = ?', order_id).all.to_a
+    puts "items " + @orderlines.inspect
     
     #remove any items from the array for which coupons are already applied to this order, as they cannot count for two separate coupons
     if @order.Coupons != nil
-      puts "found coupons existing"
+      puts "looking at old coupons"
       @order.Coupons.each do |a|
         @coupon = Coupon.find(a)
-        @coupon.Requirements.each do |b|
-          if items.include?(b.to_i)
-            puts "trying to delete " + b
-            items.delete_at(items.index(b.to_i) || items.length)
-          end
-          puts "items has " + items.inspect
-        end
-        @coupon.Requirements2.each do |b|
-          items.each do |c|
-            if Product.find(c).category_id == b.to_i
-              items.delete_at(items.index(c) || items.length)
-              puts "trying to delete " + c.to_s
+        puts "confirming stuff for " + @coupon.Name
+        (0..9).each do |b|
+          if @coupon.ProductData[b] != ''
+            if @coupon.ProductType[b] == '0'
+              puts "looking for an exact item " + @coupon.ProductData[b].to_s
+              @orderlines.each do |c|
+                if c.product_id == @coupon.ProductData[b].to_i
+                  puts "found an exact item"
+                  if @coupon.ProductMinOptions[b] != ''
+                    puts "it needs min options"
+                    if @coupon.ProductMinOptions[b].to_f <= c.OptionCount
+                      @orderlines.delete(c)
+                      puts "it qualifies1v1"
+                    end
+                  else
+                    @orderlines.delete(c)
+                    puts "it qualifies1v2"
+                  end
+                else
+                  puts "didnt find it 1"
+                end
+              end
+            elsif @coupon.ProductType[b] == '1'
+              puts "looking for a category item " + @coupon.ProductData[b].to_s
+              @orderlines.each do |c|
+                if Product.find(c.product_id).category_id == @coupon.ProductData[b].to_i
+                  puts "found a category item"
+                  if @coupon.ProductMinOptions[b] != ''
+                    puts "it needs min options"
+                    if @coupon.ProductMinOptions[b].to_f <= c.OptionCount
+                      @orderlines.delete(c)
+                      puts "it qualifies 2v1"
+                    end
+                  else
+                    @orderlines.delete(c)
+                    puts "it qualifies 2v2"
+                  end
+                else
+                  puts "didn't find it 2"
+                end
+              end
+            elsif @coupon.ProductType[b] == '2'
+              puts "looking for a string match" + @coupon.ProductData[b].to_s
+              @orderlines.each do |c|
+                if Product.find(c.product_id).Name.include?(@coupon.ProductData[b])
+                  puts "found a string match"
+                  if @coupon.ProductMinOptions[b] != ''
+                    puts "it needs min options"
+                    if @coupon.ProductMinOptions[b].to_f <= c.OptionCount
+                      @orderlines.delete(c)
+                      puts "it qualifies 3v1"
+                    end
+                  else
+                    @orderlines.delete(c)
+                    puts "it qualifies 3v2"
+                  end
+                else
+                  puts "didnt find it 3"
+                end
+              end
             end
           end
-          puts "items has " + items.inspect
         end
       end
     end
     
-    #if there's still any items, lets compare them with the coupon trying to apply
+    puts @orderlines.inspect
+    
+    
     @coupon_new = Coupon.find(coupon_id)
-    puts "items2 " + items.inspect
     
-    if items.size > 0
-      matched = false
-      puts "Reqs " + @coupon_new.Requirements.inspect
-      @coupon_new.Requirements.each do |a|
-        puts "trying to find a " + a.inspect
-        if !a.nil? && a != ''
-          matched = false
-          puts "items3 " + items.inspect
-          items.each do |b|
-            if b == a.to_i
-              items.delete_at(items.index(b) || items.length)
-              puts "trying to delete " + b.to_s
-              matched = true
+    found = false
+    
+    puts "dealing with new coupon"
+    (0..9).each do |b|
+      found = false
+      if @coupon_new.ProductData[b] != ''
+        puts "looking for a product"
+        if @coupon_new.ProductType[b] == '0'
+          puts "looking for an exact item " + @coupon_new.ProductData[b].to_s
+          @orderlines.each do |c|
+            puts "looking at " + Product.find(c.product_id).Name
+            if c.product_id == @coupon_new.ProductData[b].to_i
+              puts "found an exact item"
+              if @coupon_new.ProductMinOptions[b] != ''
+                puts "it needs min options"
+                if @coupon_new.ProductMinOptions[b].to_f <= c.OptionCount
+                  @orderlines.delete(c)
+                  found = true
+                  puts "found it 1v1"
+                else
+                  puts "coupon wants " + @coupon_new.ProductMinOptions[b]
+                  puts "has " + c.OptionCount.to_s
+                  puts "not enough options"
+                end
+              else
+                @orderlines.delete(c)
+                found = true
+                puts "found it 1v2"
+              end
+            else
+              puts "didnt find it 1"
+            end
+          end
+        elsif @coupon_new.ProductType[b] == '1'
+          puts "looking for a category item " + @coupon_new.ProductData[b].to_s
+          @orderlines.each do |c|
+            puts "looking at " + Product.find(c.product_id).Name
+            if Product.find(c.product_id).category_id == @coupon_new.ProductData[b].to_i
+              if @coupon_new.ProductMinOptions[b] != ''
+                puts "it needs min options"
+                if @coupon_new.ProductMinOptions[b].to_f <= c.OptionCount
+                  @orderlines.delete(c)
+                  found = true
+                  puts "found it 2v1"
+                else
+                  puts "coupon wants " + @coupon_new.ProductMinOptions[b]
+                  puts "has " + c.OptionCount.to_s
+                  puts "not enough options"
+                end
+              else
+                @orderlines.delete(c)
+                found = true
+                puts "found it 2v2"
+              end
+            else
+              puts "didnt find it"
+            end
+          end
+        elsif @coupon_new.ProductType[b] == '2'
+          puts "looking for a string match " + @coupon_new.ProductData[b].to_s
+          @orderlines.each do |c|
+            puts "looking at " + Product.find(c.product_id).Name
+            if Product.find(c.product_id).Name.include?(@coupon_new.ProductData[b])
+              if @coupon_new.ProductMinOptions[b] != ''
+                puts "it needs min options"
+                if @coupon_new.ProductMinOptions[b].to_f <= c.OptionCount
+                  @orderlines.delete(c)
+                  found = true
+                  puts "found it 3v1"
+                else
+                  puts "coupon wants " + @coupon_new.ProductMinOptions[b]
+                  puts "has " + c.OptionCount.to_s
+                  puts "not enough options"
+                end
+              else
+                @orderlines.delete(c)
+                found = true
+                puts "found it 3v2"
+              end
+            else
+              puts "didnt find it 3"
             end
           end
         end
+      else
+        found = true
       end
-      if matched == false
-          puts "returning false1"
-          return false
+      
+      if found == false
+        return false
       end
-      @coupon_new.Requirements2.each do |a|
-        puts "trying to find a " + a.inspect
-        if !a.nil? && a != ''
-          matched = false
-          puts "items3 " + items.inspect
-          items.each do |b|
-            if Product.find(b).category_id == a.to_i
-              items.delete_at(items.index(b) || items.length)
-              puts "trying to delete " + b.to_s
-              matched = true
-            end
-          end
-        end
-      end
-      if matched == false
-          puts "returning false1"
-          return false
-      end
-    else #no items left to check against coupon? failed to apply coupon
-      puts "returning false2"
-      return false
     end
       
-    #made it this far? coupon can be applied
-    puts "returning true"
-    return true
-      
+      if found == true
+        puts "returning true"
+        return true
+      else
+        puts "returning false"
+        return false
+      end
   end
     
 end
