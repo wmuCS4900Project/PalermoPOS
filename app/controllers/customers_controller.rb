@@ -24,6 +24,12 @@ class CustomersController < ApplicationController
   # POST /customers
   # POST /customers.json
   def create
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("create", "customers") )
+      redirect_to customers_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+
     @customer = Customer.new(customer_params)
 
     respond_to do |format|
@@ -40,6 +46,12 @@ class CustomersController < ApplicationController
   # PATCH/PUT /customers/1
   # PATCH/PUT /customers/1.json
   def update
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("edit", "customers") )
+      redirect_to customers_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+
     respond_to do |format|
       if @customer.update(customer_params)
         format.html { redirect_to @customer, notice: 'Customer was successfully updated.' }
@@ -54,6 +66,12 @@ class CustomersController < ApplicationController
   # DELETE /customers/1
   # DELETE /customers/1.json
   def destroy
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("destroy", "customers") )
+      redirect_to customers_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+
     @customer.destroy
     respond_to do |format|
       format.html { redirect_to customers_url, notice: 'Customer was successfully destroyed.' }

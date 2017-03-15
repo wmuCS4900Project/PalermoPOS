@@ -1,0 +1,17 @@
+<%= render 'bars/top2' %>
+
+<div class="wrapper has-sidebar-left">
+  <%= render 'sidebars/rolesside' %>
+  <div class="container main-content">
+    <% # Check capabilities
+  	if ( !logged_in? || !current_user.can?("view", "roles")) %>
+  		<p>Sorry, you don't have the capabilities to do this</p>
+  	<% else %>
+	  	<h1> Show Role </h1>
+		<p id="notice"><%= notice %></p>
+		<h2><%= @role.name %></h2>
+		<%= link_to 'Edit', edit_role_path(@role) %> |
+		<%= link_to 'Back', roles_path %>
+	<% end %>
+	</div>
+</div>

@@ -24,6 +24,12 @@ class CategoriesController < ApplicationController
   # POST /categories
   # POST /categories.json
   def create
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("create", "categories") )
+      redirect_to categories_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+
     @category = Category.new(category_params)
 
     respond_to do |format|
@@ -40,6 +46,12 @@ class CategoriesController < ApplicationController
   # PATCH/PUT /categories/1
   # PATCH/PUT /categories/1.json
   def update
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("edit", "categories") )
+      redirect_to categories_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+
     respond_to do |format|
       if @category.update(category_params)
         format.html { redirect_to @category, notice: 'Category was successfully updated.' }
@@ -54,6 +66,12 @@ class CategoriesController < ApplicationController
   # DELETE /categories/1
   # DELETE /categories/1.json
   def destroy
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("destroy", "categories") )
+      redirect_to categories_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+
     @category.destroy
     respond_to do |format|
       format.html { redirect_to categories_url, notice: 'Category was successfully destroyed.' }

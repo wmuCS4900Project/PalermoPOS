@@ -4,6 +4,11 @@
   <div class="wrapper has-sidebar-left">
     <%= render 'sidebars/orderside' %>
     <div class="container main-content">
+    <% # Check capabilities
+    if ( !logged_in? || !current_user.can?("edit", "orders")) %>
+      <p> Sorry, you don't have the capabilities to do that </p>
+
+    <% else %>
       
       <% if flash[:notice].present? %>
         <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
@@ -179,6 +184,8 @@
           
         </div>
       </div>
+
+      <% end %>
     </div>
   </div>
 </body>

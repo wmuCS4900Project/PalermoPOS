@@ -1,6 +1,12 @@
 <h1>Editing Order</h1>
+    
+<% # Check capabilities
+if ( !logged_in? || !current_user.can?("edit", "orders")) %>
+  <p> Sorry, you don't have the capabilities to do that </p>
 
-<%= render 'form', order: @order %>
+<% else %>
+	<%= render 'form', order: @order %>
+<% end %>
 
 <%= link_to 'Show', @order %> |
 <%= link_to 'Back', orders_path %>

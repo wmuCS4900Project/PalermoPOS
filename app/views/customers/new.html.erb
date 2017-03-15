@@ -5,9 +5,12 @@
     <%= render 'sidebars/custside' %>
     <div class="container main-content">
       <h1>New Customer</h1>
-      
-      <%= render 'form', customer: @customer %>
-      
+      <% # Check capabilities
+		if ( !logged_in? || !current_user.can?("create", "customers")) %>
+		<p> Sorry, you don't have the capabilities to do that </p>
+		<% else %>
+      	<%= render 'form', customer: @customer %>
+      <% end %>
       <%= link_to 'Back', customers_path %>
     </div>
   </div>

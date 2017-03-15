@@ -68,6 +68,12 @@ class OptionsController < ApplicationController
   # POST /options
   # POST /options.json
   def create
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("create", "options") )
+      redirect_to options_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+
     @option = Option.new(option_params)
 
     respond_to do |format|
@@ -84,6 +90,12 @@ class OptionsController < ApplicationController
   # PATCH/PUT /options/1
   # PATCH/PUT /options/1.json
   def update
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("edit", "options") )
+      redirect_to options_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+
     respond_to do |format|
       if @option.update(option_params)
         format.html { redirect_to options_url, notice: 'Option was successfully updated.' }
@@ -98,6 +110,12 @@ class OptionsController < ApplicationController
   # DELETE /options/1
   # DELETE /options/1.json
   def destroy
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("destroy", "options") )
+      redirect_to
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+
     @option.destroy
     respond_to do |format|
       format.html { redirect_to options_url, notice: 'Option was successfully destroyed.' }

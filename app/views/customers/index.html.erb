@@ -10,11 +10,11 @@
           <thead>
             <tr>
               <th>Phone</th>
-              <th>Lastname</th>
-              <th>Firstname</th>
+              <th>Last Name</th>
+              <th>First Name</th>
               <th>Address</th>
-              <th>Longdelivery</th>
-              <th>Lastorderdate</th>
+              <th>Long Delivery?</th>
+              <th>Last Order</th>
               <th colspan="3"></th>
             </tr>
           </thead>
@@ -28,7 +28,7 @@
                 <td><%= customer.AddressNumber %>
                 <%= customer.StreetName %>
                 <%= customer.City %></td>
-                <td><%= customer.LongDelivery %></td>
+                <td><%= customer.LongDelivery ? 'Yes' : 'No'  %></td>
                 <td><%= customer.LastOrderDate %></td>
                 <td><%= link_to 'Show', customer, class: "btn btn-primary" %></td>
                 <td><%= link_to 'Edit', edit_customer_path(customer), class: "btn btn-primary" %></td>

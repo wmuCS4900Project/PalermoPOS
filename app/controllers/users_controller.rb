@@ -12,33 +12,34 @@ class UsersController < ApplicationController
   def show
   end
 
-
   # GET /users/new
   def new
     @user = User.new
-    @roles = {:admin => "Administrator", :driver => "Driver"}
+    @roles = Role.all
   end
 
   # GET /users/1/edit
   def edit
-    @roles = {:admin => "Administrator", :driver => "Driver"}
+    @roles = Role.all
   end
 
   # POST /users
   # POST /users.json
   def create
-    puts params[:user]
+    # Check Capabilities
+    if ( !logged_in? || !current_user.can?("create", "users") )
+      redirect_to users_path 
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+      return false
+    end
+
     # Get roles from params 
     args = { :Name => params[:user][:Name] , :username => params[:user][:username], :password => params[:user][:password] }
-    puts args
     @user = User.new( args )
     roles = params["roles"]
-    puts "--------------------"
-    puts roles
       if @user.save
-        # Add Roles
+        # Add Roles that were checked
         roles.each do |role|
-          puts role
           @user.add_role(role)
         end
 
@@ -46,28 +47,59 @@ class UsersController < ApplicationController
         redirect_to @user
       else
         flash[:danger] = "Error: Could not add user" # TODO: More meaningful message
-        redirect_to '/users'
+        redirect_to users_path
       end
   end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    @roles = {:admin => "Administrator", :driver => "Driver"}
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    # Check Capabilities
+    if ( !logged_in? || !current_user.can?("edit", "users") )
+      redirect_to users_path
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
+
+    # If blank, don't change password
+    # if user_params["password"].blank?
+    #   user_params.delete("password")
+    # end 
+
+    roles = params["roles"]
+
+    if @user.update(user_params)
+      # Remove roles 
+      puts @user.roles
+      puts roles
+
+      user_roles = @user.roles
+      user_roles.each do |role|
+        @user.remove_role(role.name)
+      end
+
+      # Add Roles that were checked
+      roles.each do |role|
+        @user.add_role(role)
+
+      flash[:success] = "User successfully updated"
+    else
+      flash[:danger] = @user.errors
+    end
+    
+    redirect_to @user
   end
 
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    # Check Capabilities
+    if ( !logged_in? || !current_user.can?("delete", "users") )
+      redirect_to users_path
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
+    end
+
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }

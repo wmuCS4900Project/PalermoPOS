@@ -1,5 +1,10 @@
 <h1>New Category</h1>
+<% # Check capabilities
+if ( !logged_in? || !current_user.can?("create", "categories")) %>
+<p> Sorry, you don't have the capabilities to do that!</p>
 
+<% else %>
 <%= render 'form', category: @category %>
+<% end %>
 
 <%= link_to 'Back', categories_path %>

@@ -4,9 +4,13 @@
   <div class="wrapper has-sidebar-left">
     <%= render 'sidebars/orderside' %>
     <div class="container main-content">
-      
       <p id="notice"><%= notice %></p>
-      
+
+    <% # Check capabilities
+    if ( !logged_in? || !current_user.can?("edit", "orders")) %>
+      <p> Sorry, you don't have the capabilities to do that! <br/> You must be able to edit orders </p>
+
+    <% else %>   
       <h1>Cash Out Order <%= @order.id %></h1>
       
       <% @orderlines.each do |a| %>
@@ -59,7 +63,8 @@
           <%= submit_tag "Adjust for Discount" %>
         </div>
       <% end %>
-      <br>
+    <% end %>
+      <br />
       
       <%= "Select coupons:" %>
       <%= button_to "Clear Coupons", orders_cashout_url, class: 'btn', method: :get, params: { cid: "clear", id: @id  } %><br>

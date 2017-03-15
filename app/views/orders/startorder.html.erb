@@ -1,47 +1,53 @@
 <%= render 'bars/top' %>
+  <% # Check capabilities
+    if ( !logged_in? || !current_user.can?("create", "orders")) %>
+      <p> Sorry, you don't have the capabilities to do that </p>
 
-<%= form_tag("/orders/pickoptions", :method=>'post', :multipart => true) do %>
-<h1>New Order</h1>
+    <% else %>
 
-  Pick a User:
-  <select name = "user">
-    <% @users.each do |b| %>
-      <tr>
-        <option value="<%= b.id %>"><%= b.Name %></option>
-      </tr>
-    <% end %>
-  </select>
-  <br><br>
+  <%= form_tag("/orders/pickoptions", :method=>'post', :multipart => true) do %>
+  <h1>New Order</h1>
 
-  <% if !defined?(@custid) %>
-    Pick a Customer:
-    <select name = "customer">
-      <% @customers.each do |a| %>
+    Pick a User:
+    <select name = "user">
+      <% @users.each do |b| %>
         <tr>
-          <option value="<%= a.id %>"><%= a.FirstName %>&nbsp;<%= a.LastName %></option>
+          <option value="<%= b.id %>"><%= b.Name %></option>
         </tr>
       <% end %>
     </select>
     <br><br>
-  <% end %>
-  
-  <% for c in 1..8 do %>
-    <select name="items[]">
-      <% @products.each do |p| %>
-        <tr>
-          <option value="<%= p.id %>"><%= p.Name =%></option>
-        </tr>
-      <% end %>
-    </select>
-  <% end %>
-  
-  <%= hidden_field_tag :ordernum, @ordernum %>
 
-  
-  <br><br>
-  <div class="actions">
-    <%= submit_tag "Start New Order" %>
-  </div>
+    <% if !defined?(@custid) %>
+      Pick a Customer:
+      <select name = "customer">
+        <% @customers.each do |a| %>
+          <tr>
+            <option value="<%= a.id %>"><%= a.FirstName %>&nbsp;<%= a.LastName %></option>
+          </tr>
+        <% end %>
+      </select>
+      <br><br>
+    <% end %>
+    
+    <% for c in 1..8 do %>
+      <select name="items[]">
+        <% @products.each do |p| %>
+          <tr>
+            <option value="<%= p.id %>"><%= p.Name =%></option>
+          </tr>
+        <% end %>
+      </select>
+    <% end %>
+    
+    <%= hidden_field_tag :ordernum, @ordernum %>
+
+    
+    <br><br>
+    <div class="actions">
+      <%= submit_tag "Start New Order" %>
+    </div>
+  <% end %>
   
 <% end %><br>
 

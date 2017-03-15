@@ -6,7 +6,10 @@
     <div class="container main-content">
 
       <h1>Editing Product</h1>
-      
+    <% # Check capabilities
+      if ( !logged_in? || !current_user.can?("edit", "products")) %>
+      <p> Sorry, you don't have the capabilities to do that</p>
+      <% else %>
       <%= form_for(@product) do |f| %>
         <% if @product.errors.any? %>
           <div id="error_explanation">
@@ -52,7 +55,7 @@
         <div class="form-group">
           <%= f.submit "Commit Changes", class: "btn btn-primary" %>
         </div>
-        
+      <% end %>
       <% end %>
     </div>
   </div>
