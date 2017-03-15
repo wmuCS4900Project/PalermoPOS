@@ -40,14 +40,15 @@ namespace :import do
         
         # Save to database
         user.save!
+        
+        # Add admin role
+        user.add_role(:admin)
       end
-
-      # Add admin role
-      user.add_role(:admin)
 
       # Give all capabilities to admin
       role_id = Role.where(:name => :admin).pluck(:id)
 
-      Cap.new(:role_id => role_id, :action => "all", :object => "all")
+      @cap = Cap.create(:role_id => role_id, :action => "all", :object => "all")
+      @cap.save!
     end 
 end
