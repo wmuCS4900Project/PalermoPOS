@@ -80,11 +80,11 @@
         <br>
       <% end %>
       
-      <%# if !orderline.OptionCount.nil? %>
-        <%#<span class="itemleft">INGRD#</span>
-        <%#<span class="itemcenter"><%#= orderline.OptionCount %><%#</span>
+      <% if !orderline.OptionCount.nil? %>
+        <span class="itemleft">INGRD</span>
+        <span class="itemcenter"><%= orderline.OptionCount %></span>
         <br>
-      <%# end #%>
+      <% end %>
       
       <% if orderline.whole? %> <%#list the options if the product is whole %>
         <span class="itemleft">ALL</span>
@@ -93,7 +93,8 @@
             <%= "Plain" %>
           <% else %>
             <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options1 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
+            <% puts @dif.inspect %>
+            <% if !@dif.nil? %>
               <% @dif.each do |b| %>
                 <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
               <% end %>
@@ -113,7 +114,7 @@
             <%= "Plain" %>
           <% else %>
             <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options1 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
+            <% if !@dif.nil? %>
               <% @dif.each do |b| %>
                 <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
               <% end %>
@@ -132,7 +133,7 @@
             <%= "Plain" %>
           <% else %>
             <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options2 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
+            <% if !@dif.nil? %>
               <% @dif.each do |b| %>
                 <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
               <% end %>
@@ -152,7 +153,7 @@
             <%= "Plain" %>
           <% else %>
             <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options1 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
+            <% if !@dif.nil? %>
               <% @dif.each do |b| %>
                 <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
               <% end %>
@@ -170,7 +171,7 @@
             <%= "Plain" %>
           <% else %>
             <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options2 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
+            <% if !@dif.nil? %>
               <% @dif.each do |b| %>
                 <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
               <% end %>
@@ -188,7 +189,7 @@
             <%= "Plain" %>
           <% else %>
             <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options3 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
+            <% if !@dif.nil? %>
               <% @dif.each do |b| %>
                 <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
               <% end %>
@@ -206,7 +207,7 @@
             <%= "Plain" %>
           <% else %>
             <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options4 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
+            <% if !@dif.nil? %>
               <% @dif.each do |b| %>
                 <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
               <% end %>
