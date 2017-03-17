@@ -25,6 +25,11 @@
     <%= f.label :category_id %>
     <%= f.collection_select(:category_id, Category.all, :id, :Name, {}, {:class => "form-control"}) %>
   </div>
+  
+  <div class="field form-group">
+    <%= f.label :MinimumOptionCharge %>
+    <%= f.text_field :MinimumOptionCharge, :class => "form-control" %>
+  </div>
     
   <div class="field form-group">
     <%= f.label :Abbreviation %>
