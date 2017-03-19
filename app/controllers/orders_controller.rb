@@ -89,20 +89,12 @@ class OrdersController < ApplicationController
     end
     
     @order = Order.find(params[:order_id])
-    @orderlines = Orderline.where("order_id = ?",@order.id).all
-    
-    @subtotal = 0.0
-    @orderlines.each do |a|
-       @subtotal += a.ItemTotalCost
-    end
-
-    @order.Subtotal = @subtotal
-    @order.save!
-      
-    calc_taxes(@order.id)
     
     @product = Product.find(params[:product_id])
     @orderline = Orderline.create :product_id => @product.id, :order_id => @order.id, :ItemTotalCost => @product.Cost
+    
+    calc_order(@order.id)
+      
     redirect_to orders_chooseoptions_path(order_id: @order.id, orderline_id: @orderline.id)
   end
   
@@ -111,19 +103,7 @@ class OrdersController < ApplicationController
       redirect_to orders_path, :flash => { :notice => "No current order!" }
     end 
     
-    @order = Order.find(params[:order_id])
-    
-    @orderlines = Orderline.where("order_id = ?",@order.id).all
-    
-    @subtotal = 0.0
-    @orderlines.each do |a|
-       @subtotal += a.ItemTotalCost
-    end
-
-    @order.Subtotal = @subtotal
-    @order.save!
-      
-    calc_taxes(@order.id)
+    calc_order(params[:order_id])
     
     @orderid = params[:order_id]
     @pickup = params[:pickupordeliveryouter]
@@ -185,7 +165,7 @@ class OrdersController < ApplicationController
     
     @order.save!
     
-    calc_taxes(@order.id)
+    calc_order(@order.id)
     
     redirect_to orders_selectproduct_path(order_id: @order.id)
   end
@@ -193,19 +173,11 @@ class OrdersController < ApplicationController
   #a workaround to recalculate the order total if you delete an orderline
   def recalcForOrderlineDelete
     @order = Order.find(params[:order_id])
-    @orderlines = Orderline.where("order_id = ?",@order.id).all
-    
-    @order.Coupons = nil
-    
-    @subtotal = 0.0
-    @orderlines.each do |a|
-       @subtotal += a.ItemTotalCost
-    end
 
-    @order.Subtotal = @subtotal
-    @order.save!
-    puts "recalcing"
-    calc_taxes(@order.id)
+    @order.Coupons = nil
+
+    calc_order(@order.id)
+    
     redirect_to orders_selectproduct_path(:order_id => @order.id), :flash => { :notice => 'Order line deleted and coupons removed!' }
   end
   
@@ -224,16 +196,7 @@ class OrdersController < ApplicationController
     
     #direct back if there's no options in this category
     if @options.nil? || @options.size < 1
-      @orderlines = Orderline.where("order_id = ?",@order.id).all
-      
-      @subtotal = 0.0
-      @orderlines.each do |a|
-         @subtotal += a.ItemTotalCost
-      end
-  
-      @order.Subtotal = @subtotal
-      @order.save!
-      calc_taxes(@order.id)
+      calc_order(@order.id)
       redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "Item added to order!" }
       return
     end
@@ -282,18 +245,8 @@ class OrdersController < ApplicationController
     elsif(@orderline.quarters?)
       line_saver(@orderline, params[:options1], params[:options2], params[:options3], params[:options4])
     end
-    
-    @orderlines = Orderline.where("order_id = ?",@order.id).all
-    
-    @subtotal = 0.0
-    @orderlines.each do |a|
-       @subtotal += a.ItemTotalCost
-    end
-
-    @order.Subtotal = @subtotal
-    @order.save!
       
-    calc_taxes(@order.id)
+    calc_order(@order.id)
     redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "Item saved!" }
   end
   
@@ -328,18 +281,8 @@ class OrdersController < ApplicationController
       @newline.order_id = @order.id
       @newline.save!
     end
-    
-    @orderlines = Orderline.where("order_id = ?",@order.id).all
-    
-    @subtotal = 0.0
-    @orderlines.each do |a|
-       @subtotal += a.ItemTotalCost
-    end
-
-    @order.Subtotal = @subtotal
-    @order.save!
-      
-    calc_taxes(@order.id)
+  
+    calc_order(@order.id)
     
     redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "Items added to order!" }
     
@@ -403,6 +346,7 @@ class OrdersController < ApplicationController
     if Customer.exists?(lastname: 'Customer', firstname:  'Walk In')
       walk_in = Customer.where(lastname: 'Customer', firstname:  'Walk In')
       params[:custid] = walk_in[0].id
+      params[:mode] = "pickup"
       startorder
     else
       redirect_to orders_custsearch_path, :flash => {:danger => "No walk in customer in database"}
@@ -413,8 +357,15 @@ class OrdersController < ApplicationController
   #when a customer is selected, this runs to create the order before giving any order options in the selectproduct view
   def startorder
     if params[:custid].present?
-      @order = Order.create :PaidFor => false, :user_id => User.first.id, :customer_id => params[:custid]
-      puts @order.inspect
+      if params[:mode].present?
+        if params[:mode] == 'pickup'
+          @order = Order.create :PaidFor => false, :user_id => User.first.id, :IsDelivery => false, :customer_id => params[:custid]
+        elsif params[:mode] == 'delivery'
+          @order = Order.create :PaidFor => false, :user_id => User.first.id, :IsDelivery => true, :customer_id => params[:custid]
+        end
+      else
+        @order = Order.create :PaidFor => false, :user_id => User.first.id, :customer_id => params[:custid]
+      end
       redirect_to orders_selectproduct_path(order_id: @order.id)
       return
     else
