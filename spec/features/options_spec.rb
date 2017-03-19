@@ -4,10 +4,13 @@ require "rails_helper"
 describe "options tests", :type => :feature do
   
   before(:each) do
+    @c1 = FactoryGirl.create :category, :subs
+    @o1 = FactoryGirl.create :option, :sub1
+    @role1 = FactoryGirl.create :role, :admin
+    @role2 = FactoryGirl.create :role, :driver
+    @cap1 = FactoryGirl.create :cap, :all
     @u1 = FactoryGirl.create :user, :admin, id: "1", username: "admin", password: "admin123", Name: "admin"
     @u2 = FactoryGirl.create :user, id: "2", username: "user1", password: "user123", Name: "User1guy"
-    @c1 = FactoryGirl.create :category, :subs
-    @o1 = FactoryGirl.create :option, :subone
     visit '/login'
     sign_in_with('admin', 'admin123')
   end
@@ -35,7 +38,7 @@ describe "options tests", :type => :feature do
     expect(page).to have_content('Editing Option')
     expect(find_field('option[Name]').value).to eq 'Ham'
     fill_in 'option[Name]', with: 'Sausage'
-    expect(find_field('option[Cost]').value).to eq '1.0'
+    expect(find_field('option[Cost]').value).to eq '0.5'
     fill_in 'option[Cost]', with: '2'
     
     click_button 'Save Changes'
