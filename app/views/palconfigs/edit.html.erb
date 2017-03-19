@@ -1,0 +1,20 @@
+<%= render 'bars/top2' %>
+
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/managementside' %>
+    <div class="container main-content">
+      
+      <% if flash[:notice].present? %>
+        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
+      <% end %>
+      
+      
+      <h1>Editing Palconfig</h1>
+
+      <%= render 'form', palconfig: @palconfig %>
+
+    </div>
+  </div>
+</body>
+

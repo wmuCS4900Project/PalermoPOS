@@ -1,0 +1,37 @@
+<%= form_for(palconfig) do |f| %>
+  <% if palconfig.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(palconfig.errors.count, "error") %> prohibited this palconfig from being saved:</h2>
+
+      <ul>
+      <% palconfig.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name, class: "form-group-header" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :val1, class: "form-group-header" %>
+    <%= f.text_field :val1, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :val2, class: "form-group-header" %>
+    <%= f.text_field :val2, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :desc, class: "form-group-header" %>
+    <%= f.text_area :desc, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit "Save Config", class: "btn btn-primary"  %>
+  </div>
+<% end %>

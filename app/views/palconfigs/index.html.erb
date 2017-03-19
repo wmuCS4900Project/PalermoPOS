@@ -1,0 +1,45 @@
+
+<%= render 'bars/top2' %>
+
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/managementside' %>
+    <div class="container main-content">
+      
+      <% if flash[:notice].present? %>
+        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
+      <% end %>
+
+      <h1>Palconfigs</h1>
+      
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Val1</th>
+              <th>Val2</th>
+              <th>Desc</th>
+              <th colspan="1"></th>
+            </tr>
+          </thead>
+        
+          <tbody>
+            <% @palconfigs.each do |palconfig| %>
+              <tr>
+                <td><%= palconfig.name %></td>
+                <td><%= palconfig.val1 %></td>
+                <td><%= palconfig.val2 %></td>
+                <td><%= palconfig.desc %></td>
+                <td><%= link_to 'Edit', edit_palconfig_path(palconfig),  class: "btn btn-primary" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      
+      <br>
+      
+    </div>
+  </div>
+</body>
