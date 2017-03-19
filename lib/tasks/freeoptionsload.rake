@@ -88,7 +88,7 @@ namespace :freeoptionsload do
           @super = ["ham","capi%","salami","onion","pizza sauce","mushroom","pepperoni","green pepper","mozzer%"]
           @palermo = ["salami","capi%","ham","onion","pizza sauce","mozzer%"]
           @veg = ["mushroom","green olives","green pepper","onion","lettuce","tomatoes","salad%"]
-          @allmeat = ["ham","capi%","pepperoni","pizza sauce","mozzer%"]
+          @allmeat = ["ham","capi%","pepperoni","pizza sauce","mozzer%","salami"]
           @pizza = ["ham","pepperoni","pizza sauce","mozzer%"]
           @roastbeefcheese = ["roast beef","mozzer%"]
           @roastbeefdeluxe = ["roast beef","lettuce","tomatoes","onion","salad%","mozzer%"]
