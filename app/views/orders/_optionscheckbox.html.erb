@@ -1,7 +1,32 @@
 <style>
 .btn-group {
-  border: 1px solid black;
+  border: 1px dotted black;
   border-radius: 4px;
+  height: 3.7em;
+  margin: .1em .1em;
+}
+.panel-default {
+  padding: .1em;
+}
+.btn-group-2 {
+  margin: .05em;
+  height: 50%;
+}
+.nocheck {
+  display: none;
+}
+.btn-option {
+  padding: .3em;
+}
+.btn-parent {
+  width: 100%;
+  font-size: 1em;
+}
+.btn-child {
+  width: 47%;
+  height: 100%;
+  padding: .2em;
+  font-size: .7em;
 }
 </style>
 
@@ -14,55 +39,113 @@
     
     
       <% if a.ChildOf.nil? %> <%# normal button %>
-        <div class="btn-group" data-toggle="buttons">
-          <% if !currentops.nil? %>
-            <% if currentops.include?(a.id.to_s) %>
-              <label class="btn btn-option active">
-              <%= check_box_tag ops, a.id, true, id: ((lead + a.id.to_s).to_s) %><%= a.Abbreviation %>
-              </label>
-              <% else %>
-              <label class="btn btn-option">
-                <%= check_box_tag ops, a.id, false, id: ((lead + a.id.to_s).to_s) %><%= a.Abbreviation%>
-              </label>
-            <% end %>
-          <% else %>
-            <% if (@product.freeoptions).include?(a.id.to_s) %>
-              <label class="btn btn-option active">
-                <%= check_box_tag ops, a.id, true, id: ((lead + a.id.to_s).to_s) %><%= a.Abbreviation %>
-              </label>
+      
+        <% if Palconfig.where('name = ?', 'optiondisplay').first.val1 == 'long' %> <%# need to control the width on btn-group if we're using short optiondisplay %>
+          <div class="btn-group" data-toggle="buttons">
+        <% else %>
+          <div class="btn-group" style="width: 4em;" data-toggle="buttons">
+        <% end %>
+          <div class=".btn-group-2">
+            
+            <% if !currentops.nil? %>
+              <% if currentops.include?(a.id.to_s) %>
+                <label class="btn btn-option btn-parent active">
+                  <%= check_box_tag ops, a.id, true, id: ((lead + a.id.to_s).to_s), class: 'nocheck' %>
+                  <% if Palconfig.where('name = ?', 'optiondisplay').first.val1 == 'long' %>
+                    <%= a.Name %>
+                  <% else %>
+                    <%= a.Abbreviation %>
+                  <% end %>
+                </label>
+                <% else %>
+                <label class="btn btn-option btn-parent">
+                  <%= check_box_tag ops, a.id, false, id: ((lead + a.id.to_s).to_s), class: 'nocheck' %>
+                  <% if Palconfig.where('name = ?', 'optiondisplay').first.val1 == 'long' %>
+                    <%= a.Name %>
+                  <% else %>
+                    <%= a.Abbreviation %>
+                  <% end %>
+                </label>
+              <% end %>
             <% else %>
-              <label class="btn btn-option">
-                <%= check_box_tag ops, a.id, false, id: ((lead + a.id.to_s).to_s) %><%= a.Abbreviation%>
-              </label>
-            <% end %>
-          <% end %>
-          
-          <% @options.each do |b| %>
-            <% if b.ChildOf == a.id %>
-              <% @relatedoptions.push(lead + b.id.to_s) %>
-              <% if !currentops.nil? %>
-                <% if currentops.include?(b.id.to_s) %>
-                  <label class="btn btn-option active">
-                  <%= check_box_tag ops, b.id, true, id: ((lead + b.id.to_s).to_s) %><%= b.Abbreviation %>
-                  </label>
-                <% else %>
-                  <label class="btn btn-option">
-                    <%= check_box_tag ops, b.id, false, id: ((lead + b.id.to_s).to_s) %><%= b.Abbreviation%>
-                  </label>
-                <% end %>
+              <% if (@product.freeoptions).include?(a.id.to_s) %>
+                <label class="btn btn-option btn-parent active">
+                  <%= check_box_tag ops, a.id, true, id: ((lead + a.id.to_s).to_s), class: 'nocheck' %>
+                  <% if Palconfig.where('name = ?', 'optiondisplay').first.val1 == 'long' %>
+                    <%= a.Name %>
+                  <% else %>
+                    <%= a.Abbreviation %>
+                  <% end %>
+                </label>
               <% else %>
-                <% if (@product.freeoptions).include?(b.id.to_s) %>
-                  <label class="btn btn-option active">
-                    <%= check_box_tag ops, b.id, true, id: ((lead + b.id.to_s).to_s) %><%= b.Abbreviation %>
-                  </label>
+                <label class="btn btn-option btn-parent">
+                  <%= check_box_tag ops, a.id, false, id: ((lead + a.id.to_s).to_s), class: 'nocheck' %>
+                  <% if Palconfig.where('name = ?', 'optiondisplay').first.val1 == 'long' %>
+                    <%= a.Name %>
+                  <% else %>
+                    <%= a.Abbreviation %>
+                  <% end %>
+                </label>
+              <% end %>
+            <% end %>
+          </div>
+          
+          <div class=".btn-group-2">
+            <% @options.each do |b| %>
+              <% if b.ChildOf == a.id %>
+                <% @relatedoptions.push(lead + b.id.to_s) %>
+                <% if !currentops.nil? %>
+                  <% if currentops.include?(b.id.to_s) %>
+                    <label class="btn btn-option btn-child active">
+                    <%= check_box_tag ops, b.id, true, id: ((lead + b.id.to_s).to_s), class: 'nocheck' %>
+                    <% if b.Name.include?('Extra') %>
+                        <%= 'X' %>
+                      <% elsif b.Name.include?('Light') %>
+                        <%= 'LT' %>
+                      <% else %>
+                        <%= b.Abbreviation%>
+                      <% end %>
+                    </label>
+                  <% else %>
+                    <label class="btn btn-option btn-child">
+                      <%= check_box_tag ops, b.id, false, id: ((lead + b.id.to_s).to_s), class: 'nocheck' %>
+                      <% if b.Name.include?('Extra') %>
+                        <%= 'X' %>
+                      <% elsif b.Name.include?('Light') %>
+                        <%= 'LT' %>
+                      <% else %>
+                        <%= b.Abbreviation%>
+                      <% end %>
+                    </label>
+                  <% end %>
                 <% else %>
-                  <label class="btn btn-option">
-                    <%= check_box_tag ops, b.id, false, id: ((lead + b.id.to_s).to_s) %><%= b.Abbreviation%>
-                  </label>
+                  <% if (@product.freeoptions).include?(b.id.to_s) %>
+                    <label class="btn btn-option btn-child active">
+                      <%= check_box_tag ops, b.id, true, id: ((lead + b.id.to_s).to_s), class: 'nocheck' %>
+                      <% if b.Name.include?('Extra') %>
+                        <%= 'X' %>
+                      <% elsif b.Name.include?('Light') %>
+                        <%= 'LT' %>
+                      <% else %>
+                        <%= b.Abbreviation%>
+                      <% end %>
+                    </label>
+                  <% else %>
+                    <label class="btn btn-option btn-child">
+                      <%= check_box_tag ops, b.id, false, id: ((lead + b.id.to_s).to_s), class: 'nocheck' %>
+                      <% if b.Name.include?('Extra') %>
+                        <%= 'X' %>
+                      <% elsif b.Name.include?('Light') %>
+                        <%= 'LT' %>
+                      <% else %>
+                        <%= b.Abbreviation%>
+                      <% end %>
+                    </label>
+                  <% end %>
                 <% end %>
               <% end %>
             <% end %>
-          <% end %>
+          </div>
           
           <% if @relatedoptions.length > 1 %>
   
