@@ -34,12 +34,12 @@
           <% end %>
           <% if @orderline.halves? %>
             <li class="active"><a href="#halves" data-toggle="tab">Halves</a></li>
-          <% else %>
+          <% elsif Category.find(Product.find(@orderline.product_id).category_id).Splits == true %>
             <li><a href="#halves" data-toggle="tab">Halves</a></li>
           <% end %>
-          <% if @orderline.quarters? || (@orderline.splitstyle == nil) %>
+          <% if @orderline.quarters? %>
             <li class="active"><a href="#quarters" data-toggle="tab">Quarters</a></li>
-          <% else %>
+          <% elsif Category.find(Product.find(@orderline.product_id).category_id).Splits == true %>
             <li><a href="#quarters" data-toggle="tab">Quarters</a></li>
           <% end %>
         </ul>

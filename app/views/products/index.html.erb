@@ -35,7 +35,7 @@
                 <td><%= @categories.find(product.category_id).Name %></td>
                 <td><%= product.MinimumOptionCharge %></td>
                 <td><%= link_to 'Edit', edit_product_path(product), :class => "btn btn-primary" %></td>
-                <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary" %></td>
+                <td><%= link_to 'Delete', product, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary" %></td>
               </tr>
             <% end %>
           </tbody>

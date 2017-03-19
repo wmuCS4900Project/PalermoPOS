@@ -47,7 +47,7 @@
         <%= link_to 'Back', users_path %> | 
         <% if logged_in? %>
             <% if (current_user.can? "destroy", "users") %>
-              <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <%= link_to 'Delete', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
             <% end %> 
           <% end %>
    </div>

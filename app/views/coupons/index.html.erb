@@ -31,7 +31,7 @@
                 <td><%= coupon.DollarsOff %></td>
                 <td><%= coupon.PercentOff %></td>
                 <td><%= link_to 'Edit', edit_coupon_path(coupon), :class => "btn btn-primary" %></td>
-                <td><%= link_to 'Destroy', coupon, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary" %></td>
+                <td><%= link_to 'Delete', coupon, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary" %></td>
               </tr>
             <% end %>
           </tbody>

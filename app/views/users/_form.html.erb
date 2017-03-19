@@ -21,7 +21,7 @@
       @roles.each do |role| %>
       <p>
         <%= f.label role.name %> 
-        <%= check_box_tag 'roles[]', role.name, "false" %>
+        <%= check_box_tag 'roles[]', role.name %>
       </p>
       <% end
     end 

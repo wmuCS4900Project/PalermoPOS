@@ -1,9 +1,10 @@
 <style>
 .btn-group {
   border: 1px dotted black;
-  border-radius: 4px;
-  height: 3.7em;
+  border-radius: .3em;
+  height: 3.8em;
   margin: .1em .1em;
+  padding: .05em;
 }
 .panel-default {
   padding: .1em;
@@ -41,7 +42,7 @@
       <% if a.ChildOf.nil? %> <%# normal button %>
       
         <% if Palconfig.where('name = ?', 'optiondisplay').first.val1 == 'long' %> <%# need to control the width on btn-group if we're using short optiondisplay %>
-          <div class="btn-group" data-toggle="buttons">
+          <div class="btn-group" style="min-width: 4em;" data-toggle="buttons">
         <% else %>
           <div class="btn-group" style="width: 4em;" data-toggle="buttons">
         <% end %>

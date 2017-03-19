@@ -3,6 +3,9 @@
     width: 30%;
     min-width: 325px;
   }
+  .group-cust {
+    width: 55%;
+  }
   input.btn-lg {
     margin-top: 5px;
   }
@@ -18,6 +21,29 @@
   }
   .right {
     float: right;
+  }
+  .full {
+    width: 14%;
+  }
+  .results {
+    margin: .5em 0em;
+    padding: .2em;
+    overflow: hidden;
+    background: rgb(221, 221, 221);
+  }
+  .results-wrapper {
+    text-align: left;
+  }
+  .results-text {
+    font-size: 1.4em;
+    text-align: center;
+    line-height: 2em;
+  }
+  .clear {
+    clear: both;
+  }
+  .btn-primary {
+    border-radius: 0em;
   }
 </style>
 
@@ -63,11 +89,20 @@
       <% end %>
       
       
-      <div class="btn-group group left">
+      <div class="btn-group group left group-cust">
         <% if defined?(@results) && @results.size > 0 %>
           <h1>Results</h1>
           <% @results.each do |a| %>
-            <%= link_to (a.FirstName.to_s + " " + a.LastName.to_s + " - " + a.Phone.to_s + " - " + a.AddressNumber.to_s + " " + a.StreetName.to_s), orders_startorder_path(custid: a.id), class: "btn btn-primary" %> <br>
+          <div class="results">
+            <div class="results-text left">
+              <div class="results-wrapper">
+                <%= a.FirstName.to_s + " " + a.LastName.to_s + " - " + number_to_phone(a.Phone) + " - " + a.AddressNumber.to_s + " " + a.StreetName.to_s %>
+              </div>
+            </div>
+            <%= link_to "Delivery", orders_startorder_path(custid: a.id, mode: "delivery") , class: "btn btn-primary full right" %>
+            <%= link_to  'Pickup', orders_startorder_path(custid: a.id, mode: "pickup"), class: "btn btn-primary full right" %>
+            
+          </div>
           <% end %>
         <% end %>
       </div>
