@@ -19,14 +19,14 @@ class ApplicationController < ActionController::Base
     redirect_to '/default/index'
   end
   
-  before_filter :require_login
+   before_filter :require_login
 
-private
-
-  def require_login
-    unless current_user || (request.path == login_path) || (request.path == signup_path)
-      puts request.path.inspect
-      redirect_to login_path, :flash => { :danger => "You must be logged in!" }
+  private
+    def require_login
+      unless current_user || (request.path == login_path) || (request.path == signup_path)
+        puts request.path.inspect
+        redirect_to login_path, :flash => { :danger => "You must be logged in!" }
+      end
     end
   end
 

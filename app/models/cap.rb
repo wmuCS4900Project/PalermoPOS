@@ -1,3 +1,3 @@
 class Cap < ApplicationRecord
-	belongs_to :roles
+	belongs_to :role
 end

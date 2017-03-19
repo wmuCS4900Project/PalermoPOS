@@ -32,10 +32,11 @@ namespace :import do
   desc "Create admin if not exists, add admin role with all capabilities"
     task :admin, [:filename] => :environment do
       # Create admin if needed
-      user = User.where(:username => 'admin')
+      user = User.find_by(:username => 'admin')
 
-      if user.empty?
+      if user == nil
         # Create active record
+        
         user = User.new(:username => 'admin', :Name => "Admin", :password => "Palermo123")
         
         # Save to database
@@ -43,12 +44,15 @@ namespace :import do
         
         # Add admin role
         user.add_role(:admin)
+
       end
 
       # Give all capabilities to admin
-      role_id = Role.where(:name => :admin).pluck(:id)
+      role_id = Role.find_by(:name => :admin).id
+
 
       @cap = Cap.create(:role_id => role_id, :action => "all", :object => "all")
       @cap.save!
+
     end 
 end
