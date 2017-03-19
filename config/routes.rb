@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :palconfigs
   resources :customers
   get 'sessions/new'
   get 'users/new'
