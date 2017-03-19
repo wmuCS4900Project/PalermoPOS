@@ -38,10 +38,12 @@ class UsersController < ApplicationController
     @user = User.new( args )
       if @user.save
         # Add Roles that were checked
-        roles = params["roles"]
+        if params["roles"].present?
+          roles = params["roles"]
 
-        roles.each do |role|
-          @user.add_role(role)
+          roles.each do |role|
+            @user.add_role(role)
+          end
         end
 
         flash[:success] = "User successfully added"
