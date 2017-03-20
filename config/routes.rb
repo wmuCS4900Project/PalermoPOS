@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   post "orders/pickoptions" => 'orders#pickoptions'
   get "orders/cashout" => 'orders#cashout'
   get "orders/all" => 'orders#all'
+  get "orders/changeorder" => 'orders#changeorder'
   post "orders/cashedout" => 'orders#cashedout'
   post "orders/confirmorder" => 'orders#confirmorder'
   get "orders/custsearch" => 'orders#custsearch'

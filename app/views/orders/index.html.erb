@@ -34,7 +34,7 @@
                     <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br></td>
                     <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
                     <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ), class: "btn btn-primary" %></td>
-                    <td><%= link_to 'Edit', orders_selectproduct_path(order_id: order.id), class: "btn btn-primary" %></td>
+                    <td><%= link_to 'Edit', orders_changeorder_path(order_id: order.id), class: "btn btn-primary" %></td>
                     <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" %></td>
                     <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" %></td>
                   </tr>

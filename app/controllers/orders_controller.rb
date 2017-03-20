@@ -6,6 +6,10 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
+    if ( !logged_in? || !current_user.can?("view", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+      
     @customers = Customer.all
     @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
     @cancelled = Order.where("Cancelled IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
@@ -14,16 +18,27 @@ class OrdersController < ApplicationController
   end
   
   def pickup
+    if ( !logged_in? || !current_user.can?("view", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     @customers = Customer.all
     @orders = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND IsDelivery IS false AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
   end
   
   def delivery
+    if ( !logged_in? || !current_user.can?("view", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     @customers = Customer.all
     @orders = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND IsDelivery IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
   end
   
   def oldorders
+    if ( !logged_in? || !current_user.can?("view", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
     
     if !params[:startdate].present? && !params[:enddate].present? && !params[:thisdate].present?
       render :oldorders
@@ -69,7 +84,24 @@ class OrdersController < ApplicationController
     
   end
   
+  #in-between for editting orders so we can check "edit" and "orders" in cancan while keeping the actual order functions under "create"
+  def changeorder
+    if ( !logged_in? || !current_user.can?("edit", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
+    if !params[:order_id].present?
+      redirect_to orders_path, :flash => { :notice => "No current order!" }
+      return
+    end
+    redirect_to controller: 'orders', action: 'selectproduct', order_id: params[:order_id]
+  end
+  
   def selectproduct
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
       return
@@ -80,6 +112,10 @@ class OrdersController < ApplicationController
   
   #creates a new product when selected on the orders page
   def addproducttoorder
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
       return
@@ -99,6 +135,10 @@ class OrdersController < ApplicationController
   end
   
   def commitorder
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
     end 
@@ -123,6 +163,10 @@ class OrdersController < ApplicationController
   end
   
   def selectcoupons
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
     end
@@ -131,6 +175,10 @@ class OrdersController < ApplicationController
   end
   
   def addcoupons
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
     end
@@ -172,6 +220,10 @@ class OrdersController < ApplicationController
   
   #a workaround to recalculate the order total if you delete an orderline
   def recalcForOrderlineDelete
+    if ( !logged_in? || !current_user.can?("delete", "orderlines"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     @order = Order.find(params[:order_id])
 
     @order.Coupons = nil
@@ -183,6 +235,10 @@ class OrdersController < ApplicationController
   
   #view handles selection of options for an orderline
   def chooseoptions
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
     elsif !params[:orderline_id].present?
@@ -209,6 +265,9 @@ class OrdersController < ApplicationController
   
   #saves any options selected in the chooseoptions view
   def addoptions
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
     
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
@@ -252,6 +311,9 @@ class OrdersController < ApplicationController
   
   #adds the orderlines from the previously placed order to the current order. no check for paid/cancelled/refunded status
   def addPreviousOrderItems
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
     
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No order selected!" }
@@ -289,6 +351,10 @@ class OrdersController < ApplicationController
   end
   
   def all
+    if ( !logged_in? || !current_user.can?("view", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     @customers = Customer.all
     @pending = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false")
     @cancelled = Order.where("Cancelled IS true")
@@ -299,6 +365,10 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
+    if ( !logged_in? || !current_user.can?("view", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     @order = Order.find(params[:id])
     @customers = Customer.all
     @orderlines = Orderline.where("order_id = ?",@order.id).all
@@ -310,6 +380,10 @@ class OrdersController < ApplicationController
   # GET /orders/custsearch
   #first step in creating a new order. page includes a "walk in customer" button. calls itself again for a search, displaying results
   def custsearch
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     @users = User.all
     c = params[:criteria]
     crit = params[:searchcriteria]
@@ -343,6 +417,10 @@ class OrdersController < ApplicationController
   
   # GET /orders/walkin
   def walkin
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     if Customer.exists?(lastname: 'Customer', firstname:  'Walk In')
       walk_in = Customer.where(lastname: 'Customer', firstname:  'Walk In')
       params[:custid] = walk_in[0].id
@@ -356,6 +434,10 @@ class OrdersController < ApplicationController
   # GET /orders/startorder
   #when a customer is selected, this runs to create the order before giving any order options in the selectproduct view
   def startorder
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     if params[:custid].present?
       if params[:mode].present?
         if params[:mode] == 'pickup'
@@ -377,6 +459,10 @@ class OrdersController < ApplicationController
   #get receipt
   #handles display and auto-print for receipt printer
   def receipt
+    if ( !logged_in? || !current_user.can?("view", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     @order = Order.find(params[:id])
     @products = Product.all
     @options = Option.all
@@ -394,6 +480,9 @@ class OrdersController < ApplicationController
 
   #generates the cashout page for an order. calls itself over and over to handle tips, adjustments, or coupons if they are added.
   def cashout
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
     
     if !params[:id].present?
       redirect_to orders_url
@@ -447,6 +536,9 @@ class OrdersController < ApplicationController
   
   #displays final cashout amounts including change and tip
   def cashedout
+    if ( !logged_in? || !current_user.can?("create", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
     
     if !params[:id].present?
       redirect_to orders_url
@@ -505,6 +597,10 @@ class OrdersController < ApplicationController
   # DELETE /orders/1
   # DELETE /orders/1.json
   def destroy
+    if ( !logged_in? || !current_user.can?("destroy", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+    end
+    
     @order.destroy
     respond_to do |format|
       format.html { redirect_to orders_url, notice: 'Order was successfully destroyed.' }
