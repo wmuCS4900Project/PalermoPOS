@@ -15,11 +15,6 @@
   <div class="wrapper has-sidebar-left">
     <%= render 'sidebars/optionside' %>
     <div class="container main-content">
-      
-      <% if flash[:notice].present? %>
-        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
-      <% end %>
-
       <h1>Editing All Option</h1>
       
       <%= form_tag("/options/changeallapply", :method=>'post', :multipart => true) do %>

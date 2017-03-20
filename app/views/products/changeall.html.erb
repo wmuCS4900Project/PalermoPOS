@@ -15,11 +15,6 @@
   <div class="wrapper has-sidebar-left">
     <%= render 'sidebars/productside' %>
     <div class="container main-content">
-      
-      <% if flash[:notice].present? %>
-        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
-      <% end %>
-
       <h1>Editing All Products</h1>
       
       <%= form_tag("/products/changeallapply", :method=>'post', :multipart => true) do %>

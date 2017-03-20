@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  # Flash messages
+   use_growlyflash
+
   # GET /users
   # GET /users.json
   def index
