@@ -126,13 +126,14 @@ a:hover {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-	background-color: rgb(221, 221, 221);
-	background-clip: border-box;
+	border-right-width: .15em;
+	border-top-width: .15em;
+	border-left-width: .15em;
+	background-color: white;
 }
 .nav-tabs > li > a:hover,
 .nav-tabs > li > a:focus {
-	background-color: rgb(221, 221, 221);
-	background-clip: border-box;
+	background-color: white;
 }
 .nav-tabs {
 	border: none;
