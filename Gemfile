@@ -9,10 +9,11 @@ gem 'schema_to_scaffold'
 # MYSQL for database interaction
 gem 'mysql2'
 
-
-
 # Used for maintaining and enforcing roles
 gem "rolify"
+
+# Growl-like notifications using flash messages
+gem 'growlyflash'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
