@@ -8,12 +8,7 @@
     if ( !logged_in? || !current_user.can?("edit", "orders")) %>
       <p> Sorry, you don't have the capabilities to do that </p>
 
-    <% else %>
-      
-      <% if flash[:notice].present? %>
-        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
-      <% end %>
-      
+    <% else %>    
       <h1>Current Order</h1>
       <%= render 'currentorderbox', order: @order %>
       

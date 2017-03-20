@@ -4,11 +4,6 @@
   <div class="wrapper has-sidebar-left">
     <%= render 'sidebars/optionside', locals: {category_id: @category_id } %>
     <div class="container main-content">
-      
-      <% if flash[:notice].present? %>
-        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
-      <% end %>
-      
       <h1>Options</h1>
       
       <div class="table">
