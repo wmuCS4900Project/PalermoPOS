@@ -52,6 +52,9 @@ Rails.application.routes.draw do
   # Route Signup to new users page
   get  '/signup',  to: 'users#new'
 
+  resources :caps, :path => "capabilities"
+  resources :roles
+
   # Route Logins to Sessions controller
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
