@@ -15,7 +15,7 @@ ul {
 	border-bottom: 1px solid #888;
 	font-size: 1.2em;
 	top: -5px;
-	left: -5px;
+	left: -4px;
 }
 </style>
 
@@ -45,26 +45,16 @@ ul {
         
         <%= render 'currentorderbox', order: @order %>
         
-        <div>
-          <ul class="nav nav-tabs">
-            <% @categories.each do |cat| %>
-              <li><%= link_to cat.Abbreviation, ("#" + cat.Name.gsub(/\s+/, "")), { 'data-toggle' => 'tab' } %></li>
-            <% end %>
-          </ul>
-          
+        <h2>Select Coupons</h2>
         
-          <div class="tab-content">
-            <% @categories.each do |cat| %>
-              <%= content_tag :div, :class => "tab-pane", :id => cat.Name.gsub(/\s+/, "") do -%>
-                <p>
-                  <% Product.where("category_id = ?", cat.id).each do |p| %>
-                    <%= link_to p.Name, orders_addproducttoorder_path(order_id: @order.id, product_id: p.id), method: :post, class: "btn btn-product" %>
-                  <% end %>
-                </p>
-              <% end -%>
-            <% end %>
-          </div>
+        <div class="tab-content">
+            <%= link_to "Return to Product Selection", orders_selectproduct_url(order_id: @order.id), method: :get, class: 'btn btn-primary' %>
+            <%= link_to "Clear Coupons", orders_addcoupons_url(cid: "clear", order_id: @order.id), method: :post, class: 'btn btn-primary' %><br>
+          <% Coupon.all.each do |c| %>
+            <%= link_to "Apply " + c.Name, orders_addcoupons_url(cid: c.id, order_id: @order.id), method: :post, class: 'btn btn-product' %>
+          <% end %>
         </div>
+        
       <% end %>
     </div>
   </div>

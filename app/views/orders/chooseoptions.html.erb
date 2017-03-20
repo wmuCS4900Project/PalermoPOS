@@ -8,8 +8,19 @@
     if ( !logged_in? || !current_user.can?("edit", "orders")) %>
       <p> Sorry, you don't have the capabilities to do that </p>
 
-    <% else %>    
-      <h1>Current Order</h1>
+    <% else %>
+      
+      <% if flash[:notice].present? %>
+        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
+      <% end %>
+      
+      <h1>
+          <%= "Current Order for " %>
+          <%= Customer.find(@order.customer_id).FirstName %>
+          <%= " " %>
+          <%= Customer.find(@order.customer_id).LastName %>
+      </h1>
+        
       <%= render 'currentorderbox', order: @order %>
       
       <div>

@@ -125,7 +125,7 @@ RSpec.describe OrdersController, :type => :controller do
       @c1 = FactoryGirl.create :customer, :one 
       @c2 = FactoryGirl.create :customer, :two
       @c3 = FactoryGirl.create :customer, :three
-      @cat1 = FactoryGirl.create :category, :one
+      @cat1 = FactoryGirl.create :category, :pizza
       @prod2 = FactoryGirl.create :product, :two
       
       @o1 = FactoryGirl.create :order, :pending, :new, user: @u1, customer: @c1

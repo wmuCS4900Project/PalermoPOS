@@ -18,7 +18,11 @@ Rails.application.routes.draw do
   post "options/changeallapply" => 'options#changeallapply'
   resources :options
   
+  post "coupons/save" => 'coupons#save'
   resources :coupons
+  
+  resources :caps
+  resources :roles
   
   get "management" => 'management#index'
   get "management/cashoutdrivers" => 'management#cashoutdrivers'
@@ -44,6 +48,9 @@ Rails.application.routes.draw do
   get "orders/startorder" => 'orders#startorder'
   get "orders/pending" => 'orders#pending'
   get "orders/walkin" => 'orders#walkin'
+  get "orders/selectcoupons" => 'orders#selectcoupons'
+  post "orders/addcoupons" => 'orders#addcoupons'
+  get "orders/recalcForOrderlineDelete" => 'orders#recalcForOrderlineDelete'
   
   resources :orders
 

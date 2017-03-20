@@ -1,14 +1,14 @@
 FactoryGirl.define do
   factory :category do
     
-    trait :one do
+    trait :pizza do
       id "1"
       Name "12 Inch Pizzas"
       Splits "1"
       created_at { DateTime.now }
     end
     
-    trait :two do
+    trait :subs do
       id "7"
       Name "Subs"
       Splits "0"
@@ -16,5 +16,4 @@ FactoryGirl.define do
     end
     
   end
-      
 end
