@@ -3,10 +3,21 @@
     <ul class="nav">
       
       <li>
-        <% if request.path == "/coupons" %>
-          <%= link_to "Coupons", coupons_path, class: "active nav-item" %><span class="active-arrow"></span>
-        <% else %>
-          <%= link_to "Coupons", coupons_path, class: "nav-item" %>
+        <% if ( current_user.can?("view", "coupons")) %>
+          <% if request.path == "/coupons" %>
+            <%= link_to "All Coupons", coupons_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "All Coupons", coupons_path, class: "nav-item" %>
+          <% end %>
+        <% end %>
+      </li>
+      <li>
+        <% if ( current_user.can?("create", "coupons")) %>
+          <% if request.path == "/coupons" %>
+            <%= link_to "New Coupon", new_coupons_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "New Coupon", new_coupons_path, class: "nav-item" %>
+          <% end %>
         <% end %>
       </li>
 

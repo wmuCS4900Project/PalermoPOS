@@ -1,29 +1,85 @@
 FactoryGirl.define do
   factory :option do
-    trait :subone do
-      category_id "7"
+    
+    trait :sub1 do
+      category_id "2"
       id "1"
       Name "Ham"
-      Cost "1"
+      Cost ".5"
     end
-    trait :subtwo do
-      category_id "7"
+    trait :sub2 do
+      category_id "2"
       id "2"
       Name "Sausage"
-      Cost "1.5"
+      Cost ".5"
     end
-    
-    trait :pizzaone do
-      category_id "1"
+    trait :sub3 do
+      category_id "2"
       id "3"
       Name "Pepperoni"
-      Cost "2"
+      Cost ".5"
     end
-    trait :pizzatwo do
-      category_id "1"
+    trait :sub4 do
+      category_id "2"
       id "4"
       Name "Onion"
       Cost ".5"
+    end
+    trait :sub5 do
+      category_id "2"
+      id "5"
+      Name "Mushroom"
+      Cost ".5"
+    end
+    trait :sub6 do
+      category_id "2"
+      id "6"
+      Name "Extra Cheese"
+      Cost "1"
+    end
+      
+    
+    trait :pizza1 do
+      category_id "1"
+      id "7"
+      Name "Ham"
+      Cost "1"
+      Abbreviation 'Ham'
+    end
+    trait :pizza2 do
+      category_id "1"
+      id "8"
+      Name "Sausage"
+      Cost "1"
+      Abbreviation 'Sau'
+    end
+    trait :pizza3 do
+      category_id "1"
+      id "9"
+      Name "Pepperoni"
+      Cost "1"
+      Abbreviation 'Pep'
+    end
+    trait :pizza4 do
+      category_id "1"
+      id "10"
+      Name "Onion"
+      Cost "1"
+      Abbreviation 'Oni'
+    end
+    trait :pizza5 do
+      category_id "1"
+      id "11"
+      Name "Mushroom"
+      Cost "1"
+      Abbreviation 'Mus'
+    end
+    trait :pizza6 do
+      category_id "1"
+      id "12"
+      Name "Extra Cheese"
+      Cost "2"
+      Abbreviation 'xCHS'
     end
   end
 end

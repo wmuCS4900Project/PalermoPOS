@@ -1,0 +1,1 @@
+json.partial! "palconfigs/palconfig", palconfig: @palconfig

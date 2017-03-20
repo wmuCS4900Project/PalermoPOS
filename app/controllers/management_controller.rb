@@ -27,6 +27,17 @@ class ManagementController < ApplicationController
     
   end
   
+  def palconfig
+    @palconfigs = Palconfig.all
+  end
+  
+  def palconfigedit
+    
+    @palconfig = Palconfig.find(c)
+    
+  end
+  
+  
   
   #end of day print out page to show sales totals and breakdowns by item
   def endofday
@@ -35,6 +46,11 @@ class ManagementController < ApplicationController
     @cancelled = Order.where("Cancelled IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
     @completed = Order.where("PaidFor IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
     @refunded = Order.where("Refunded IS true AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all
+    
+    if @pending.size > 0
+      redirect_to management_path, :flash => { :notice => "You may not do End of Day while any orders are still pending!" }    
+    end
+    
     
     productCount = ActiveRecord::Base.connection.exec_query(query)
     @cols = productCount.columns
