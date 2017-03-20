@@ -2,24 +2,39 @@
   <div class="navbar">
     <ul class="nav">
       <li>
-        <% if request.path == management_path %>
-          <%= link_to "Management", management_path, class: "active nav-item" %><span class="active-arrow"></span>
-        <% else %>
-          <%= link_to "Management", management_path, class: "nav-item" %>
+        <% if ( current_user.can?("view", "management")) %>
+          <% if request.path == management_path %>
+            <%= link_to "Management", management_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "Management", management_path, class: "nav-item" %>
+          <% end %>
         <% end %>
       </li>
       <li>
-        <% if request.path == management_cashoutdrivers_path %>
-          <%= link_to "Cash out drivers", management_cashoutdrivers_path, class: "active nav-item" %><span class="active-arrow"></span>
-        <% else %>
-          <%= link_to "Cash out drivers", management_cashoutdrivers_path, class: "nav-item" %>
+        <% if ( current_user.can?("view", "management")) %>
+          <% if request.path == management_cashoutdrivers_path %>
+            <%= link_to "Cash out drivers", management_cashoutdrivers_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "Cash out drivers", management_cashoutdrivers_path, class: "nav-item" %>
+          <% end %>
         <% end %>
       </li>
       <li>
-        <% if request.path == management_endofday_path %>
-          <%= link_to "End of day", management_endofday_path, class: "active nav-item" %><span class="active-arrow"></span>
-        <% else %>
-          <%= link_to "End of day", management_endofday_path, class: "nav-item" %>
+        <% if ( current_user.can?("view", "management")) %>
+          <% if request.path == management_endofday_path %>
+            <%= link_to "End of day", management_endofday_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "End of day", management_endofday_path, class: "nav-item" %>
+          <% end %>
+        <% end %>
+      </li>
+      <li>
+        <% if ( current_user.can?("view", "configurations")) %>
+          <% if request.path == "/palconfigs" %>
+            <%= link_to "Configurations", palconfigs_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "Configurations", palconfigs_path, class: "nav-item" %>
+          <% end %>
         <% end %>
       </li>
     </ul>

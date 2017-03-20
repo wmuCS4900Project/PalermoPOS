@@ -1,0 +1,1 @@
+json.array! @palconfigs, partial: 'palconfigs/palconfig', as: :palconfig

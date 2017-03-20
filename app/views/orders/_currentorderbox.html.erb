@@ -2,26 +2,48 @@
 .orderinfo1 {
 	float: left;
 	width: 40%;
-	height: 200px;
-	border: 2px solid black;
+	height: 100%;
+	border-left: 2px solid black;
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	border-right: 1px solid black;
 	overflow: auto;
-
 }
 .orderinfo2 {
 	float: left;
-	width: 30%;
-	height: 200px;
-	border: 2px solid black;
+	width: 16%;
+	height: 100%;
+	border-left: 1px solid black;
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	border-right: 1px solid black;
 	overflow: auto;
 	padding: 3px;
 }
-.orderinfo3{
+.orderinfo3{ <%# actually the fourth window %>
 	float: left;
-	height: 200px;
-	width: 29%;
-	border: 2px solid black;
+	height: 100%;
+	width: 21%;
+	border-left: 1px solid black;
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	border-right: 2px solid black;
 	overflow: auto;
 	padding: 3px;
+}
+.orderinfo4 { <%# actually the third window %>
+  float: left;
+	width: 23%;
+	height: 100%;
+	border-left: 1px solid black;
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	border-right: 1px solid black;
+	overflow: auto;
+	padding: 3px;
+}
+.orderitems {
+  font-size: 1.1em;
 }
 .item{
 	border: 1px dotted black;
@@ -53,243 +75,274 @@
 .btn-smaller {
   font-size: 1em;
 }
+.dlvpickup {
+  margin: .1em;
+}
+.orderstuff1 {
+  height: 15em;
+  width: 100%;
+  overflow: hidden;
+}
+.orderstuff2 {
+  clear: both;
+  margin-bottom: .2em;
+}
 </style>
 
-<div class="orderinfo1">
-
-  <% Orderline.where("order_id = ?", @order.id).each do |orderline| %>
-    <div class="item">
-      <span class="itemleft">PRODUCT</span>
-      <span class="itemcenter"><%= Product.find(orderline.product_id).Name %></span>
-      <span class="itembuttons">
-        <%= link_to "Modify", orders_chooseoptions_path(order_id: @order.id, orderline_id: orderline.id), class: "btn btn-primary" %>
-        <%= link_to "Delete", orderline, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
-      </span>
-        <span class="itemcost"><%= number_to_currency(orderline.ItemTotalCost) %></span>
-      <br>
-      
-      <% if orderline.HowCooked != "normal" %>
-        <span class="itemleft">COOK IT</span>
-        <span class="itemcenter"><%= orderline.HowCooked.humanize %></span>
-        <br>
-      <% end %>
-      
-      <% if orderline.Comments.length > 1 %>
-        <span class="itemleft">NOTES</span>
-        <span class="itemcenter"><%= orderline.Comments %></span>
-        <br>
-      <% end %>
-      
-      <%# if !orderline.OptionCount.nil? %>
-        <%#<span class="itemleft">INGRD#</span>
-        <%#<span class="itemcenter"><%#= orderline.OptionCount %><%#</span>
-        <br>
-      <%# end #%>
-      
-      <% if orderline.whole? %> <%#list the options if the product is whole %>
-        <span class="itemleft">ALL</span>
-        <span class="itemcenter">
-          <% if orderline.Options1.nil? %>  <%# tried to move this block to an html partial and for some reason the Options1 array will NOT pass in %>
-            <%= "Plain" %>
-          <% else %>
-            <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options1 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
-              <% @dif.each do |b| %>
-                <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
-              <% end %>
-            <% end %>
-            <% orderline.Options1.each do |b| %>
-              <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                <%= Option.find(b).Abbreviation %>
-              <% end %>
-            <% end %>
-          <% end %>
+<div class="orderstuff1">
+  <div class="orderinfo1">
+  
+    <% Orderline.where("order_id = ?", @order.id).each do |orderline| %>
+      <div class="item">
+        <span class="itemleft">PRODUCT</span>
+        <span class="itemcenter"><%= Product.find(orderline.product_id).Name %></span>
+        <span class="itembuttons">
+          <%= link_to "Modify", orders_chooseoptions_path(order_id: @order.id, orderline_id: orderline.id), class: "btn btn-primary" %>
+          <%= link_to "Delete", orderline, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
         </span>
+          <span class="itemcost"><%= number_to_currency(orderline.ItemTotalCost) %></span>
+        <br>
         
-      <% elsif orderline.halves? %> <%#list the options if the product is split in halves %>
-        <span class="itemleft">TOP</span>
-        <span class="itemcenter">
-          <% if orderline.Options1.nil? %> 
-            <%= "Plain" %>
-          <% else %>
-            <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options1 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
-              <% @dif.each do |b| %>
-                <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
-              <% end %>
-            <% end %>
-            <% orderline.Options1.each do |b| %>
-              <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                <%= Option.find(b).Abbreviation %>
-              <% end %>
-            <% end %>
-          <% end %>
-        </span>
-        <br>
-        <span class="itemleft">BOTTOM</span>
-        <span class="itemcenter">
-          <% if orderline.Options2.nil? %> 
-            <%= "Plain" %>
-          <% else %>
-            <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options2 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
-              <% @dif.each do |b| %>
-                <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
-              <% end %>
-            <% end %>
-            <% orderline.Options2.each do |b| %>
-              <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                <%= Option.find(b).Abbreviation %>
-              <% end %>
-            <% end %>
-          <% end %>
-        </span>
+        <% if orderline.HowCooked != "normal" %>
+          <span class="itemleft">COOK IT</span>
+          <span class="itemcenter"><%= orderline.HowCooked.humanize %></span>
+          <br>
+        <% end %>
         
-      <% elsif orderline.quarters? %> <%#list the options if the product is split in quarters %>
-        <span class="itemleft">Quarter 1</span>
-        <span class="itemcenter">
-          <% if orderline.Options1.nil? %> 
-            <%= "Plain" %>
-          <% else %>
-            <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options1 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
-              <% @dif.each do |b| %>
-                <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+        <% if orderline.Comments.length > 1 %>
+          <span class="itemleft">NOTES</span>
+          <span class="itemcenter"><%= orderline.Comments %></span>
+          <br>
+        <% end %>
+        
+        <% if !orderline.OptionCount.nil? %>
+          <span class="itemleft">INGRD</span>
+          <span class="itemcenter"><%= orderline.OptionCount %></span>
+          <br>
+        <% end %>
+        
+        <% if orderline.whole? %> <%#list the options if the product is whole %>
+          <span class="itemleft">ALL</span>
+          <span class="itemcenter">
+            <% if orderline.Options1.nil? %>  <%# tried to move this block to an html partial and for some reason the Options1 array will NOT pass in %>
+              <%= "Plain" %>
+            <% else %>
+              <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options1 %> <%# grab any removed free items %>
+              <% puts @dif.inspect %>
+              <% if !@dif.nil? %>
+                <% @dif.each do |b| %>
+                  <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                <% end %>
+              <% end %>
+              <% orderline.Options1.each do |b| %>
+                <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                  <%= Option.find(b).Abbreviation %>
+                <% end %>
               <% end %>
             <% end %>
-            <% orderline.Options1.each do |b| %>
-              <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                <%= Option.find(b).Abbreviation %>
+          </span>
+          
+        <% elsif orderline.halves? %> <%#list the options if the product is split in halves %>
+          <span class="itemleft">TOP</span>
+          <span class="itemcenter">
+            <% if orderline.Options1.nil? %> 
+              <%= "Plain" %>
+            <% else %>
+              <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options1 %> <%# grab any removed free items %>
+              <% if !@dif.nil? %>
+                <% @dif.each do |b| %>
+                  <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                <% end %>
+              <% end %>
+              <% orderline.Options1.each do |b| %>
+                <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                  <%= Option.find(b).Abbreviation %>
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
-        </span><br>
-        <span class="itemleft">Quarter 2</span>
-        <span class="itemcenter">
-          <% if orderline.Options2.nil? %> 
-            <%= "Plain" %>
-          <% else %>
-            <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options2 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
-              <% @dif.each do |b| %>
-                <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+          </span>
+          <br>
+          <span class="itemleft">BOTTOM</span>
+          <span class="itemcenter">
+            <% if orderline.Options2.nil? %> 
+              <%= "Plain" %>
+            <% else %>
+              <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options2 %> <%# grab any removed free items %>
+              <% if !@dif.nil? %>
+                <% @dif.each do |b| %>
+                  <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                <% end %>
+              <% end %>
+              <% orderline.Options2.each do |b| %>
+                <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                  <%= Option.find(b).Abbreviation %>
+                <% end %>
               <% end %>
             <% end %>
-            <% orderline.Options2.each do |b| %>
-              <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                <%= Option.find(b).Abbreviation %>
+          </span>
+          
+        <% elsif orderline.quarters? %> <%#list the options if the product is split in quarters %>
+          <span class="itemleft">Quarter 1</span>
+          <span class="itemcenter">
+            <% if orderline.Options1.nil? %> 
+              <%= "Plain" %>
+            <% else %>
+              <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options1 %> <%# grab any removed free items %>
+              <% if !@dif.nil? %>
+                <% @dif.each do |b| %>
+                  <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                <% end %>
+              <% end %>
+              <% orderline.Options1.each do |b| %>
+                <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                  <%= Option.find(b).Abbreviation %>
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
-        </span><br>
-        <span class="itemleft">Quarter 3</span>
-        <span class="itemcenter">
-          <% if orderline.Options3.nil? %> 
-            <%= "Plain" %>
-          <% else %>
-            <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options3 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
-              <% @dif.each do |b| %>
-                <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+          </span><br>
+          <span class="itemleft">Quarter 2</span>
+          <span class="itemcenter">
+            <% if orderline.Options2.nil? %> 
+              <%= "Plain" %>
+            <% else %>
+              <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options2 %> <%# grab any removed free items %>
+              <% if !@dif.nil? %>
+                <% @dif.each do |b| %>
+                  <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                <% end %>
+              <% end %>
+              <% orderline.Options2.each do |b| %>
+                <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                  <%= Option.find(b).Abbreviation %>
+                <% end %>
               <% end %>
             <% end %>
-            <% orderline.Options3.each do |b| %>
-              <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                <%= Option.find(b).Abbreviation %>
+          </span><br>
+          <span class="itemleft">Quarter 3</span>
+          <span class="itemcenter">
+            <% if orderline.Options3.nil? %> 
+              <%= "Plain" %>
+            <% else %>
+              <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options3 %> <%# grab any removed free items %>
+              <% if !@dif.nil? %>
+                <% @dif.each do |b| %>
+                  <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                <% end %>
+              <% end %>
+              <% orderline.Options3.each do |b| %>
+                <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                  <%= Option.find(b).Abbreviation %>
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
-        </span><br>
-        <span class="itemleft">Quarter 4</span>
-        <span class="itemcenter">
-          <% if orderline.Options4.nil? %> 
-            <%= "Plain" %>
-          <% else %>
-            <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options4 %> <%# grab any removed free items %>
-            <% if @dif.nil? %>
-              <% @dif.each do |b| %>
-                <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+          </span><br>
+          <span class="itemleft">Quarter 4</span>
+          <span class="itemcenter">
+            <% if orderline.Options4.nil? %> 
+              <%= "Plain" %>
+            <% else %>
+              <% @dif = Product.find(orderline.product_id).freeoptions - orderline.Options4 %> <%# grab any removed free items %>
+              <% if !@dif.nil? %>
+                <% @dif.each do |b| %>
+                  <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                <% end %>
+              <% end %>
+              <% orderline.Options4.each do |b| %>
+                <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                  <%= Option.find(b).Abbreviation %>
+                <% end %>
               <% end %>
             <% end %>
-            <% orderline.Options4.each do |b| %>
-              <% if !Product.find(orderline.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                <%= Option.find(b).Abbreviation %>
-              <% end %>
-            <% end %>
-          <% end %>
-        </span>
-      <% end %>
-      <br>
-      
-
-    </div>
-    
-  <% end %>
-</div>
-
-
-<div class="orderinfo2">
-  <div class="orderitems">
-    <% if !@order.nil? %>
-      <%= "Order Subtotal: " %><%= @order.Subtotal %><br>
-      <%= "Order Discounts: " %><%= @order.Discounts %><br>
-      <%= "Order Taxes: " %><%= @order.Tax %><br>
-      <%= "Order Total " %><%= @order.TotalCost %><br><br>
-      <% if !@order.Coupons.nil? %>
-        <%= "Coupons: " %><br>
-        <% @order.Coupons.each do |b| %>
-          <%= Coupon.find(b).Name %><%= " -" + Coupon.find(b).DollarsOff.to_s %><br>
+          </span>
         <% end %>
         <br>
-      <% end %>
-      <% @cust = Customer.find(@order.customer_id) %>
-      <%= @cust.FirstName %> <%= " " %><%= @cust.LastName %> <br>
-      <%= @cust.AddressNumber %><%= " " %><%= @cust.StreetName %> <br>
-      <%= @cust.City %> <%= ", " %><%= @cust.State %> <br>
-      <%= "Directions: " %><%= @cust.Directions %> <br>
-      
+      </div>
     <% end %>
   </div>
-</div>
-
-<div class="orderinfo3">
   
-  <%= link_to "Add previous order", orders_addPreviousOrderItems_url(order_id: @order.id), class: 'btn btn-primary btn-smaller' %>
-  <%= link_to "Add coupons", orders_selectcoupons_url(order_id: @order.id), class: 'btn btn-primary btn-smaller' %>
-
-  <%= form_tag("/orders/commitorder", :method=>'post', :multipart => true) do %>
-    <div class="btn-group form-group group" data-toggle="buttons">
-    <% if @order.IsDelivery.nil? || @order.IsDelivery == false %>
-      <label class="btn btn-option active"><%= radio_button_tag 'pickupordeliveryouter', 'pickup', true %>Pickup</label>
-      <label class="btn btn-option"><%= radio_button_tag 'pickupordeliveryouter', 'delivery' %>Delivery</label>
-    <% elsif @order.IsDelivery == true %>
-      <label class="btn btn-option"><%= radio_button_tag 'pickupordeliveryouter', 'pickup' %>Pickup</label>
-      <label class="btn btn-option active"><%= radio_button_tag 'pickupordeliveryouter', 'delivery', true %>Delivery</label>
-    <% end %>
+  <div class="orderinfo2">
+    <div class="orderitems">
+      <% if !@order.nil? %>
+        <%= "Subtotal: " %>
+        <span style="float: right;"><%= number_to_currency(@order.Subtotal) %></span><br>
+        <%= "Discounts: " %>
+        <span style="float: right;"><%= number_to_currency(@order.Discounts) %></span><br>
+        <% if @order.IsDelivery == true %>
+          <%= "Delivery: " %>
+          <span style="float: right;"><%= number_to_currency(@order.DeliveryCharge) %></span><br>
+        <% end %>
+        <%= "Tax: " %>
+        <span style="float: right;"><%= number_to_currency(@order.Tax) %></span><br>
+        <%= "Total: " %>
+        <span style="float: right;"><%= number_to_currency(@order.TotalCost) %></span><br><br>
+        <% if !@order.Coupons.nil? %>
+          <%= "Coupons: " %><br>
+          <% @order.Coupons.each do |b| %>
+            <%= Coupon.find(b).Name %><%= " -" %> <%= number_to_currency(Coupon.find(b).DollarsOff) %><br>
+          <% end %>
+          <br>
+        <% end %>
+      <% end %>
     </div>
-    <br>
+  </div>
+  
+  <div class="orderinfo4">
+    <div class="orderitems">
+      <% if !@order.nil? %>
+        <% @cust = Customer.find(@order.customer_id) %>
+        <%= @cust.FirstName %> <%= " " %><%= @cust.LastName %> <br>
+        <%= number_to_phone(@cust.Phone) %><br>
+        <%= @cust.AddressNumber %><%= " " %><%= @cust.StreetName %><%= " " %><% @cust.Zip %> <br>
+        <%= @cust.City %> <%= ", " %><%= @cust.State %> <br>
+        <% if @cust.LongDelivery == false  %>
+          <%= "Normal delivery" %><br>
+        <% else %>
+          <%= "Long delivery" %><br>
+        <% end %>
+        <%= "Directions: " %><%= @cust.Directions %> <br>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="orderinfo3">
     
-
-    
-    <%= label_tag :discount, "Discount" %>
-    <%= text_field_tag :discount %>
-    <br>
-    
-    <%= label_tag :user_id, "User Creating Order" %>
-    <%= select_tag :user_id, options_from_collection_for_select(User.all, "id", "Name", "1") %>
-    <br>
-    
-    <%= label_tag :comments, "Comments" %>
-    <%= text_field_tag :comments, nil, :maxlength => 255 %>
-    <br>
-    
-    <%= hidden_field_tag :order_id, @order.id %>
-
-    <%= submit_tag "Submit Order & Print", class: "btn btn-primary btn-smaller" %>
-    
-    <%= submit_tag "Submit Only", class: "btn btn-primary btn-smaller" %>
-
-  <% end %>
-
-
+    <%= link_to "Add previous order", orders_addPreviousOrderItems_url(order_id: @order.id), class: 'btn btn-primary btn-smaller' %>
+    <%= link_to "Add coupons", orders_selectcoupons_url(order_id: @order.id), class: 'btn btn-primary btn-smaller' %>
+  
+    <%= form_tag("/orders/commitorder", :method=>'post', :multipart => true) do %>
+      <div class="dlvpickup" data-toggle="buttons">
+      <% if @order.IsDelivery.nil? || @order.IsDelivery == false %>
+        <label class="btn btn-option btn-smaller active"><%= radio_button_tag 'pickupordeliveryouter', 'pickup', true %>Pickup</label>
+        <label class="btn btn-option btn-smaller"><%= radio_button_tag 'pickupordeliveryouter', 'delivery' %>Delivery</label>
+      <% elsif @order.IsDelivery == true %>
+        <label class="btn btn-option btn-smaller"><%= radio_button_tag 'pickupordeliveryouter', 'pickup' %>Pickup</label>
+        <label class="btn btn-option btn-smaller active"><%= radio_button_tag 'pickupordeliveryouter', 'delivery', true %>Delivery</label>
+      <% end %>
+      </div>
+  
+      
+      <%= label_tag :discount, "Discount" %>
+      <%= text_field_tag :discount %>
+      <br>
+      
+      <%= label_tag :user_id, "User Creating Order" %>
+      <%= select_tag :user_id, options_from_collection_for_select(User.all, "id", "Name", "1") %>
+      <br>
+      
+      <%= label_tag :comments, "Comments" %>
+      <%= text_field_tag :comments, nil, :maxlength => 255 %>
+      <br>
+      
+      <%= hidden_field_tag :order_id, @order.id %>
+  
+      <%= submit_tag "Submit Order & Print", class: "btn btn-primary btn-smaller" %>
+      
+      <%= submit_tag "Submit Only", class: "btn btn-primary btn-smaller" %>
+  
+    <% end %>
+  
+  
+  </div>
+</div>
+<div class="orderstuff2">
 </div>

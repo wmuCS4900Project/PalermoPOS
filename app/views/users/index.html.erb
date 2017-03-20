@@ -55,7 +55,7 @@
 
               <% if logged_in? %>
                 <% if (current_user.can? :delete, :User) %>
-                  <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>
+                  <%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
                 <% end %> 
               <% end; %>
               </td>

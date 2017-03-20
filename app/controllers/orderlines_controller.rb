@@ -1,6 +1,11 @@
 class OrderlinesController < ApplicationController
   
   def destroy
+    if ( !logged_in? || !current_user.can?("destroy", "orderlines"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     puts params.inspect
     @orderline = Orderline.find(params[:id])
     @order_id = @orderline.order_id

@@ -3,33 +3,41 @@
     <ul class="nav">
       
       <li>
-        <% if request.path == "/roles" %>
-          <%= link_to "Roles", '/roles', class: "active nav-item" %><span class="active-arrow"></span>
-        <% else %>
-          <%= link_to "Roles", '/roles', class: "nav-item" %>
+        <% if ( current_user.can?("view", "roles")) %>
+          <% if request.path == "/roles" %>
+            <%= link_to "Roles", '/roles', class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "Roles", '/roles', class: "nav-item" %>
+          <% end %>
         <% end %>
       </li>
       <li>
-        <% if request.path == "/roles/new" %>
-          <%= link_to "Add New Role", '/roles/new', class: "active nav-item" %><span class="active-arrow"></span>
-        <% else %>
-          <%= link_to "Add New Role", '/roles/new', class: "nav-item" %>
+        <% if ( current_user.can?("create", "roles")) %>
+          <% if request.path == "/roles/new" %>
+            <%= link_to "Add New Role", '/roles/new', class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "Add New Role", '/roles/new', class: "nav-item" %>
+          <% end %>
         <% end %>
       </li>
 
       <li>
-        <% if request.path == "/capabilities" %>
-            <%= link_to "Capabilities", caps_path, class: "active nav-item" %><span class="active-arrow"></span>
-          <% else %>
-            <%= link_to "Capabilities", caps_path, class: "nav-item" %>
-        <% end %>          
+        <% if ( current_user.can?("view", "capabilities")) %>
+          <% if request.path == "/capabilities" %>
+              <%= link_to "Capabilities", caps_path, class: "active nav-item" %><span class="active-arrow"></span>
+            <% else %>
+              <%= link_to "Capabilities", caps_path, class: "nav-item" %>
+          <% end %>          
+        <% end %>
       </li>
       <li>
-        <% if request.path == new_cap_path %>
-            <%= link_to "Add New Capability", new_cap_path, class: "active nav-item" %><span class="active-arrow"></span>
-          <% else %>
-            <%= link_to "Add New Capability", new_cap_path, class: "nav-item" %>
-        <% end %>         
+        <% if ( current_user.can?("create", "capabilities")) %>
+          <% if request.path == new_cap_path %>
+              <%= link_to "Add New Capability", new_cap_path, class: "active nav-item" %><span class="active-arrow"></span>
+            <% else %>
+              <%= link_to "Add New Capability", new_cap_path, class: "nav-item" %>
+          <% end %>         
+        <% end %>
       </li>
     </ul>
   </div>

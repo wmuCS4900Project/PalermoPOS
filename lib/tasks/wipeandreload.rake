@@ -1,6 +1,7 @@
 #lib/tasks/wipeandreload.rake
 namespace :wipeandreload do
   desc "Wipes out the database of entries and reenter them all with auto_increments starting at 1"
+  #CAREFUL! wipes orders, orderlines, categories, products and options currently
     task :doit, [:filename] => :environment do  
       ActiveRecord::Base.connection.execute("delete from orderlines;")
       ActiveRecord::Base.connection.execute("delete from orders;")
@@ -19,11 +20,7 @@ namespace :wipeandreload do
       Rake::Task["import:options"].invoke
       
       Rake::Task["freeoptionsload:loadall"].invoke
-      
       Rake::Task["extralightload:loadall"].invoke
-
-
-
   end
   
 end

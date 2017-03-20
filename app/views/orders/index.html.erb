@@ -8,116 +8,137 @@
       <% if flash[:notice].present? %>
         <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
       <% end %>
-  <% if !@pending.empty? %>
-      <h1>Pending Orders</h1>
-      <div class="table" %>
-        <table>
-          <thead>
-            <tr>
-              <th><%= "Order Number" %></th>
-              <th><%= "Ordered by" %></th>
-              <th><%= "Ordered at" %></th>
-              <th colspan="4"></th>
-            </tr>
-          </thead>
-        
-          <tbody>
-              <% @pending.each do |order| %>
+      
+  
+      <% if @pending.empty? && @cancelled.empty? && @refunded.empty? && @completed.empty? %>
+        <h2>No orders yet today</h2>
+      <% end %>
+      
+      <% if !@pending.empty? %>
+        <h1>Pending Orders</h1>
+        <div class="table" %>
+          <table>
+            <thead>
+              <tr>
+                <th><%= "Order Number" %></th>
+                <th><%= "Ordered by" %></th>
+                <th><%= "Ordered at" %></th>
+                <th colspan="4"></th>
+              </tr>
+            </thead>
+          
+            <tbody>
+                <% @pending.each do |order| %>
+                  <tr>
+                    <td><%= order.id %> <br>
+                    <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br></td>
+                    <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
+                    <% if ( current_user.can?("create", "orders")) %>
+                      <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ), class: "btn btn-primary" %></td>
+                    <% end %>
+                    <% if ( current_user.can?("edit", "orders")) %>
+                      <td><%= link_to 'Edit', orders_changeorder_path(order_id: order.id), class: "btn btn-primary" %></td>
+                    <% end %>
+                    <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" %></td>
+                    <% if ( current_user.can?("destroy", "orders")) %>
+                      <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" %></td>
+                    <% end %>
+                  </tr>
+                <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+      
+      <% if !@completed.empty? %>
+        <h1>Completed Orders</h1>
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th><%= "Order Number" %></th>
+                <th><%= "Ordered by" %></th>
+                <th><%= "Ordered at" %></th>
+                <th colspan="4"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @completed.each do |order| %>
                 <tr>
-                  <td><%= order.id %> <br>
-                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br></td>
+                  <td><%= order.id %> </td>
+                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
                   <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
-                  <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ), class: "btn btn-primary" %></td>
-                  <td><%= link_to 'Edit', orders_selectproduct_path(order_id: order.id), class: "btn btn-primary" %></td>
                   <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" %></td>
-                  <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" %></td>
+                  <% if ( current_user.can?("destroy", "orders")) %>
+                    <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
+                  <% end %>
                 </tr>
               <% end %>
-          </tbody>
-        </table>
-      </div>
-    <% end %>
-      
-    <% if !@completed.empty? %>
-      <h1>Completed Orders</h1>
-      <div class="table">
-        <table>
-          <thead>
-            <tr>
-              <th><%= "Order Number" %></th>
-              <th><%= "Ordered by" %></th>
-              <th><%= "Ordered at" %></th>
-              <th colspan="4"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @completed.each do |order| %>
-              <tr>
-                <td><%= order.id %> </td>
-                <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
-                <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
-                <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    <% end %>
-      
-    <% if !@cancelled.empty? %>
-      <h1>Cancelled Orders</h1>
-      <div class="table">
-        <table>
-          <thead>
-            <tr>
-              <th><%= "Order Number" %></th>
-              <th><%= "Ordered by" %></th>
-              <th><%= "Ordered at" %></th>
-              <th colspan="4"></th>
-            </tr>
-          </thead>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
         
-          <tbody>
-            <% @cancelled.each do |order| %>
+      <% if !@cancelled.empty? %>
+        <h1>Cancelled Orders</h1>
+        <div class="table">
+          <table>
+            <thead>
               <tr>
-                <td><%= order.id %> </td>
-                <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
-                <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
-                <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <th><%= "Order Number" %></th>
+                <th><%= "Ordered by" %></th>
+                <th><%= "Ordered at" %></th>
+                <th colspan="4"></th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    <% end %>
+            </thead>
+          
+            <tbody>
+              <% @cancelled.each do |order| %>
+                <tr>
+                  <td><%= order.id %> </td>
+                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
+                  <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
+                  <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" %></td>
+                  <% if ( current_user.can?("destroy", "orders")) %>
+                    <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
     
-    <% if !@refunded.empty? %>
-      <h1>Refunded Orders</h1>
-       
-      <div class="table">
-        <table>
-          <thead>
-            <tr>
-              <th><%= "Order Number" %></th>
-              <th><%= "Ordered by" %></th>
-              <th><%= "Ordered at" %></th>
-              <th colspan="4"></th>
-            </tr>
-          </thead>
-        
-          <tbody>
-            <% @refunded.each do |order| %>
+      <% if !@refunded.empty? %>
+        <h1>Refunded Orders</h1>
+         
+        <div class="table">
+          <table>
+            <thead>
               <tr>
-                <td><%= order.id %> </td>
-                <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
-                <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
-                <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <th><%= "Order Number" %></th>
+                <th><%= "Ordered by" %></th>
+                <th><%= "Ordered at" %></th>
+                <th colspan="4"></th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    <% end %>
+            </thead>
+          
+            <tbody>
+              <% @refunded.each do |order| %>
+                <tr>
+                  <td><%= order.id %> </td>
+                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
+                  <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
+                  <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" %></td>
+                  <% if ( current_user.can?("destroy", "orders")) %>
+                    <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
     </div>
   </div>
 </body>

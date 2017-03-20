@@ -35,14 +35,13 @@
                 <td><%= option.Abbreviation %></td>
                 <td><% if !option.ChildOf.nil? %><%= Option.find(option.ChildOf).Name %><% end %></td>
                 <td><%= link_to 'Edit', edit_option_path(option), class: "btn btn-primary" %></td>
-                <td><%= link_to 'Destroy', option, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
+                <td><%= link_to 'Delete', option, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
               </tr>
             <% end %>
           </tbody>
         </table>
       </div>
       
-      <%= link_to 'New Option', new_option_path %>
     </div>
   </div>
 </body>
