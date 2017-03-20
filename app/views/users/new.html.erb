@@ -3,9 +3,7 @@
   <%= render 'sidebars/loginside' %>
   	<div class="container main-content">
 		<h1>New User</h1>
-		<% if flash[:danger] %>
-		  <div class="alert alert-danger"><%= flash[:danger] %></div>
-		<% end %>
+		
 		<% if logged_in? %>	
 		    <% if ( !current_user.can? "create", "users") %>
 		    	<p> Sorry, you don't have the capabilities to do this </p>

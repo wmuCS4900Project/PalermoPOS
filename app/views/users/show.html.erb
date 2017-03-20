@@ -3,12 +3,6 @@
   <%= render 'sidebars/loginside' %>
       <div class="container main-content">
         <p id="notice"><%= notice %></p>
-        <% if flash[:danger].present? %>
-          <div class="alert alert-danger"><%= flash[:danger] %></div>
-        <% end %>
-        <% if flash[:success].present? %>
-          <div class="alert alert-success"><%= flash[:success] %></div>
-        <% end %>
 
           <% 
           # Check capabilities
