@@ -21,6 +21,8 @@
               <th>Cost</th>
               <th>Category</th>
               <th>Minimum Option Charge</th>
+              <th>Favorite?</th>
+              <th>Favorite priority</th>
               <th colspan="2"></th>
             </tr>
           </thead>
@@ -34,6 +36,8 @@
                 <td><%= product.Cost %></td>
                 <td><%= @categories.find(product.category_id).Name %></td>
                 <td><%= product.MinimumOptionCharge %></td>
+                <td><%= product.Favorite %></td>
+                <td><%= product.FavoritePriority %></td>
                 <td><%= link_to 'Edit', edit_product_path(product), :class => "btn btn-primary" %></td>
                 <td><%= link_to 'Delete', product, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary" %></td>
               </tr>

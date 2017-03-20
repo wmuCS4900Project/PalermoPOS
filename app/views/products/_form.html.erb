@@ -36,6 +36,16 @@
     <%= f.text_field :Abbreviation, :class => "form-control" %>
   </div>
   
+  <div class="form-group">
+    <%= f.label :Favorite, class: "form-group-header" %>
+    <%= f.check_box :Favorite, class: "form-control" %>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :FavoritePriority, class: "form-group-header" %>
+    <%= f.text_field :FavoritePriority, class: "form-control" %>
+  </div>
+  
   <div class="actions">
     <%= f.submit "Add Product", :class => "btn btn-lg btn-primary" %>
   </div>

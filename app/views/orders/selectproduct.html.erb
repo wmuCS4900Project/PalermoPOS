@@ -26,6 +26,7 @@
         
         <div>
           <ul class="nav nav-tabs">
+            <li class="active"><%= link_to "Favorites", ("#" + "Favorites".gsub(/\s+/, "")), { 'data-toggle' => 'tab' } %></li>
             <% @categories.each do |cat| %>
               <li><%= link_to cat.Abbreviation, ("#" + cat.Name.gsub(/\s+/, "")), { 'data-toggle' => 'tab' } %></li>
             <% end %>
@@ -33,6 +34,13 @@
           
         
           <div class="tab-content">
+              <%= content_tag :div, :class => "tab-pane active", :id => "Favorites".gsub(/\s+/, "") do -%>
+                <p>
+                  <% Product.where("Favorite = true").order(:FavoritePriority).each do |p| %>
+                    <%= link_to p.Name, orders_addproducttoorder_path(order_id: @order.id, product_id: p.id), method: :post, class: "btn btn-product" %>
+                  <% end %>
+                </p>
+              <% end -%>
             <% @categories.each do |cat| %>
               <%= content_tag :div, :class => "tab-pane", :id => cat.Name.gsub(/\s+/, "") do -%>
                 <p>

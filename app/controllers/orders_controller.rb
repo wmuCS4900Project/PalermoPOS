@@ -439,7 +439,7 @@ class OrdersController < ApplicationController
     @customer = Customer.find(@order.customer_id)
     @orderlines = Orderline.where(order_id: @id)
     
-    calc_taxes(@order.id)
+    calc_order(@order.id)
     
     @order = Order.find(@id)
       

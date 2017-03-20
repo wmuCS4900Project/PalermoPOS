@@ -119,6 +119,28 @@ a:hover {
 .nav-item {
 	width: 100%;
 }
+.nav-tabs > li > a {
+	background-color: white;
+	background-clip: content-box;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+	background-color: rgb(221, 221, 221);
+	background-clip: border-box;
+}
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+	background-color: rgb(221, 221, 221);
+	background-clip: border-box;
+}
+.nav-tabs {
+	border: none;
+	background-clip: content-box;
+}
+.tab-content {
+  border-top: 1px solid #ddd;
+}
 .main-content {
 	background-color: #fff;
 	border-radius: .3em;
