@@ -2,25 +2,31 @@
   <div class="navbar">
     <ul class="nav">
       <li>
-        <% if request.path == new_product_path %>
-          <%= link_to "New Product", new_product_path, class: "active nav-item" %><span class="active-arrow"></span>
-        <% else %>
-          <%= link_to "New Product", new_product_path, class: "nav-item" %>
+        <% if ( current_user.can?("create", "products")) %>
+          <% if request.path == new_product_path %>
+            <%= link_to "New Product", new_product_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "New Product", new_product_path, class: "nav-item" %>
+          <% end %>
         <% end %>
       </li>
       <li>
-        <% if request.path == products_path %>
-            <%= link_to "All Products", products_path, class: "active nav-item" %><span class="active-arrow"></span>
-          <% else %>
-            <%= link_to "All Products", products_path, class: "nav-item" %>
-        <% end %>          
+        <% if ( current_user.can?("view", "products")) %>
+          <% if request.path == products_path %>
+              <%= link_to "All Products", products_path, class: "active nav-item" %><span class="active-arrow"></span>
+            <% else %>
+              <%= link_to "All Products", products_path, class: "nav-item" %>
+          <% end %>          
+        <% end %>
       </li>
       <li>
-        <% if request.path == products_changeall_path %>
-            <%= link_to "Mass Edit Products", products_changeall_path, class: "active nav-item" %><span class="active-arrow"></span>
-          <% else %>
-            <%= link_to "Mass Edit Products", products_changeall_path, class: "nav-item" %>
-        <% end %>          
+        <% if ( current_user.can?("edit", "products")) %>
+          <% if request.path == products_changeall_path %>
+              <%= link_to "Mass Edit Products", products_changeall_path, class: "active nav-item" %><span class="active-arrow"></span>
+            <% else %>
+              <%= link_to "Mass Edit Products", products_changeall_path, class: "nav-item" %>
+          <% end %>
+        <% end %>
       </li>
     </ul>
   </div>

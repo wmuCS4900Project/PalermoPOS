@@ -8,23 +8,55 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><%= link_to "Orders", orders_path %></li>
-        <li><%= link_to "Customers", customers_path %></li>
-        <li><%= link_to "Products", products_path %></li>
-        <li><%= link_to "Options", options_path %></li>
-        <li><%= link_to "Coupons", coupons_path %></li>
-        <li><%= link_to "Users", users_path %></li>
-
-        <li class="dropdown">
-          <a class="dropdown-toggle user-management" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Management <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li> <%= link_to 'Roles', '/roles' %></li>
-            <li> <%= link_to 'Capabilities', caps_url %></li>
-            <li> <%= link_to 'Cash Out Drivers', management_cashoutdrivers_url %></li>
-            <li> <%= link_to 'End of Day Printout', management_endofday_url %> </li>
-            <li> <%= link_to 'Configuration Settings', palconfigs_url %></li>
-          </ul>
-        </li>
+        
+        <% if !current_user.nil? %>
+        
+          <% if ( current_user.can?("view", "orders")) %>
+            <li><%= link_to "Orders", orders_path %></li>
+          <% end %>
+          
+          <% if ( current_user.can?("view", "customers")) %>
+            <li><%= link_to "Customers", customers_path %></li>
+          <% end %>
+          
+          <% if ( current_user.can?("view", "products")) %>
+            <li><%= link_to "Products", products_path %></li>
+          <% end %>
+          
+          <% if ( current_user.can?("view", "options")) %>
+            <li><%= link_to "Options", options_path %></li>
+          <% end %>
+          
+          <% if ( current_user.can?("view", "coupons")) %>
+            <li><%= link_to "Coupons", coupons_path %></li>
+          <% end %>
+          
+          <% if ( current_user.can?("view", "users")) %>
+            <li><%= link_to "Users", users_path %></li>
+          <% end %>
+          
+          <% if ( current_user.can?("view", "management")) %>
+            <li class="dropdown">
+              <a class="dropdown-toggle user-management" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Management <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <% if ( current_user.can?("view", "roles")) %>
+                  <li> <%= link_to 'Roles', roles_url %></li>
+                <% end %>
+                
+                <% if ( current_user.can?("view", "capabilities")) %>
+                  <li> <%= link_to 'Capabilities', caps_url %></li>
+                <% end %>
+                
+                <li> <%= link_to 'Cash Out Drivers', management_cashoutdrivers_url %></li>
+                <li> <%= link_to 'End of Day Printout', management_endofday_url %> </li>
+                
+                <% if ( current_user.can?("view", "configurations")) %>
+                  <li> <%= link_to 'Configuration Settings', palconfigs_url %></li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+        <% end %>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">

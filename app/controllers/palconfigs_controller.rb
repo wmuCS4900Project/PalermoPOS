@@ -4,26 +4,48 @@ class PalconfigsController < ApplicationController
   # GET /palconfigs
   # GET /palconfigs.json
   def index
+    if ( !logged_in? || !current_user.can?("view", "configurations"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     @palconfigs = Palconfig.all
   end
 
   # GET /palconfigs/1
   # GET /palconfigs/1.json
   def show
+    if ( !logged_in? || !current_user.can?("view", "configurations"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
   end
 
   # GET /palconfigs/new
   def new
+    if ( !logged_in? || !current_user.can?("create", "configurations"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
     @palconfig = Palconfig.new
   end
 
   # GET /palconfigs/1/edit
   def edit
+    if ( !logged_in? || !current_user.can?("edit", "configurations"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
   end
 
   # POST /palconfigs
   # POST /palconfigs.json
   def create
+    if ( !logged_in? || !current_user.can?("create", "configurations"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     @palconfig = Palconfig.new(palconfig_params)
 
     respond_to do |format|
@@ -39,6 +61,11 @@ class PalconfigsController < ApplicationController
   # PATCH/PUT /palconfigs/1
   # PATCH/PUT /palconfigs/1.json
   def update
+    if ( !logged_in? || !current_user.can?("edit", "configurations"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     respond_to do |format|
       if @palconfig.update(palconfig_params)
         format.html { redirect_to palconfigs_path, notice: 'Palconfig was successfully updated.' }
@@ -52,6 +79,11 @@ class PalconfigsController < ApplicationController
   # DELETE /palconfigs/1
   # DELETE /palconfigs/1.json
   def destroy
+    if ( !logged_in? || !current_user.can?("destroy", "configurations"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     @palconfig.destroy
     respond_to do |format|
       format.html { redirect_to palconfigs_url, notice: 'Palconfig was successfully destroyed.' }

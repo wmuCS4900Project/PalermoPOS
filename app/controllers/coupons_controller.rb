@@ -4,24 +4,45 @@ class CouponsController < ApplicationController
   # GET /coupons
   # GET /coupons.json
   def index
+    if ( !logged_in? || !current_user.can?("view", "coupons"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     @coupons = Coupon.all
   end
 
   # GET /coupons/1
   # GET /coupons/1.json
   def show
+    if ( !logged_in? || !current_user.can?("view", "coupons"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
   end
 
   # GET /coupons/new
   def new
+    if ( !logged_in? || !current_user.can?("create", "coupons"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
     @coupon = Coupon.new
   end
 
   # GET /coupons/1/edit
   def edit
+    if ( !logged_in? || !current_user.can?("edit", "coupons"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
   end
   
   def save
+    if ( !logged_in? || !current_user.can?("create", "coupons"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
     
     if params[:id].present? && !params[:id].nil?
       @coupon = Coupon.find(params[:id])
@@ -47,6 +68,7 @@ class CouponsController < ApplicationController
 
   # POST /coupons
   # POST /coupons.json
+  # DEPRECATED
   def create
     @coupon = Coupon.new(coupon_params)
 
@@ -87,6 +109,7 @@ class CouponsController < ApplicationController
 
   # PATCH/PUT /coupons/1
   # PATCH/PUT /coupons/1.json
+  # DEPRECATED
   def update
     
     puts params
@@ -129,6 +152,11 @@ class CouponsController < ApplicationController
   # DELETE /coupons/1
   # DELETE /coupons/1.json
   def destroy
+    if ( !logged_in? || !current_user.can?("destroy", "coupons"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     @coupon.destroy
     respond_to do |format|
       format.html { redirect_to coupons_url, notice: 'Coupon was successfully destroyed.' }

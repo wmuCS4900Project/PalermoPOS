@@ -4,6 +4,10 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
+    if ( !logged_in? || !current_user.can?("view", "products"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
     @products = Product.all
     @categories = Category.all
   end
@@ -11,25 +15,49 @@ class ProductsController < ApplicationController
   # GET /products/1
   # GET /products/1.json
   def show
+    if ( !logged_in? || !current_user.can?("view", "products"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
   end
 
   # GET /products/new
   def new
+    if ( !logged_in? || !current_user.can?("create", "products"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     @product = Product.new
     @options = Option.where("category_id = ?", @product.category_id).all
   end
 
   # GET /products/1/edit
   def edit
+    if ( !logged_in? || !current_user.can?("edit", "products"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     @product = Product.find(params[:id])
     @options = Option.where("category_id = ?", @product.category_id).all
   end
   
   def changeall
+    if ( !logged_in? || !current_user.can?("edit", "products"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     @products = Product.all
   end
   
   def changeallapply
+    if ( !logged_in? || !current_user.can?("edit", "products"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     if !params[:changeto].present?
       redirect_to products_changeall_path, :flash => { :notice => "No value included!" }
       return
@@ -65,9 +93,8 @@ class ProductsController < ApplicationController
   # POST /products.json
   def create
     # Check capabilities
-    if ( !logged_in? || !current_user.can?("create", "products") )
-      redirect_to products_url
-      flash[:danger] = "Sorry, you don't have the capability to do that"
+    if ( !logged_in? || !current_user.can?("create", "products"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
       return
     end
 

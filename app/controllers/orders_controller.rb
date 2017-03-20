@@ -8,6 +8,7 @@ class OrdersController < ApplicationController
   def index
     if ( !logged_in? || !current_user.can?("view", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
       
     @customers = Customer.all
@@ -20,6 +21,7 @@ class OrdersController < ApplicationController
   def pickup
     if ( !logged_in? || !current_user.can?("view", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     @customers = Customer.all
@@ -29,6 +31,7 @@ class OrdersController < ApplicationController
   def delivery
     if ( !logged_in? || !current_user.can?("view", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     @customers = Customer.all
@@ -38,6 +41,7 @@ class OrdersController < ApplicationController
   def oldorders
     if ( !logged_in? || !current_user.can?("view", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:startdate].present? && !params[:enddate].present? && !params[:thisdate].present?
@@ -88,6 +92,7 @@ class OrdersController < ApplicationController
   def changeorder
     if ( !logged_in? || !current_user.can?("edit", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:order_id].present?
@@ -100,6 +105,7 @@ class OrdersController < ApplicationController
   def selectproduct
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:order_id].present?
@@ -114,6 +120,7 @@ class OrdersController < ApplicationController
   def addproducttoorder
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:order_id].present?
@@ -132,15 +139,18 @@ class OrdersController < ApplicationController
     calc_order(@order.id)
       
     redirect_to orders_chooseoptions_path(order_id: @order.id, orderline_id: @orderline.id)
+    return
   end
   
   def commitorder
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
+      return
     end 
     
     calc_order(params[:order_id])
@@ -156,8 +166,10 @@ class OrdersController < ApplicationController
 
     if params['commit'] == "Submit Order"
       redirect_to orders_receipt_url(id: @order.id)
+      return
     else
       redirect_to orders_url
+      return
     end
 
   end
@@ -165,10 +177,12 @@ class OrdersController < ApplicationController
   def selectcoupons
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
+      return
     end
     
     @order = Order.find(params[:order_id])
@@ -177,13 +191,16 @@ class OrdersController < ApplicationController
   def addcoupons
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
+      return
     end
     if !params[:cid].present?
       redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "No coupon selected!" } 
+      return
     end
     
     @order = Order.find(params[:order_id])
@@ -216,12 +233,14 @@ class OrdersController < ApplicationController
     calc_order(@order.id)
     
     redirect_to orders_selectproduct_path(order_id: @order.id)
+    return
   end
   
   #a workaround to recalculate the order total if you delete an orderline
   def recalcForOrderlineDelete
     if ( !logged_in? || !current_user.can?("delete", "orderlines"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     @order = Order.find(params[:order_id])
@@ -231,18 +250,22 @@ class OrdersController < ApplicationController
     calc_order(@order.id)
     
     redirect_to orders_selectproduct_path(:order_id => @order.id), :flash => { :notice => 'Order line deleted and coupons removed!' }
+    return
   end
   
   #view handles selection of options for an orderline
   def chooseoptions
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
+      return
     elsif !params[:orderline_id].present?
       redirect_to orders_path, :flash => { :notice => "No line selected!" }
+      return
     end
     
     @order = Order.find(params[:order_id])
@@ -267,12 +290,15 @@ class OrdersController < ApplicationController
   def addoptions
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No current order!" }
+      return
     elsif !params[:orderline_id].present?
       redirect_to orders_path, :flash => { :notice => "No line selected!" }
+      return
     end
 
     @order = Order.find(params[:order_id])
@@ -307,16 +333,19 @@ class OrdersController < ApplicationController
       
     calc_order(@order.id)
     redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "Item saved!" }
+    return
   end
   
   #adds the orderlines from the previously placed order to the current order. no check for paid/cancelled/refunded status
   def addPreviousOrderItems
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:order_id].present?
       redirect_to orders_path, :flash => { :notice => "No order selected!" }
+      return
     end
     
     @order = Order.find(params[:order_id])
@@ -347,12 +376,14 @@ class OrdersController < ApplicationController
     calc_order(@order.id)
     
     redirect_to orders_selectproduct_path(order_id: @order.id), :flash => { :notice => "Items added to order!" }
+    return
     
   end
   
   def all
     if ( !logged_in? || !current_user.can?("view", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     @customers = Customer.all
@@ -367,6 +398,7 @@ class OrdersController < ApplicationController
   def show
     if ( !logged_in? || !current_user.can?("view", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     @order = Order.find(params[:id])
@@ -382,6 +414,7 @@ class OrdersController < ApplicationController
   def custsearch
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     @users = User.all
@@ -419,6 +452,7 @@ class OrdersController < ApplicationController
   def walkin
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if Customer.exists?(lastname: 'Customer', firstname:  'Walk In')
@@ -428,6 +462,7 @@ class OrdersController < ApplicationController
       startorder
     else
       redirect_to orders_custsearch_path, :flash => {:danger => "No walk in customer in database"}
+      return
     end
   end
 
@@ -436,6 +471,7 @@ class OrdersController < ApplicationController
   def startorder
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if params[:custid].present?
@@ -461,6 +497,7 @@ class OrdersController < ApplicationController
   def receipt
     if ( !logged_in? || !current_user.can?("view", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     @order = Order.find(params[:id])
@@ -482,6 +519,7 @@ class OrdersController < ApplicationController
   def cashout
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:id].present?
@@ -538,6 +576,7 @@ class OrdersController < ApplicationController
   def cashedout
     if ( !logged_in? || !current_user.can?("create", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     if !params[:id].present?
@@ -583,6 +622,11 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
+    if ( !logged_in? || !current_user.can?("edit", "orders"))
+      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
     respond_to do |format|
       if @order.update(order_params)
         format.html { redirect_to @order, notice: 'Order was successfully updated.' }
@@ -599,6 +643,7 @@ class OrdersController < ApplicationController
   def destroy
     if ( !logged_in? || !current_user.can?("destroy", "orders"))
       redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
     end
     
     @order.destroy
