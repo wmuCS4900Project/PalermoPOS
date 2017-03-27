@@ -2,7 +2,9 @@
 	color: #D44D13;
 	font-size: 32px;
 	font-family: 'Coda Caption', sans-serif;
-	text-shadow: -1px 0 #ddcb9b, 0 1px #ddcb9b, 1px 0 #ddcb9b, 0 -1px #ddcb9b;}
+	text-shadow: -1px 0 #ddcb9b, 0 1px #ddcb9b, 1px 0 #ddcb9b, 0 -1px #ddcb9b;
+	
+}
 #main-nav {
 	margin-bottom: 0;
 }
@@ -100,7 +102,7 @@ a:hover {
 	opacity: .8;
 }
 .sidebar-left .navbar {
-	margin-top: 30px;
+	margin-top: 2em;
 	border-top: 1px solid #888;
 	border-right: 0;
 }
@@ -115,17 +117,40 @@ a:hover {
 	color: #413D3D;
 }
 .nav-item {
-	width: 208px;
+	width: 100%;
+}
+.nav-tabs > li > a {
+	background-color: white;
+	background-clip: content-box;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+	border-right-width: .15em;
+	border-top-width: .15em;
+	border-left-width: .15em;
+	background-color: white;
+}
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+	background-color: white;
+}
+.nav-tabs {
+	border: none;
+	background-clip: content-box;
+}
+.tab-content {
+  border-top: 1px solid #ddd;
 }
 .main-content {
 	background-color: #fff;
-	border-radius: 5px;
-	padding: 15px; 
+	border-radius: .3em;
+	padding: 1em; 
 	box-sizing: border-box;
 }
 .has-sidebar-left .main-content {
-	width: calc(100% - 210px);
-	margin-left: 210px;
+	width: calc(100% - 15em);
+	margin-left: 15em;
 }
 .wrapper {
 	margin-top: 51px;
@@ -134,8 +159,8 @@ a:hover {
 	background-color: #413D3D;
 	position: fixed;
 	left: 0;
-	top: 51px;
-	width: 210px;
+	top: 3em;
+	width: 15em;
 	box-sizing: border-box;
 	min-height: 100vh; 
 	border-right: 1px solid #888;
@@ -270,6 +295,10 @@ a:hover {
 }
 .form-group-header {
 	font-size: 16px;
+}
+.form-group {
+	width: 50%;
+	margin-right: auto;
 }
 .form-checkboxes{
 	border: 1px solid silver;

@@ -4,22 +4,27 @@ namespace :freeoptionsload do
   task :loadall, [:filename] => :environment do  
     Category.all.each do |cat|
       
-      if cat.Name.include? "Pizza"
+      if cat.Name.include? "Pizzas"
         Product.where("category_id = ?", cat).each do |a|
-          @deluxe = ["mushroom","pepperoni","sausage","ham","onion","green pepper"]
-          @meat = ["ham","pepperoni","sausage","bacon","ground beef"]
-          @bbq = ["chicken","onion","bacon","barbeque%"]
-          @greek = ["black olives","tomatoes","banana%","feta%","onion"]
-          @blt = ["bacon","lettuce","miracle%","tomatoes"]
-          @veg = ["mushroom","green pepper","onion","green olives","tomatoes"]
-          @grilled = ["chicken","onion","tomatoes","romano%"]
-          @hawaiian = ["ham","bacon","pineapple"]
-          @super = ["ham","pepperoni","banana peppers","bacon","black olives","green pepper","sausage","onion","ground beef","mushroom"]
-          @ranch = ["chicken","bacon","tomatoes","ranch%"] 
-          @alfredo = ["chicken","alfredo%"]
+          @norm = ["pizza sauce","mozzer%"]
+          @deluxe = ["pizza sauce","mozzer%","mushroom","pepperoni","sausage","ham","onion","green pepper"]
+          @meat = ["pizza sauce","mozzer%","ham","pepperoni","sausage","bacon","ground beef"]
+          @bbq = ["mozzer%","chicken","onion","bacon","barbeque%"]
+          @greek = ["pizza sauce","mozzer%","black olives","tomatoes","banana%","feta%","onion"]
+          @blt = ["mozzer%","bacon","lettuce","miracle%","tomatoes"]
+          @veg = ["pizza sauce","mozzer%","mushroom","green pepper","onion","green olives","tomatoes"]
+          @grilled = ["pizza sauce","mozzer%","chicken","onion","tomatoes","romano%"]
+          @hawaiian = ["pizza sauce","mozzer%","ham","bacon","pineapple"]
+          @super = ["pizza sauce","mozzer%","ham","pepperoni","banana peppers","bacon","black olives","green pepper","sausage","onion","ground beef","mushroom"]
+          @ranch = ["mozzer%","chicken","bacon","tomatoes","ranch%"] 
+          @alfredo = ["mozzer%","chicken","alfredo%"]
           @array = []
           
-          if a.Name.include? "Super Deluxe"
+          if a.Name.include? "Pizza"
+            @norm.each do |item|
+              @array.push(Option.where("category_id = ? AND Name like ? AND Name NOT LIKE ?", cat, item, "extra").ids.to_s.delete! '[]')
+            end
+          elsif a.Name.include? "Super Deluxe"
             @super.each do |item|
               @array.push(Option.where("category_id = ? AND Name like ? AND Name NOT LIKE ?", cat, item, "extra").ids.to_s.delete! '[]')
             end 
@@ -74,25 +79,25 @@ namespace :freeoptionsload do
         end
       elsif cat.Name.include? "Subs"
         Product.where("category_id = ?", cat).each do |a|
-          @pep = ["pepperoni","pizza sauce"]
-          @ham = ["ham"]
-          @deluxe = ["ham","lettuce","onion","tomatoes","salad%"]
-          @italian = ["salami","capi%","morta%","lettuce","tomatoes","italian%"]
-          @meatball = ["meatballs","spagh%"]
-          @sausage = ["sausage","spagh%"]
-          @super = ["ham","capi%","salami","onion","pizza sauce","mushroom","pepperoni","green pepper"]
-          @palermo = ["salami","capi%","ham","onion","pizza sauce"]
+          @pep = ["pepperoni","pizza sauce","mozzer%"]
+          @ham = ["ham","mozzer%"]
+          @deluxe = ["ham","lettuce","onion","tomatoes","salad%","mozzer%"]
+          @italian = ["salami","capi%","morta%","lettuce","tomatoes","italian%","mozzer%"]
+          @meatball = ["meatballs","spagh%","mozzer%"]
+          @sausage = ["sausage","spagh%","mozzer%"]
+          @super = ["ham","capi%","salami","onion","pizza sauce","mushroom","pepperoni","green pepper","mozzer%"]
+          @palermo = ["salami","capi%","ham","onion","pizza sauce","mozzer%"]
           @veg = ["mushroom","green olives","green pepper","onion","lettuce","tomatoes","salad%"]
-          @allmeat = ["ham","capi%","pepperoni","pizza sauce"]
-          @pizza = ["ham","pepperoni","pizza sauce"]
-          @roastbeefcheese = ["roast beef"]
-          @roastbeefdeluxe = ["roast beef","lettuce","tomatoes","onion","salad%"]
-          @steak = ["steak","onion","mushroom","lettuce","tomatoes","miracle%"]
-          @turkeycheese = ["turkey"]
-          @turkeydeluxe = ["turkey","lettuce","tomatoes","onion","salad%"]
-          @blt = ["bacon","lettuce","tomatoes","salad%"]
-          @club = ["ham","turkey","bacon","lettuce","tomatoes","salad%"]
-          @bbq = ["chicken","bacon","barb%","onion"]
+          @allmeat = ["ham","capi%","pepperoni","pizza sauce","mozzer%","salami"]
+          @pizza = ["ham","pepperoni","pizza sauce","mozzer%"]
+          @roastbeefcheese = ["roast beef","mozzer%"]
+          @roastbeefdeluxe = ["roast beef","lettuce","tomatoes","onion","salad%","mozzer%"]
+          @steak = ["steak","onion","mushroom","lettuce","tomatoes","miracle%","mozzer%"]
+          @turkeycheese = ["turkey","mozzer%"]
+          @turkeydeluxe = ["turkey","lettuce","tomatoes","onion","salad%","mozzer%"]
+          @blt = ["bacon","lettuce","tomatoes","salad%","mozzer%"]
+          @club = ["ham","turkey","bacon","lettuce","tomatoes","salad%","mozzer%"]
+          @bbq = ["chicken","bacon","barb%","onion","mozzer%"]
           
           @array = []
           

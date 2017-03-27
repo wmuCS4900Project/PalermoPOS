@@ -9,6 +9,7 @@
         <table>
           <thead>
             <tr>
+              <th>ID</th>
               <th>Phone</th>
               <th>Last Name</th>
               <th>First Name</th>
@@ -22,6 +23,7 @@
           <tbody>
             <% @customers.each do |customer| %>
               <tr>
+                <td><%= customer.id %></td>
                 <td><%= customer.Phone %></td>
                 <td><%= customer.LastName %></td>
                 <td><%= customer.FirstName %></td>
@@ -32,7 +34,7 @@
                 <td><%= customer.LastOrderDate %></td>
                 <td><%= link_to 'Show', customer, class: "btn btn-primary" %></td>
                 <td><%= link_to 'Edit', edit_customer_path(customer), class: "btn btn-primary" %></td>
-                <td><%= link_to 'Destroy', customer, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
+                <td><%= link_to 'Delete', customer, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
               </tr>
             <% end %>
           </tbody>

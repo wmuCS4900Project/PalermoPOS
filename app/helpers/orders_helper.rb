@@ -32,15 +32,15 @@ module OrdersHelper
           if !Product.find(thisorderline.product_id).freeoptions.include?(a)
             if Option.find(a).ChildOf == nil
               puts "found a nil childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost * 0.5
             elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
               puts "found a free childof"
-              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f) * 0.5
             else
               puts "found a nonfree childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost * 0.5
             end
-            optioncount += 1.0
+            optioncount += 0.5
           end
         end
       end
@@ -49,15 +49,15 @@ module OrdersHelper
           if !Product.find(thisorderline.product_id).freeoptions.include?(a)
             if Option.find(a).ChildOf == nil
               puts "found a nil childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost * 0.5
             elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
               puts "found a free childof"
-              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f) * 0.5
             else
               puts "found a nonfree childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost * 0.5
             end
-            optioncount += 1.0
+            optioncount += 0.5
           end
         end
       end
@@ -68,15 +68,15 @@ module OrdersHelper
           if !Product.find(thisorderline.product_id).freeoptions.include?(a)
             if Option.find(a).ChildOf == nil
               puts "found a nil childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost * 0.25
             elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
               puts "found a free childof"
-              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f) * 0.25
             else
               puts "found a nonfree childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost * 0.25
             end
-            optioncount += 1.0
+            optioncount += 0.25
           end
         end
       end
@@ -85,15 +85,15 @@ module OrdersHelper
           if !Product.find(thisorderline.product_id).freeoptions.include?(a)
             if Option.find(a).ChildOf == nil
               puts "found a nil childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost * 0.25
             elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
               puts "found a free childof"
-              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f) * 0.25
             else
               puts "found a nonfree childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost * 0.25
             end
-            optioncount += 1.0
+            optioncount += 0.25
           end
         end
       end
@@ -102,15 +102,15 @@ module OrdersHelper
           if !Product.find(thisorderline.product_id).freeoptions.include?(a)
             if Option.find(a).ChildOf == nil
               puts "found a nil childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost * 0.25
             elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
               puts "found a free childof"
-              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f) * 0.25
             else
               puts "found a nonfree childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost * 0.25
             end
-            optioncount += 1.0
+            optioncount += 0.25
           end
         end
       end
@@ -119,22 +119,26 @@ module OrdersHelper
           if !Product.find(thisorderline.product_id).freeoptions.include?(a)
             if Option.find(a).ChildOf == nil
               puts "found a nil childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost* 0.25
             elsif Product.find(thisorderline.product_id).freeoptions.include?(Option.find(a).ChildOf.to_s)
               puts "found a free childof"
-              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f)
+              addcost += (Option.find(a).Cost.to_f - Option.find(Option.find(a).ChildOf).Cost.to_f) * 0.25
             else
               puts "found a nonfree childof"
-              addcost += Option.find(a).Cost
+              addcost += Option.find(a).Cost * 0.25
             end
-            optioncount += 1.0
+            optioncount += 0.25
           end
         end
       end
     end
-
-    if addcost > 0 && addcost < Product.find(thisorderline.product_id).MinimumOptionCharge
-      addcost = Product.find(thisorderline.product_id).MinimumOptionCharge
+    
+    puts "optioncount is " + optioncount.to_s
+    puts "ceiling is " + optioncount.ceil.to_s
+    
+    if (optioncount.ceil - optioncount) > 0
+      addcost += (optioncount.ceil - optioncount) * Product.find(thisorderline.product_id).MinimumOptionCharge 
+      optioncount = optioncount.ceil
     end
     
     thisorderline.OptionCount = optioncount
@@ -148,11 +152,23 @@ module OrdersHelper
   end
   
   #order totals calculator, handles subtotalling, coupons, discounts, taxes, and totalling
-  def calc_taxes(orderid)
+  #sales tax information based on https://www.legislature.mi.gov/(S(wrwcmwmxg3runuoc5j0udnio))/mileg.aspx?page=getobject&objectName=mcl-205-73
+  def calc_order(order_id)
     
-    order = Order.find(orderid)
+    order = Order.find(order_id)
+    
+    subtotal = 0.0
+    
+    orderlines = Orderline.where('order_id = ?', order.id)
+    
+    orderlines.each do |a|
+       subtotal += a.ItemTotalCost
+    end
+
+    order.Subtotal = subtotal
     
     coupondiscount = 0.0
+    
     if !order.Coupons.nil?
       puts "figuring out coupon discounts"
       puts order.Coupons.inspect
@@ -166,7 +182,7 @@ module OrdersHelper
         end
       end
     end
-    puts coupondiscount.inspect
+    
     order.Discounts = coupondiscount + order.ManualDiscount
     
     subtotal2 = order.Subtotal.to_f - order.Discounts
@@ -191,32 +207,36 @@ module OrdersHelper
       centstax = 0.06      
     end
     
-    taxes = taxes + centstax
+    taxes += centstax
     
+    if order.IsDelivery == true
+      if Customer.find(order.customer_id).LongDelivery == true
+        dlvcharge = Palconfig.where('name = ?', 'deliverylong').first.val1.to_f
+      elsif Customer.find(order.customer_id).LongDelivery == false
+        dlvcharge = Palconfig.where('name = ?', 'delivery').first.val1.to_f
+      end
+    else
+      dlvcharge = 0.0
+    end
+    
+    order.DeliveryCharge = dlvcharge
+
     order.Tax = taxes
-    order.TotalCost = order.Subtotal.to_f - order.Discounts + order.Tax
+    order.TotalCost = order.Subtotal.to_f - order.Discounts + order.Tax + order.DeliveryCharge
+    puts order.Subtotal
+    puts order.Discounts
+    puts order.Tax
+    puts order.DeliveryCharge
+    puts order.TotalCost
     order.save!
   end
+  
   
   def orders_options_update(orderid, pickupordelivery, discount, user, driver, comments)
     
     puts "orders_options_update called"
     
     @order = Order.find(orderid)
-    
-    if !pickupordelivery.nil? 
-      if pickupordelivery == "delivery"
-        @order.IsDelivery = true
-        if Customer.find(@order.customer_id).LongDelivery == true
-          @order.TotalCost = @order.TotalCost + Rails.configuration.palermo['deliveryLong']
-        else
-          @order.TotalCost = @order.TotalCost + Rails.configuration.palermo['deliveryShort']
-        end
-      elsif pickupordelivery == "pickup"
-        @order.IsDelivery = false
-      end
-      
-    end
     
     if !discount.nil?
       @order.ManualDiscount = discount

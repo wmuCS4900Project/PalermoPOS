@@ -1,10 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  def home
-    redirect_to '/default/index'
-  end
-
   # Returns the current logged-in user (if any).
   def current_user
   	user = @current_user ||= User.find_by(id: session[:user_id])
@@ -19,8 +15,7 @@ class ApplicationController < ActionController::Base
     redirect_to '/default/index'
   end
   
-  class << self
-    before_filter :require_login
+  before_filter :require_login
 
      # Flash messages
     use_growlyflash
@@ -31,8 +26,8 @@ class ApplicationController < ActionController::Base
           puts request.path.inspect
           redirect_to login_path, :flash => { :danger => "You must be logged in!" }
         end
+
       end
     end
-  end
 
 end

@@ -1,22 +1,8 @@
 <style>
-.nav-tabs {
-  font-size: 1em;
-}
-.nav-tabs>li>a {
-  padding: .4em;
-  font-size: 1.2em;
-}
-ul {
-  margin: 5px;
-}
-.sidebar-left a.nav-item, .sidebar-left a.nav-item:hover {
-	background-color: #524E4E;
-	color: #d8d8d8;
-	border-bottom: 1px solid #888;
-	font-size: 1.2em;
-	top: -5px;
-	left: -5px;
-}
+  h1 {
+    margin-top: .1em;
+    margin-bottom: .1em;
+  }
 </style>
 
 <%= render 'bars/top2' %>
@@ -47,6 +33,7 @@ ul {
         
         <div>
           <ul class="nav nav-tabs">
+            <li class="active"><%= link_to "Favorites", ("#" + "Favorites".gsub(/\s+/, "")), { 'data-toggle' => 'tab' } %></li>
             <% @categories.each do |cat| %>
               <li><%= link_to cat.Abbreviation, ("#" + cat.Name.gsub(/\s+/, "")), { 'data-toggle' => 'tab' } %></li>
             <% end %>
@@ -54,6 +41,13 @@ ul {
           
         
           <div class="tab-content">
+              <%= content_tag :div, :class => "tab-pane active", :id => "Favorites".gsub(/\s+/, "") do -%>
+                <p>
+                  <% Product.where("Favorite = true").order(:FavoritePriority).each do |p| %>
+                    <%= link_to p.Name, orders_addproducttoorder_path(order_id: @order.id, product_id: p.id), method: :post, class: "btn btn-product" %>
+                  <% end %>
+                </p>
+              <% end -%>
             <% @categories.each do |cat| %>
               <%= content_tag :div, :class => "tab-pane", :id => cat.Name.gsub(/\s+/, "") do -%>
                 <p>

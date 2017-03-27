@@ -1,26 +1,31 @@
 <div class="sidebar-left">
   <div class="navbar">
     <ul class="nav">
-      
       <li>
-        <% if request.path == "/customers" %>
-          <%= link_to "Recent Customers", customers_path, class: "active nav-item" %><span class="active-arrow"></span>
-        <% else %>
-          <%= link_to "Recent Customers", customers_path, class: "nav-item" %>
+        <% if ( current_user.can?("view", "customers")) %>
+          <% if request.path == "/customers" %>
+            <%= link_to "Recent Customers", customers_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "Recent Customers", customers_path, class: "nav-item" %>
+          <% end %>
         <% end %>
       </li>
       <li>
-        <% if request.path == "/customers/search" %>
-            <%= link_to "Search Customers", customers_path, class: "active nav-item" %><span class="active-arrow"></span>
-          <% else %>
-            <%= link_to "Search Customers", customers_path, class: "nav-item" %>
-        <% end %>          
+        <% if ( current_user.can?("view", "customers")) %>
+          <% if request.path == "/customers/search" %>
+              <%= link_to "Search Customers", customers_path, class: "active nav-item" %><span class="active-arrow"></span>
+            <% else %>
+              <%= link_to "Search Customers", customers_path, class: "nav-item" %>
+          <% end %>    
+        <% end %>
       </li>
       <li>
-        <% if request.path == "/customers/new" %>
-            <%= link_to "Add New Customer", new_customer_path, class: "active nav-item" %><span class="active-arrow"></span>
-          <% else %>
-            <%= link_to "Add New Customer", new_customer_path, class: "nav-item" %>
+        <% if ( current_user.can?("create", "customers")) %>
+          <% if request.path == "/customers/new" %>
+              <%= link_to "Add New Customer", new_customer_path, class: "active nav-item" %><span class="active-arrow"></span>
+            <% else %>
+              <%= link_to "Add New Customer", new_customer_path, class: "nav-item" %>
+          <% end %>
         <% end %>
       </li>
     </ul>
