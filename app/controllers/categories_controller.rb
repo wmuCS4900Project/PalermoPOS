@@ -10,15 +10,31 @@ class CategoriesController < ApplicationController
   # GET /categories/1
   # GET /categories/1.json
   def show
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("view", "categories") )
+      redirect_to categories_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
   end
 
   # GET /categories/new
   def new
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("create", "categories") )
+      redirect_to categories_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+    
     @category = Category.new
   end
 
   # GET /categories/1/edit
   def edit
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("edit", "categories") )
+      redirect_to categories_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
   end
 
   # POST /categories
@@ -28,6 +44,7 @@ class CategoriesController < ApplicationController
     if ( !logged_in? || !current_user.can?("create", "categories") )
       redirect_to categories_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
 
     @category = Category.new(category_params)
@@ -50,6 +67,7 @@ class CategoriesController < ApplicationController
     if ( !logged_in? || !current_user.can?("edit", "categories") )
       redirect_to categories_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
 
     respond_to do |format|
@@ -70,6 +88,7 @@ class CategoriesController < ApplicationController
     if ( !logged_in? || !current_user.can?("destroy", "categories") )
       redirect_to categories_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
 
     @category.destroy

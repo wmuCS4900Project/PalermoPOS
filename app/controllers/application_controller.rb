@@ -17,17 +17,16 @@ class ApplicationController < ActionController::Base
   
   before_filter :require_login
 
-     # Flash messages
-    use_growlyflash
+   # Flash messages
+  use_growlyflash
 
-    private
-      def require_login
-        unless current_user || (request.path == login_path) || (request.path == signup_path)
-          puts request.path.inspect
-          redirect_to login_path, :flash => { :danger => "You must be logged in!" }
-        end
-
+  private
+    def require_login
+      unless current_user || (request.path == login_path) || (request.path == signup_path)
+        puts request.path.inspect
+        redirect_to login_path, :flash => { :danger => "You must be logged in!" }
       end
+
     end
 
 end
