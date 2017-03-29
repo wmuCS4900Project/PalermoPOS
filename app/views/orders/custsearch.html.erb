@@ -24,6 +24,8 @@
   }
   .full {
     width: 14%;
+    border: 1px solid #D44D13 ;
+    margin: 0em .1em;
   }
   .results {
     margin: .5em 0em;
@@ -38,6 +40,7 @@
     font-size: 1.4em;
     text-align: center;
     line-height: 2em;
+    padding-left: .3em;
   }
   .clear {
     clear: both;
@@ -79,14 +82,14 @@
           <div class="actions group">
             <%= submit_tag "Search", class: "btn btn-lg" %>
           </div>
-          
+        <% end %>
           <div class="group">
             <h3>OR</h3>
             <%= link_to "Walk In Customer", orders_walkin_path, class: "btn btn-primary btn-lg" %>  
           </div>
         
         </div>
-      <% end %>
+      
       
       
       <div class="btn-group group left group-cust">

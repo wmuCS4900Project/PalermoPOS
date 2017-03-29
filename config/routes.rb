@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get "management" => 'management#index'
   get "management/cashoutdrivers" => 'management#cashoutdrivers'
   get "management/endofday" => 'management#endofday'
+  get "management/salesreport" => 'management/salesreport'
 
   get "orders/addPreviousOrderItems" => 'orders#addPreviousOrderItems'
   post "orders/commitorder" => 'orders#commitorder'

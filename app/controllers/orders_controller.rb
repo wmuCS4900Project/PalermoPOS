@@ -579,43 +579,92 @@ class OrdersController < ApplicationController
       return
     end
     
-    if !params[:id].present?
-      redirect_to orders_url
+    if !params[:order_id].present?
+      redirect_to orders_url, :flash => { :notice => "Order not found!" }
+      return
+    end
+    if !params[:amountpaid].present?
+      redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "No amount entered!" }
       return
     end
     
-    @id = params[:id]
+    @order = Order.find(params[:order_id])
     
-    @order = Order.find(@id)
+    if @order.IsDelivery?
+      if !params[:order][:DriverID].present?
+        redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "No driver selected!" }
+        return
+      end
+    end
+    
     @customer = Customer.find(@order.customer_id)
-    @orderlines = Orderline.where(order_id: @id)
+    @orderlines = Orderline.where(order_id: @order.id)
     @products = Product.all
-
-    if params[:tip].present?
-      @order.Tip = params[:tip]
-    end
-
-    if params[:amountpaid].present?
-      @paid = params[:amountpaid]
-    else
-      @paid = @order.TotalCost
-    end
     
-    @order.AmountPaid = @paid
+    @paid = (params[:amountpaid].to_f) / 100
+    puts @paid
+    puts @paid.to_d
+    puts @order.TotalCost
+    puts params["commit"].inspect
+    @commit = params["commit"]
     
-    if(@order.AmountPaid > @order.TotalCost.to_f)
-      @order.ChangeDue = @order.AmountPaid - @order.TotalCost.to_f - @order.Tip
-    end
-    
-    @order.PaidCash = params[:cashorcredit]
-    @order.PaidFor = true
-    
-    if params[:order].present?
-      @order.DriverID = params[:order][:DriverID]
+    if @paid.to_d < @order.TotalCost
+      puts "checking under"
+      redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "Not enough to cover cost!" }
+      puts "not enough"
+      return
+    elsif @paid.to_d > @order.TotalCost
+      puts "checking greater"
+      if @commit.downcase.include?("credit")
+        puts "found credit"
+        if !@order.IsDelivery?
+          puts "overpay credit pickup"
+          redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "Can't overpay with credit for pickup!" }
+          return
+        else
+          puts "overpay credit delivery"
+          @order.AmountPaid = @paid
+          @order.Tip = @order.AmountPaid - @order.TotalCost
+          @order.PaidFor = true
+          @order.PaidCash = false
+        end
+      elsif @commit.downcase.include?("cash")
+        puts "found cash"
+        if @order.IsDelivery? && @commit.downcase.include?("tip")
+          puts "overpay cash delivery"
+          @order.AmountPaid = @paid
+          @order.Tip = @order.AmountPaid - @order.TotalCost
+          @order.PaidFor = true
+          @order.PaidCash = true
+        else
+          puts "overpay cash pickup"
+          @order.AmountPaid = @paid
+          @order.ChangeDue = @order.AmountPaid - @order.TotalCost
+          @order.PaidFor = true
+          @order.PaidCash = true
+        end
+      end
+    elsif @paid.to_d == @order.TotalCost
+      puts "checking equal"
+      if @commit.downcase.include?("credit")
+        puts "correctpay credit"
+        @order.AmountPaid = @paid
+        @order.PaidFor = true
+        @order.PaidCash = false
+      elsif @commit.downcase.include?("cash")
+        puts "correctpay cash"
+        @order.AmountPaid = @paid
+        @order.PaidFor = true
+        @order.PaidCash = true
+      end
     end
     
     @order.save!
     
+    if @order.PaidFor == false
+      redirect_to orders_url, :flash => { :notice => "Something went wrong." }
+      return
+    end
   end
   
   

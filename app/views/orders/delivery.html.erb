@@ -11,38 +11,7 @@
       
       <h1>Delivery Orders</h1>
       <% if !@orders.empty? %>
-        <div class="table" %>
-          <table>
-            <thead>
-              <tr>
-                <th><%= "Order Number" %></th>
-                <th><%= "Ordered by" %></th>
-                <th><%= "Ordered at" %></th>
-                <th colspan="4"></th>
-              </tr>
-            </thead>
-          
-            <tbody>
-              <% @orders.each do |order| %>
-                <tr>
-                  <td><%= order.id %> <br>
-                  <td><%= Customer.find(order.customer_id).FirstName %> <%= Customer.find(order.customer_id).LastName %> <br></td>
-                  <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
-                  <% if ( current_user.can?("create", "orders")) %>
-                    <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ), class: "btn btn-primary" %></td>
-                  <% end %>
-                  <% if ( current_user.can?("edit", "orders")) %>
-                    <td><%= link_to 'Edit', orders_changeorder_path(order_id: order.id), class: "btn btn-primary" %></td>
-                  <% end %>
-                  <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" %></td>
-                  <% if ( current_user.can?("destroy", "orders")) %>
-                    <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" %></td>
-                  <% end %>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
+        <%= render 'pending', orders: @orders %>
       <% else %>
         <h2>No delivery orders found</h2>
       <% end %>

@@ -25,37 +25,19 @@ ul {
   <div class="wrapper has-sidebar-left">
     <%= render 'sidebars/orderside' %>
     <div class="container main-content">
-      
-      <% if flash[:notice].present? %>
-        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
-      <% end %>
 
-      <% # Check capabilities
-      if ( !logged_in? || !current_user.can?("create", "orders")) %>
-        <p> Sorry, you don't have the capabilities to do that </p>
-  
-      <% else %>
-  
-        <h1>
-          <%= "Current Order for " %>
-          <%= Customer.find(@order.customer_id).FirstName %>
-          <%= " " %>
-          <%= Customer.find(@order.customer_id).LastName %>
-        </h1>
-        
-        <%= render 'currentorderbox', order: @order %>
-        
-        <h2>Select Coupons</h2>
-        
-        <div class="tab-content">
-            <%= link_to "Return to Product Selection", orders_selectproduct_url(order_id: @order.id), method: :get, class: 'btn btn-primary' %>
-            <%= link_to "Clear Coupons", orders_addcoupons_url(cid: "clear", order_id: @order.id), method: :post, class: 'btn btn-primary' %><br>
-          <% Coupon.all.each do |c| %>
-            <%= link_to "Apply " + c.Name, orders_addcoupons_url(cid: c.id, order_id: @order.id), method: :post, class: 'btn btn-product' %>
-          <% end %>
-        </div>
-        
-      <% end %>
+      <%= render 'currentorderbox', order: @order %>
+      
+      <h2>Select Coupons</h2>
+      
+      <div class="tab-content">
+          <%= link_to "Return to Product Selection", orders_selectproduct_url(order_id: @order.id), method: :get, class: 'btn btn-primary' %>
+          <%= link_to "Clear Coupons", orders_addcoupons_url(cid: "clear", order_id: @order.id), method: :post, class: 'btn btn-primary' %><br>
+        <% Coupon.all.each do |c| %>
+          <%= link_to "Apply " + c.Name, orders_addcoupons_url(cid: c.id, order_id: @order.id), method: :post, class: 'btn btn-product' %>
+        <% end %>
+      </div>
+      
     </div>
   </div>
 </body>

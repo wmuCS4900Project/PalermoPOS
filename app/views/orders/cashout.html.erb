@@ -1,82 +1,592 @@
+<script type="text/javascript">
+
+    var screen = $("#screen"); 
+    var total = screen.text();
+    var clrBtn = $("#clr");
+    var delBtn = $("#del");
+    var numBtn = $("button.number"); 
+    var dols = '';
+    var display;
+    var quicktip = $("button.quicktip");
+    var quickchange = $("button.quickchange");
+  
+  quicktip.click(function() {
+    console.log("thinger");
+    var amount = $(this).val();
+    document.getElementById("amountpaid").setAttribute('value', amount);
+    var input = document.createElement("input");
+    input.setAttribute("type", "hidden");
+    input.setAttribute("name", "commit");
+    input.setAttribute("value", "Cash Tip");
+    document.getElementsByName("cashmeout")[0].appendChild(input);
+    document.cashmeout.submit();
+  });
+  quickchange.click(function() {
+    console.log("thinger");
+    var amount = $(this).val();
+    document.getElementById("amountpaid").setAttribute('value', amount);
+    var input = document.createElement("input");
+    input.setAttribute("type", "hidden");
+    input.setAttribute("name", "commit");
+    input.setAttribute("value", "Cash Change");
+    document.getElementsByName("cashmeout")[0].appendChild(input);
+    document.cashmeout.submit();
+  });
+  numBtn.click(function() {
+  	var number = $(this).val();
+    updateScreenTotal(number);
+    updateDisplay();
+    console.log('message1');
+  });
+  delBtn.click(function() {
+  	deleteNumber();
+  	updateDisplay();
+    console.log('message2');
+  });
+  clrBtn.click(function() {
+  	clearNumber();
+  	updateDisplay();
+    console.log('message3');
+  });
+  $(document).unbind('keydown').bind('keydown', function (e) {
+  if(e.which == 96) {
+    var number = 0;
+    updateScreenTotal(number);
+    updateDisplay();
+  }
+  if(e.which == 97) {
+    var number = 1;
+    updateScreenTotal(number);
+    updateDisplay();
+  }
+  if(e.which == 98) {
+    var number = 2;
+    updateScreenTotal(number);
+    updateDisplay();
+  }
+  if(e.which == 99) {
+    var number = 3;
+    updateScreenTotal(number);
+    updateDisplay();
+  }
+  if(e.which == 100) {
+    var number = 4;
+    updateScreenTotal(number);
+    updateDisplay();
+  }
+  if(e.which == 101) {
+    var number = 5;
+    updateScreenTotal(number);
+    updateDisplay();
+  }
+  if(e.which == 102) {
+    var number = 6;
+    updateScreenTotal(number);
+    updateDisplay();
+  }
+  if(e.which == 103) {
+    var number = 7;
+    updateScreenTotal(number);
+    updateDisplay();
+  }
+  if(e.which == 104) {
+    var number = 8;
+    updateScreenTotal(number);
+    updateDisplay();
+  }
+  if(e.which == 105) {
+    var number = 9;
+    updateScreenTotal(number);
+    updateDisplay();
+  }
+  if(e.which == 8){
+    deleteNumber();
+    updateDisplay();
+  }
+  if(e.which == 27){
+    clearNumber();
+    updateDisplay();
+  }
+  });
+  
+  function updateScreenTotal(newNumber) {
+    if (dols == '0')
+      dols = '';
+    if (dols.length <= 9)
+  	  dols = dols.concat(newNumber);
+  }
+  function deleteNumber() {
+  	dols = dols.slice(0,-1);
+  }
+  function clearNumber() {
+  	dols = '0';
+  }
+  function updateDisplay() {
+    if (dols == '0' || dols == ''){
+      display = '0.00';
+    }
+    else {
+  	  if (dols.length == 1){
+  	    display = "0.0".concat(dols);
+  	  }
+  	  else if (dols.length == 2){
+  	    display = "0.".concat(dols);
+  	  }
+  	  else {
+  	    display = [dols.slice(0, -2), '.', dols.slice(-2)].join('');
+  	  }
+    }
+  	screen.text(display);
+  	//document.getElementById('amountpaid').value = dols;
+  	document.getElementById("amountpaid").setAttribute('value', dols);
+  }
+  
+</script>
+
+<style>
+  .left1 {
+    width: 20%;
+    float: left;
+  }
+  .left {
+    width: 25%;
+    float: left;
+  }
+  .mid {
+    width: 15%;
+    float: left;
+
+  }
+  .rightmost {
+    width: 45%;
+    float: left;
+  }
+  .around {
+    border: .15em solid #D44D13;
+    border-radius: .3em;
+    padding: .8em;
+    margin: 0em .3em;
+    height: 40em;
+    display: block;
+    overflow: auto;
+  }
+  .after {
+    float: none;
+  }
+  .item {
+    border-left: .1em solid black;
+    border-right: .1em solid black;
+    border-top: .1em solid black;
+    font-size: 14px;
+    overflow: auto;
+    padding: .3em;
+  }
+  .item:last-of-type {
+    border-bottom: .1em solid black;
+  }
+  .options {
+    text-indent: 10px;
+  }
+  .head {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .right{
+    float: right;
+  }
+  .breakdown{
+  }
+  .lineitem{
+    display:block;
+    text-align: center;
+    border-bottom: 1px dashed #000; 
+    line-height: 1em;
+    margin: 0px 5px 0px 5px;
+  }
+  .total{
+    font-weight: bold;
+    border-top: 1px solid black;
+  }
+  h3 {
+    padding: 0em 0em .3em 0em;
+    margin: 0em;
+  }
+  .under {
+    border-bottom: .15em solid #D44D13;
+    margin-bottom: .7em;
+  }
+  .numberbox {
+    width: 36%;
+    height: 12em;
+    float: left;
+    margin: 0em .3em;
+  }
+  .box {
+    border: .05em solid gray;
+    padding: .2em .1em;
+    margin: .3em 0em;
+  }
+  .buttonbox {
+    float: left;
+    margin: 0em .3em;
+    width: 60%;
+  }
+  .numb {
+    width: 28%;
+    height: 28%;
+    margin: .2em;
+  }
+  .invis {
+    visibility:hidden;
+  }
+  .wid {
+    width: 100%;
+  }
+  .half {
+    width: 49%;
+  }
+  .cashout {
+    width: 100%;
+    height: 2.3em;
+    text-align: right;
+    overflow: hidden;
+    border: .05em solid gray;
+    padding: .1em;
+  }
+  .cashoutleft {
+    float: left;
+  }
+  .btn-go {
+    width: 49%;
+  }
+  .cashoutright {
+    float: right;
+  }
+  .drop {
+    width: 90%;
+    max-width: 90%;
+    margin: .4em 5%;
+  }
+  h4 {
+    margin-top: .1em;
+    font-size: 1.5em;
+    text-align: center;
+  }
+  
+</style>
+
 <%= render 'bars/top2' %>
 
 <body>
   <div class="wrapper has-sidebar-left">
     <%= render 'sidebars/orderside' %>
     <div class="container main-content">
-      <p id="notice"><%= notice %></p>
-
-    <% # Check capabilities
-    if ( !logged_in? || !current_user.can?("edit", "orders")) %>
-      <p> Sorry, you don't have the capabilities to do that! <br/> You must be able to edit orders </p>
-
-    <% else %>   
-      <h1>Cash Out Order <%= @order.id %></h1>
+  
+      <h1>Cash Out Order <%= @order.DailyID %> for <%= @customer.FirstName %> <%= @customer.LastName %> </h1>
       
-      <% @orderlines.each do |a| %>
-        <%= @products.find(a.product_id).Name %>
-        <%= a.ItemTotalCost %><br>
-      <% end %><br>
-      
-      <% if !@order.Coupons.nil? %>
-        <%= "Coupons:" %><br>
-        <% @order.Coupons.each do |b| %>
-          <%= Coupon.find(b).Name %><%= " -" + Coupon.find(b).DollarsOff.to_s %><br>
-        <% end %>
-        <br>
-      <% end %>
-      
-      <%= "Comments: " %>
-      <%= @order.Comments %><br><br>
-      <%= "Subtotal:" %>
-      <%= @order.Subtotal %><br>
-      <%= "Discount:"%>
-      <%= @order.Discounts %><br>
-      <%= "Taxes:" %>
-      <%= @order.Tax %><br>
-      <%= "Total Due" %>
-      <%= @order.TotalCost %>
+      <div class="left around">
+        <div class="under"><h3>Items Ordered</h3></div>
         
-
-      
-      <br>
-      <br>
-      <%= form_tag("/orders/cashedout", :method=>'post', :multipart => true) do %>
-        <% if @order.IsDelivery %>
-          <%= "Select Driver" %>
-          <%= collection_select(:order, :DriverID, User.with_role(:driver), :id, :Name) %><br><br>
-          <%= "Tip: " %><%= text_field_tag 'tip', @order.Tip %><br>
-        <% end %><br>
-        <%= "Cash or Credit: " %>
-        <%= radio_button_tag 'cashorcredit', 'cash', true %> <%= "Cash" %>
-        <%= radio_button_tag 'cashorcredit', 'credit' %> <%= "Credit" %><br><br>
-        <%= "Amount being paid:" %>
-        <%= text_field_tag 'amountpaid', @order.TotalCost %><br><br>
-        <%= hidden_field_tag :id, @id %>
-        <div class="actions">
-          <%= submit_tag "Cash This Order Out" %>
+        <% @orderlines.each do |a| %>
+          <div class="item">
+            <%= @products.find(a.product_id).Name %>
+            <span class="right">
+              <%= number_to_currency(a.ItemTotalCost) %>
+            </span>
+            
+            <br>
+            
+            <% if a.whole? %> <%# list options if orderline is whole %>
+              <% if a.Options1.nil? %> <%# tried to move this block to an html partial and for some reason the Options1 array will NOT pass in %>
+                <%= "Plain" %>
+              <% else %>
+                <% @dif = Product.find(a.product_id).freeoptions - a.Options1 %> <%# grab any removed free items %>
+                <% if !@dif.nil? %>
+                  <% @dif.each do |b| %>
+                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                  <% end %>
+                <% end %>
+                <% a.Options1.each do |b| %>
+                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                    <%= Option.find(b).Abbreviation %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              
+            <% elsif a.halves? %> <%#list the options if the product is split in halves %>
+              <%= "top: " %>
+              <% if a.Options1.nil? %> 
+                <%= "Plain" %>
+              <% else %>
+                <% @dif = Product.find(a.product_id).freeoptions - a.Options1 %> <%# grab any removed free items %>
+                <% if !@dif.nil? %>
+                  <% @dif.each do |b| %>
+                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                  <% end %>
+                <% end %>
+                <% a.Options1.each do |b| %>
+                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                    <%= Option.find(b).Abbreviation %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <br>
+              <%= "bot: " %>
+              <% if a.Options2.nil? %> 
+                <%= "Plain" %>
+              <% else %>
+                <% @dif = Product.find(a.product_id).freeoptions - a.Options2 %> <%# grab any removed free items %>
+                <% if !@dif.nil? %>
+                  <% @dif.each do |b| %>
+                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                  <% end %>
+                <% end %>
+                <% a.Options2.each do |b| %>
+                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                    <%= Option.find(b).Abbreviation %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              
+            <% elsif a.quarters? %> <%#list the options if the product is split in halves %>
+              <%= "Q1: " %>
+              <% if a.Options1.nil? %> 
+                <%= "Plain" %>
+              <% else %>
+                <% @dif = Product.find(a.product_id).freeoptions - a.Options1 %> <%# grab any removed free items %>
+                <% if !@dif.nil? %>
+                  <% @dif.each do |b| %>
+                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                  <% end %>
+                <% end %>
+                <% a.Options1.each do |b| %>
+                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                    <%= Option.find(b).Abbreviation %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <br><%= "Q2: " %>
+              <% if a.Options2.nil? %> 
+                <%= "Plain" %>
+              <% else %>
+                <% @dif = Product.find(a.product_id).freeoptions - a.Options2 %> <%# grab any removed free items %>
+                <% if !@dif.nil? %>
+                  <% @dif.each do |b| %>
+                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                  <% end %>
+                <% end %>
+                <% a.Options2.each do |b| %>
+                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                    <%= Option.find(b).Abbreviation %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <br><%= "Q3: " %>
+              <% if a.Options3.nil? %> 
+                <%= "Plain" %>
+              <% else %>
+                <% @dif = Product.find(a.product_id).freeoptions - a.Options3 %> <%# grab any removed free items %>
+                <% if !@dif.nil? %>
+                  <% @dif.each do |b| %>
+                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                  <% end %>
+                <% end %>
+                <% a.Options3.each do |b| %>
+                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                    <%= Option.find(b).Abbreviation %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <br><%= "Q4: " %>
+              <% if a.Options4.nil? %> 
+                <%= "Plain" %>
+              <% else %>
+                <% @dif = Product.find(a.product_id).freeoptions - a.Options4 %> <%# grab any removed free items %>
+                <% if !@dif.nil? %>
+                  <% @dif.each do |b| %>
+                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
+                  <% end %>
+                <% end %>
+                <% a.Options4.each do |b| %>
+                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
+                    <%= Option.find(b).Abbreviation %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <br> 
+            
+            <% if a.HowCooked != "normal" %>
+              Cooked: 
+              <%= a.HowCooked.humanize %>
+              <br>
+            <% end %>
+            
+            <% if a.Comments.length > 1 %>
+              Notes: 
+              <i><%= a.Comments %></i>
+              <br>
+            <% end %>
+          </div>
+        <% end %>
+        
+      </div>
+      <div class="mid around">
+        <div class="breakdown">
+          <div class="under"><h3>Order Totals</h3></div>
+          
+          <%= "Sub" %>
+          <span class="right">
+            <%= number_to_currency(@order.Subtotal).delete('$') %>
+          </span>
+          <br>
+          
+          <%= "Adj" %>
+          <span class="right">
+            <%= number_to_currency(-@order.Discounts).delete('$') %>
+          </span>
+          <br>
+          
+          <%= "Tax" %>
+          <span class="right">
+            <%= number_to_currency(@order.Tax).delete('$') %>
+          </span>
+          <br>
+          
+          <% if @order.IsDelivery == true %>
+            <%= "Dlv" %>
+            <span class="right">
+              <% if Customer.find(@order.customer_id).LongDelivery == true %>
+                <%= number_with_precision(Palconfig.where('name = ?', 'deliverylong').first.val1.to_f, precision: 2) %>
+              <% else %>
+                <%= number_with_precision(Palconfig.where('name = ?', 'delivery').first.val1.to_f, precision: 2) %>
+              <% end %>
+            </span>
+            <br>
+          <% end %>
         </div>
-      <% end %>
-      
-      <br>
-      <br>
-      <br>
-      <%= "Discount Amount:" %>
-      <%= form_tag("/orders/cashout", :method=>'get', :multipart => true) do %>
-          <%= text_field_tag 'discount' %>
-          <%= hidden_field_tag :id, @id %>
-        <div class="actions">
-          <%= submit_tag "Adjust for Discount" %>
+        
+        <div class="bold total">
+          <%= "Total" %>
+          <span class="right">
+            <%= number_to_currency(@order.TotalCost) %>
+          </span>
         </div>
-      <% end %>
-    <% end %>
-      <br />
+        
+        <% if !@order.Coupons.nil? %>
+          <%= "Coupons: " %><br>
+          <% @order.Coupons.each do |b| %>
+            <%= Coupon.find(b).Name %><%= " -" %> <%= number_to_currency(Coupon.find(b).DollarsOff) %><br>
+          <% end %>
+          <br>
+        <% end %>
+      </div>
       
-      <%= "Select coupons:" %>
-      <%= button_to "Clear Coupons", orders_cashout_url, class: 'btn', method: :get, params: { cid: "clear", id: @id  } %><br>
-      <% Coupon.all.each do |c| %>
-        <%= button_to "Apply " + c.Name, orders_cashout_url, class: 'btn', method: :get, params: { cid: c.id, id: @id  } %><br>
-      <% end %>
+      <div class="rightmost around">
+        <div class="breakdown">
+          <div class="under"><h3>Total Out</h3></div>
+            <%= form_tag("/orders/cashedout", :method=>'post', :multipart => true, :name => "cashmeout") do %>
+            
+              <div class="numberbox">
+                <div class="cashout">
+                  <span class="cashoutleft"><h3>$</h3></span>
+                  <span class="cashoutright"><h3 id="screen">0.00</h3></span>
+                </div>
+                <input id="amountpaid" name="amountpaid" type="hidden" value="" />
+                <div class="box">
+                  <button type="button" class="number numb btn btn-primary" value="1">1</button>
+                  <button type="button" class="number numb btn btn-primary" value="2">2</button>
+                  <button type="button" class="number numb btn btn-primary" value="3">3</button>
+                  <br />
+                  <button type="button" class="number numb btn btn-primary" value="4">4</button>
+                  <button type="button" class="number numb btn btn-primary" value="5">5</button>
+                  <button type="button" class="number numb btn btn-primary" value="6">6</button>
+                  <br />
+                  <button type="button" class="number numb btn btn-primary" value="7">7</button>
+                  <button type="button" class="number numb btn btn-primary" value="8">8</button>
+                  <button type="button" class="number numb btn btn-primary" value="9">9</button>
+                  <br />
+                  <button type="button" class="numb btn btn-primary invis" ></button>
+                  <button type="button" class="number numb btn btn-primary" value="0">0</button>
+                  <button type="button" class="numb btn btn-primary invis" ></button>
+                  <br />
+                  <button type="button" id="del" class="btn btn-primary btn-go" value="del">Delete</button>
+                  <button type="button" id="clr" class="btn btn-primary btn-go" value="clr">Clear</button>
+                </div>
+                
+                <div class="box">
+                  
+                  <%#= radio_button_tag 'cashorcredit', 'cash', true %> <%#= "Cash" %>
+                  <%#= radio_button_tag 'cashorcredit', 'credit' %> <%#= "Credit" %>
+                  <%= hidden_field_tag :order_id, @order.id %>
+                  
+                  <% if @order.IsDelivery %>
+                    <%= collection_select(:order, :DriverID, User.with_role(:driver), :id, :Name, {:prompt=>true}, {:class=>'drop'} ) %>
+                    <br>
+                  <% end %>
+                  
+                  <%= submit_tag "CASH out", :cashorcredit => 'cash', :class => 'btn btn-primary wid' %>
+                  <% if @order.IsDelivery %>
+                    <%= submit_tag "CASH + TIP", :cashorcredit => 'cash', :class => 'btn btn-primary wid' %>
+                  <% end %>
+                  <br>
+                  
+                  <%= submit_tag "CREDIT out", :cashorcredit => 'credit', :class => 'btn btn-primary wid' %>
+                  <br>
+                  
+                </div>
+                
+                
+              </div> 
+              
+              <div class="buttonbox box">
+                
+                <h4>Quick Cash Out</h4>
+                
+                <%= button_tag "$5 and Change", :type => "button", :value => "500", :class => 'btn btn-primary half quickchange' %>
+                <% if @order.IsDelivery %>
+                  <%= button_tag "$5 and Tip", :type => "button", :value => "500", :class => 'btn btn-primary half quicktip' %>
+                <% end %>
+                <br>
+                <%= button_tag "$10 and Change", :type => "button", :value => "1000", :class => 'btn btn-primary half quickchange' %>
+                <% if @order.IsDelivery %>
+                  <%= button_tag "$10 and Tip", :type => "button", :value => "1000", :class => 'btn btn-primary half quicktip' %>
+                <% end %>
+                <br>
+                <%= button_tag "$15 and Change", :type => "button", :value => "1500", :class => 'btn btn-primary half quickchange' %>
+                <% if @order.IsDelivery %>
+                  <%= button_tag "$15 and Tip", :type => "button", :value => "1500", :class => 'btn btn-primary half quicktip' %>
+                <% end %>
+                <br>
+                <%= button_tag "$20 and Change", :type => "button", :value => "2000", :class => 'btn btn-primary half quickchange' %>
+                <% if @order.IsDelivery %>
+                  <%= button_tag "$20 and Tip", :type => "button", :value => "2000", :class => 'btn btn-primary half quicktip' %>
+                <% end %>
+                <br>
+                <%= button_tag "$30 and Change", :type => "button", :value => "3000", :class => 'btn btn-primary half quickchange' %>
+                <% if @order.IsDelivery %>
+                  <%= button_tag "$30 and Tip", :type => "button", :value => "3000", :class => 'btn btn-primary half quicktip' %>
+                <% end %>
+                <br>
+                <%= button_tag "$40 and Change", :type => "button", :value => "4000", :class => 'btn btn-primary half quickchange' %>
+                <% if @order.IsDelivery %>
+                  <%= button_tag "$40 and Tip", :type => "button", :value => "4000", :class => 'btn btn-primary half quicktip' %>
+                <% end %>
+                <br>
+                <%= button_tag "$50 and Change", :type => "button", :value => "5000", :class => 'btn btn-primary half quickchange' %>
+                <% if @order.IsDelivery %>
+                  <%= button_tag "$50 and Tip", :type => "button", :value => "5000", :class => 'btn btn-primary half quicktip' %>
+                <% end %>
+                <br>
+                
+              </div>
+             
+            <% end %>
+            
+          </div>
+        </div>
+      </div>
+      
     </div>
   </div>
 </body>
