@@ -1,16 +1,3 @@
 <div class="sidebar-left">
-  <div class="navbar">
-    <ul class="nav">
-      <li>
-        <% if request.path == "/orders/custsearch" %>
-          <%= link_to "New Order", orders_custsearch_path, class: "active nav-item" %><span class="active-arrow"></span>
-        <% else %>
-          <%= link_to "New Order", orders_custsearch_path, class: "nav-item" %>
-        <% end %>
-      </li>
-      <li>
-        <%= link_to "Walk In Customer", orders_walkin_path, class: "nav-item" %>
-      </li>
-    </ul>
-  </div>
+
 </div>

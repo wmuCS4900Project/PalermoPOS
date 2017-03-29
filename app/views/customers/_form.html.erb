@@ -102,6 +102,8 @@
   </div>
 
   <div class="actions">
-    <%= f.submit "Save Customer", class: "btn btn-primary" %>
+    <%= button_tag(type: 'submit', class: "btn btn-primary") do %>
+      <span class="glyphicon glyphicon-floppy-disk"></span> Save Customer
+    <% end %>
   </div>
 <% end %>
