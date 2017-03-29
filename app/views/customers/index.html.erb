@@ -32,9 +32,9 @@
                 <%= customer.City %></td>
                 <td><%= customer.LongDelivery ? 'Yes' : 'No'  %></td>
                 <td><%= customer.LastOrderDate %></td>
-                <td><%= link_to 'Show', customer, class: "btn btn-primary" %></td>
-                <td><%= link_to 'Edit', edit_customer_path(customer), class: "btn btn-primary" %></td>
-                <td><%= link_to 'Delete', customer, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
+                <td><%= link_to customer, class: "btn btn-primary" do %><span class="glyphicon glyphicon-list-alt"></span> Show<% end %></td>
+                <td><%= link_to edit_customer_path(customer), class: "btn btn-primary" do %><span class="glyphicon glyphicon-pencil"></span> Edit<% end %></td>
+                <td><%= link_to customer, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" do %><span class="glyphicon glyphicon-trash"></span> Delete<% end %></td>
               </tr>
             <% end %>
           </tbody>
