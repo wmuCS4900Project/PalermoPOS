@@ -21,6 +21,7 @@ class Order < ApplicationRecord
     self.ManualDiscount = 0.0 if self.ManualDiscount.nil?
     self.DeliveryCharge = 0.0 if self.DeliveryCharge.nil?
     self.Comments = '' if self.Comments.nil?
+
   end
   
 end

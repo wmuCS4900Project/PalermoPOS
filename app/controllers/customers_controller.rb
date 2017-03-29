@@ -4,21 +4,44 @@ class CustomersController < ApplicationController
   # GET /customers
   # GET /customers.json
   def index
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("view", "customers") )
+      redirect_to customers_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+    
     @customers = Customer.limit(100)
   end
 
   # GET /customers/1
   # GET /customers/1.json
   def show
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("view", "customers") )
+      redirect_to customers_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
   end
 
   # GET /customers/new
   def new
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("create", "customers") )
+      redirect_to customers_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+    
     @customer = Customer.new
   end
 
   # GET /customers/1/edit
   def edit
+    # Check capabilities
+    if ( !logged_in? || !current_user.can?("edit", "customers") )
+      redirect_to customers_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+    end
+    
   end
 
   # POST /customers

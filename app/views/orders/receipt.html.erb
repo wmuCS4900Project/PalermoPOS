@@ -14,11 +14,16 @@
     font-size: 12px;
   }
   .item {
-    border-style: solid;
-    border-width: 1px;
+    border-left: .1em solid black;
+    border-right: .1em solid black;
+    border-top: .1em solid black;
     font-size: 14px;
     overflow: auto;
-  }    
+    padding: .3em;
+  }
+  .item:last-of-type {
+    border-bottom: .1em solid black;
+  }
   .options {
     text-indent: 10px;
   }
@@ -38,7 +43,7 @@
     margin: 0px 0px 0px 60px;
   }
   .lineitem{
-    display:block;
+    display: block;
     text-align: center;
     border-bottom: 1px dashed #000; 
     line-height: 1em;

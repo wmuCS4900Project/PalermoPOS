@@ -49,13 +49,6 @@ class OrdersController < ApplicationController
       return
     end
     
-    puts params.inspect
-    
-    @customers = []
-    @pending = []
-    @completed = []
-    @refunded = []
-    
     if params[:thisdate].present?
       @year = params[:thisdate]['(1i)'].to_s
       @month = params[:thisdate]['(2i)'].to_s
@@ -456,12 +449,12 @@ class OrdersController < ApplicationController
     end
     
     if Customer.exists?(lastname: 'Customer', firstname:  'Walk In')
-      walk_in = Customer.where(lastname: 'Customer', firstname:  'Walk In')
-      params[:custid] = walk_in[0].id
+      walk_in = Customer.where(lastname: 'Customer', firstname:  'Walk In').first
+      params[:custid] = walk_in.id
       params[:mode] = "pickup"
       startorder
     else
-      redirect_to orders_custsearch_path, :flash => {:danger => "No walk in customer in database"}
+      redirect_to orders_custsearch_path, :flash => { :danger => "No walk in customer in database"}
       return
     end
   end
@@ -474,15 +467,22 @@ class OrdersController < ApplicationController
       return
     end
     
+    @o = Order.where("created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).last
+    if @o.nil?
+      @daily = 1
+    else
+      @daily = @o.DailyID + 1
+    end
+    
     if params[:custid].present?
       if params[:mode].present?
         if params[:mode] == 'pickup'
-          @order = Order.create :PaidFor => false, :user_id => User.first.id, :IsDelivery => false, :customer_id => params[:custid]
+          @order = Order.create :PaidFor => false, :user_id => User.first.id, :IsDelivery => false, :customer_id => params[:custid], :DailyID => @daily
         elsif params[:mode] == 'delivery'
-          @order = Order.create :PaidFor => false, :user_id => User.first.id, :IsDelivery => true, :customer_id => params[:custid]
+          @order = Order.create :PaidFor => false, :user_id => User.first.id, :IsDelivery => true, :customer_id => params[:custid], :DailyID => @daily
         end
       else
-        @order = Order.create :PaidFor => false, :user_id => User.first.id, :customer_id => params[:custid]
+        @order = Order.create :PaidFor => false, :user_id => User.first.id, :customer_id => params[:custid], :DailyID => @daily
       end
       redirect_to orders_selectproduct_path(order_id: @order.id)
       return
@@ -579,43 +579,92 @@ class OrdersController < ApplicationController
       return
     end
     
-    if !params[:id].present?
-      redirect_to orders_url
+    if !params[:order_id].present?
+      redirect_to orders_url, :flash => { :notice => "Order not found!" }
+      return
+    end
+    if !params[:amountpaid].present?
+      redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "No amount entered!" }
       return
     end
     
-    @id = params[:id]
+    @order = Order.find(params[:order_id])
     
-    @order = Order.find(@id)
+    if @order.IsDelivery?
+      if !params[:order][:DriverID].present?
+        redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "No driver selected!" }
+        return
+      end
+    end
+    
     @customer = Customer.find(@order.customer_id)
-    @orderlines = Orderline.where(order_id: @id)
+    @orderlines = Orderline.where(order_id: @order.id)
     @products = Product.all
-
-    if params[:tip].present?
-      @order.Tip = params[:tip]
-    end
-
-    if params[:amountpaid].present?
-      @paid = params[:amountpaid]
-    else
-      @paid = @order.TotalCost
-    end
     
-    @order.AmountPaid = @paid
+    @paid = (params[:amountpaid].to_f) / 100
+    puts @paid
+    puts @paid.to_d
+    puts @order.TotalCost
+    puts params["commit"].inspect
+    @commit = params["commit"]
     
-    if(@order.AmountPaid > @order.TotalCost.to_f)
-      @order.ChangeDue = @order.AmountPaid - @order.TotalCost.to_f - @order.Tip
-    end
-    
-    @order.PaidCash = params[:cashorcredit]
-    @order.PaidFor = true
-    
-    if params[:order].present?
-      @order.DriverID = params[:order][:DriverID]
+    if @paid.to_d < @order.TotalCost
+      puts "checking under"
+      redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "Not enough to cover cost!" }
+      puts "not enough"
+      return
+    elsif @paid.to_d > @order.TotalCost
+      puts "checking greater"
+      if @commit.downcase.include?("credit")
+        puts "found credit"
+        if !@order.IsDelivery?
+          puts "overpay credit pickup"
+          redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "Can't overpay with credit for pickup!" }
+          return
+        else
+          puts "overpay credit delivery"
+          @order.AmountPaid = @paid
+          @order.Tip = @order.AmountPaid - @order.TotalCost
+          @order.PaidFor = true
+          @order.PaidCash = false
+        end
+      elsif @commit.downcase.include?("cash")
+        puts "found cash"
+        if @order.IsDelivery? && @commit.downcase.include?("tip")
+          puts "overpay cash delivery"
+          @order.AmountPaid = @paid
+          @order.Tip = @order.AmountPaid - @order.TotalCost
+          @order.PaidFor = true
+          @order.PaidCash = true
+        else
+          puts "overpay cash pickup"
+          @order.AmountPaid = @paid
+          @order.ChangeDue = @order.AmountPaid - @order.TotalCost
+          @order.PaidFor = true
+          @order.PaidCash = true
+        end
+      end
+    elsif @paid.to_d == @order.TotalCost
+      puts "checking equal"
+      if @commit.downcase.include?("credit")
+        puts "correctpay credit"
+        @order.AmountPaid = @paid
+        @order.PaidFor = true
+        @order.PaidCash = false
+      elsif @commit.downcase.include?("cash")
+        puts "correctpay cash"
+        @order.AmountPaid = @paid
+        @order.PaidFor = true
+        @order.PaidCash = true
+      end
     end
     
     @order.save!
     
+    if @order.PaidFor == false
+      redirect_to orders_url, :flash => { :notice => "Something went wrong." }
+      return
+    end
   end
   
   

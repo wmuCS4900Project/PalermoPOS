@@ -1,37 +1,14 @@
-<style>
-  h1 {
-    margin-top: .1em;
-    margin-bottom: .1em;
-  }
-</style>
-
 <%= render 'bars/top2' %>
 
 <body>
   <div class="wrapper has-sidebar-left">
     <%= render 'sidebars/orderside' %>
     <div class="container main-content">
-    <% # Check capabilities
-    if ( !logged_in? || !current_user.can?("edit", "orders")) %>
-      <p> Sorry, you don't have the capabilities to do that </p>
 
-    <% else %>
-      
-      <% if flash[:notice].present? %>
-        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
-      <% end %>
-      
-      <h1>
-          <%= "Current Order for " %>
-          <%= Customer.find(@order.customer_id).FirstName %>
-          <%= " " %>
-          <%= Customer.find(@order.customer_id).LastName %>
-      </h1>
-        
       <%= render 'currentorderbox', order: @order %>
       
       <div>
-        <h2><%= Product.find(@orderline.product_id).Name %> Options</h2>
+        <%#<h3><%= Product.find(@orderline.product_id).Name %> <%#Options</h3>%>
   
         <ul class="nav nav-tabs">
           <% if @orderline.whole? || (@orderline.splitstyle == nil) %>
@@ -102,7 +79,6 @@
         </script>
         
         <div class="tab-content">
-          
           
           <!-- WHOLE -->
           <% if @orderline.whole? || (@orderline.splitstyle == nil) %>
@@ -197,8 +173,6 @@
           
         </div>
       </div>
-
-      <% end %>
     </div>
   </div>
 </body>

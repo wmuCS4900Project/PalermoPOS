@@ -137,7 +137,7 @@ class ProductsController < ApplicationController
   # DELETE /products/1.json
   def destroy
     # Check capabilities
-    if ( !logged_in? || !current_user.can?("edit", "products") )
+    if ( !logged_in? || !current_user.can?("destroy", "products") )
       redirect_to products_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
       return

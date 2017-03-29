@@ -4,21 +4,43 @@ class RolesController < ApplicationController
   # GET /roles
   # GET /roles.json
   def index
+    if ( !logged_in? || !current_user.can?("view", "roles"))
+      flash[:danger] = "Sorry, you don't have the capabilities to do this"
+      redirect_to roles_path
+      return
+    end
+    
     @roles = Role.all
   end
 
   # GET /roles/1
   # GET /roles/1.json
   def show
+    if ( !logged_in? || !current_user.can?("view", "roles"))
+      flash[:danger] = "Sorry, you don't have the capabilities to do this"
+      redirect_to roles_path
+      return
+    end
   end
 
   # GET /roles/new
   def new
+    if ( !logged_in? || !current_user.can?("create", "roles"))
+      flash[:danger] = "Sorry, you don't have the capabilities to do this"
+      redirect_to roles_path
+      return
+    end
+    
     @role = Role.new
   end
 
   # GET /roles/1/edit
   def edit
+    if ( !logged_in? || !current_user.can?("edit", "roles"))
+      flash[:danger] = "Sorry, you don't have the capabilities to do this"
+      redirect_to roles_path
+      return
+    end
   end
 
   # POST /roles
