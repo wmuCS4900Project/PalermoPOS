@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20170327024346) do
     t.string   "Coupons"
     t.decimal  "ManualDiscount", precision: 8,  scale: 2
     t.decimal  "DeliveryCharge", precision: 8,  scale: 2
+    t.integer  "DailyID"
     t.index ["customer_id"], name: "index_orders_on_customer_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
