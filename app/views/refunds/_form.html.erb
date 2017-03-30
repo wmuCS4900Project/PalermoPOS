@@ -51,8 +51,11 @@
       <%= select_tag :order_id, options_from_collection_for_select(Order.all, "id", "id"), {:class => 'form-control'} %>
       <% end %>
     </div>
-
     <div class="field form-group">
+      <label for="include-tax">Include tax</label>
+      <input id="include-tax" name="include-tax" type="checkbox" />
+    </div>
+    <div class="field form-group subtotal" style="display:none">
       <%= f.label :subtotal, "Subtotal Refunded" %>
       <%= f.text_field :subtotal, :class => "form-control" %>
     </div>
@@ -74,19 +77,92 @@
         $("input.order-line").each(function() {
           if (! isNaN(parseFloat($(this).val())) && $(this).val() != '')
             total += parseFloat($(this).val());
-          console.log(parseFloat($(this).val()));
         });
 
         $("#refund_subtotal").val(total.toFixed(2));
-        $("#refund_total").val(total.toFixed(2));
+        
+        // Whether or not to include taxes in total
+        if ($("#include-tax").prop("checked")) {
+          $("#refund_total").val(calculateTaxes(total));
+          $(".subtotal").show();
+        } else {
+          $("#refund_total").val(total.toFixed(2));
+          $(".subtotal").hide();
+        }
+
         e.preventDefault();
       });
+
+      $("#include-tax").change(function() {
+        if ($(this).prop("checked")) {
+          if ($("#refund_subtotal").val() == '')
+            $("#refund_total").val(0);
+          else 
+            $("#refund_total").val( calculateTaxes( parseFloat($("#refund_subtotal").val() )) );
+          
+          $(".subtotal").show();
+        } else {
+            if ($("#refund_subtotal").val() == '')
+              $("#refund_total").val(0);
+           else 
+            $("#refund_total").val((parseFloat($("#refund_subtotal").val())).toFixed(2));
+         
+           $(".subtotal").hide();
+        }
+      });
+
+      $("#refund_subtotal").change(function() {
+        if ($(this).prop("checked")) {
+          if ($("#refund_subtotal").val() == '')
+            $("#refund_total").val(0);
+          else 
+            $("#refund_total").val( calculateTaxes( parseFloat($("#refund_subtotal").val() )) );
+         
+          $(".subtotal").show();
+        } else {
+          if ($("#refund_subtotal").val() == '')
+            $("#refund_total").val(0);
+          else 
+            $("#refund_total").val((parseFloat($("#refund_subtotal").val())).toFixed(2));
+          
+          $(".subtotal").hide();
+        }
+      });
     });
+
+    function calculateTaxes(total) {
+      var cents = total % 1;
+      var dollars = Math.floor(total);
+      var taxes = (dollars * 0.06)
+    
+      if((0.10 >= cents) && (cents >= 0.00))
+        centstax = 0.0;
+      else if ((0.24 >= cents) && (cents >= 0.11))
+        centstax = 0.01;
+      else if ((0.41 >= cents) && (cents >= 0.25))
+        centstax = 0.02;
+      else if ((0.58 >= cents) && (cents >= 0.42))
+        centstax = 0.03;   
+      else if ((0.74 >= cents) && (cents >= 0.59))
+        centstax = 0.04;   
+      else if ((0.91 >= cents) && (cents >= 0.75))
+        centstax = 0.05;
+      else if ((0.99 >= cents) && (cents >= 0.92))
+        centstax = 0.06;
+
+      taxes += centstax;   
+
+      return (total + taxes).toFixed(2);
+    }
   </script>
 
   <% else # Give ability to choose order %>
+    <p>Select an order to refund</p>
     <form>
+      <div class="field form-group">
       <%= select_tag :order_id, options_from_collection_for_select(@completed, "id", "id"), {:class => 'form-control'} %>
+      </div>
+
       <button type="submit" class="btn btn-primary">Use Order</button>
     </form>
   <% end %>

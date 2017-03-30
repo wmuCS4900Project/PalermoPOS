@@ -11,6 +11,7 @@
     <thead>
       <tr>
         <th>Order Refunded</th>
+        <th>Subtotal</th>
         <th>Total</th>
         <th colspan="3"></th>
       </tr>
@@ -22,10 +23,17 @@
        %>
         <tr>
           <td><%= link_to '#' + refund.order_id.to_s, order %></td>
+          <td>
+            <% if refund.total != refund.subtotal %>
+              <%= refund.subtotal %> 
+            <% else %>
+             &mdash;
+            <% end %>
+          </td>
           <td><%= number_to_currency(refund.total) %></td>
-          <td><%= link_to 'Show', refund %></td>
-          <td><%= link_to 'Edit', edit_refund_path(refund) %></td>
-          <td><%= link_to 'Destroy', refund, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Show', refund, class: 'btn btn-primary'%></td>
+          <td><%= link_to 'Edit', edit_refund_path(refund), class: 'btn btn-primary'%></td>
+          <td><%= link_to 'Destroy', refund, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary'%></td>
         </tr>
       <% end %>
     </tbody>
