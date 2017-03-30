@@ -1,0 +1,31 @@
+<%= render 'bars/top2' %>
+
+<body>
+  <div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/managementside' %>
+    <div class="container main-content">
+      
+      <%= form_tag("/management/genreport", :method=>'get', :multipart => true) do %>
+        Search a date range - Starting date:
+        <%= date_select "startdate", "", selected: Date.today %>
+        Ending date:
+        <%= date_select "enddate", "", selected: Date.today %>
+        <%= submit_tag "Search for orders" %>
+        
+        <div class="form_row">
+          <label>Report Type:</label>
+          <% [ 'overall sales', 'product total sales', 'sales by customer' ].each do |a| %>
+            <br><%= radio_button_tag 'reporttype', a, @a == a %>
+            <%= a.humanize %>
+          <% end %>
+        </div>        
+        
+        
+        <%= submit_tag 'Generate Report' %>
+        
+      <% end %>
+  
+      
+    </div>
+  </div>
+</body>

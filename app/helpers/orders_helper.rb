@@ -238,6 +238,12 @@ module OrdersHelper
     
     @order = Order.find(orderid)
     
+    if pickupordelivery == 'delivery'
+      @order.IsDelivery = true
+    else
+      @order.IsDelivery = false
+    end
+    
     if !discount.nil?
       @order.ManualDiscount = discount
     end

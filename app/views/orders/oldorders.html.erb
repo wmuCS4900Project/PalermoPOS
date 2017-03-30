@@ -27,124 +27,25 @@
       <% if (@pending.nil? || @pending.size == 0) && (@cancelled.nil? || @cancelled.size == 0) && (@completed.nil? || @completed.size == 0) && (@refunded.nil? || @refunded.size == 0) %>
         <h1>No orders found!</h1>
       <% end %>
-
       
-      <% if @pending != nil && @pending.size > 0 %>
+      <% if !@pending.nil? %>
         <h1>Pending Orders</h1>
-        <div class="table" %>
-          <table>
-            <thead>
-              <tr>
-                <th><%= "Order Number" %></th>
-                <th><%= "Ordered by" %></th>
-                <th><%= "Ordered at" %></th>
-                <th colspan="4"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @pending.each do |order| %>
-                <tr>
-                  <td><%= order.id %> <br>
-                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %> <br></td>
-                  <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
-                  <td><%= link_to 'Cash Out', orders_cashout_path(:id => order.id ), class: "btn btn-primary" %></td>
-                  <td><%= link_to 'Edit', orders_selectproduct_path(order_id: order.id), class: "btn btn-primary" %></td>
-                  <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" %></td>
-                  <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
+        <%= render 'pending', orders: @pending %>
+      <% end %>
+      
+      <% if !@completed.nil? %>
+        <h1>Completed Orders</h1>
+        <%= render 'completed', orders: @completed %>
       <% end %>
         
-      <% if @completed != nil && @completed.size > 0 %>
-        <h1>Completed Orders</h1>
-        <div class="table">
-          <table>
-            <thead>
-              <tr>
-                <th><%= "Order Number" %></th>
-                <th><%= "Ordered by" %></th>
-                <th><%= "Ordered at" %></th>
-                <th colspan="2"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @completed.each do |order|%>
-                <tr>
-                  <td><%= order.id %> </td>
-                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
-                  <td><%= order.created_at %> </td>
-                  <td>
-                  <% 
-                  if @refunded.include?(order) %> 
-                    Refunded!
-                  <% else %>
-                     <% if ( current_user.can?("edit", "orders")) %>
-                      <%= link_to 'Refund', new_refund_path(order_id: order.id), class: "btn btn-primary" %>
-                      <% end %>
-                  <% end %>
-                  <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% end %>
-      
-      <% if @cancelled != nil && @cancelled.size > 0 %>
+      <% if !@cancelled.nil? %>
         <h1>Cancelled Orders</h1>
-        <div class="table">
-          <table>
-            <thead>
-              <tr>
-                <th><%= "Order Number" %></th>
-                <th><%= "Ordered by" %></th>
-                <th><%= "Ordered at" %></th>
-                <th colspan="4"></th>
-              </tr>
-            </thead>
-          
-            <tbody>
-              <% @cancelled.each do |order| %>
-                <tr>
-                  <td><%= order.id %> </td>
-                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
-                  <td><%= order.created_at %> </td>
-                  <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
+        <%= render 'cancelled', orders: @cancelled %>
       <% end %>
-      
-      <% if @refunded != nil && @refunded.size > 0 %>
+    
+      <% if !@refunded.nil? %>
         <h1>Refunded Orders</h1>
-        <div class="table">
-          <table>
-            <thead>
-              <tr>
-                <th><%= "Order Number" %></th>
-                <th><%= "Ordered by" %></th>
-                <th><%= "Ordered at" %></th>
-                <th colspan="4"></th>
-              </tr>
-            </thead>
-          
-            <tbody>
-              <% @refunded.each do |order| %>
-                <tr>
-                  <td><%= order.id %> </td>
-                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
-                  <td><%= order.created_at %> </td>
-                  <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
+        <%= render 'refunded', orders: @refunded %>
       <% end %>
       
     </div>

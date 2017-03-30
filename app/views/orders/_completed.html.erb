@@ -1,0 +1,38 @@
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th><%= "Order Number" %></th>
+        <th><%= "Ordered by" %></th>
+        <th><%= "Ordered at" %></th>
+        <th><%= "Cashed out at" %></th>
+        <th><%= "Order Total" %></th>
+        <th><%= "Type" %></th>
+        <th colspan="6"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.each do |order| %>
+        <tr>
+          <td><%= order.DailyID %> <br>
+          <td><%= Customer.find(order.customer_id).FirstName %> <%= Customer.find(order.customer_id).LastName %></td>
+          <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
+          <td><%= order.updated_at.strftime("%I:%M %p %m/%d/%y") %> </td>
+          <td><%= number_to_currency(order.TotalCost) %></td>
+          <% if order.IsDelivery == true %>
+            <td><%= "Delivery" %></td>
+          <% else %>
+            <td><%= "Pickup" %></td>
+          <% end %>
+          <% if ( current_user.can?("view", "management")) %>
+              <td><%= link_to orders_cashout_path(:id => order.id), class: "btn btn-primary" do %><span class="glyphicon glyphicon-exclamation-sign"></span> Refund<% end %></td>
+            <% end %>
+          <td><%= link_to orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" do %><span class="glyphicon glyphicon-list-alt"></span> Receipt<% end %></td>
+          <% if ( current_user.can?("destroy", "orders")) %>
+            <td><%= link_to order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" do %><span class="glyphicon glyphicon-trash"></span> Delete<% end %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

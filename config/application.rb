@@ -12,5 +12,9 @@ module PalermoPOS
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.palermo = config_for(:palermo)
+    config.assets.paths << "#{Rails}/vendor/assets/fonts"
+    config.assets.paths << "#{Rails}/vendor/assets/javascripts"
+
   end
 end
+

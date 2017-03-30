@@ -4,6 +4,12 @@ class CapsController < ApplicationController
   # GET /caps
   # GET /caps.json
   def index
+    if ( !logged_in? || !current_user.can?("view", "capabilities") )
+      redirect_to caps_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
+    end
+    
     @caps = Cap.all
     @roles = Role.all
   end
@@ -11,17 +17,35 @@ class CapsController < ApplicationController
   # GET /caps/1
   # GET /caps/1.json
   def show
+    if ( !logged_in? || !current_user.can?("view", "capabilities") )
+      redirect_to caps_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
+    end
+    
     @roles = Role.all
   end
 
   # GET /caps/new
   def new
+    if ( !logged_in? || !current_user.can?("create", "capabilities") )
+      redirect_to caps_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
+    end
+    
     @cap = Cap.new
     @roles = Role.all
   end
 
   # GET /caps/1/edit
   def edit
+    if ( !logged_in? || !current_user.can?("edit", "capabilities") )
+      redirect_to caps_url
+      flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
+    end
+    
     @roles = Role.all
   end
 
@@ -32,6 +56,7 @@ class CapsController < ApplicationController
     if ( !logged_in? || !current_user.can?("create", "capabilities") )
       redirect_to caps_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
 
     @cap = Cap.new(:role_id => params[:role_id], :action => params[:ability], :object => params[:object])
@@ -54,6 +79,7 @@ class CapsController < ApplicationController
     if ( !logged_in? || !current_user.can?("edit", "capabilities") )
       redirect_to caps_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
 
     respond_to do |format|
@@ -74,6 +100,7 @@ class CapsController < ApplicationController
     if ( !logged_in? || !current_user.can?("destroy", "capabilities") )
       redirect_to caps_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
 
     @cap.destroy
