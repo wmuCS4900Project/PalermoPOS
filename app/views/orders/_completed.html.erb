@@ -19,14 +19,23 @@
           <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
           <td><%= order.updated_at.strftime("%I:%M %p %m/%d/%y") %> </td>
           <td><%= number_to_currency(order.TotalCost) %></td>
+         
           <% if order.IsDelivery == true %>
             <td><%= "Delivery" %></td>
           <% else %>
             <td><%= "Pickup" %></td>
           <% end %>
-          <% if ( current_user.can?("view", "management")) %>
-              <td><%= link_to orders_cashout_path(:id => order.id), class: "btn btn-primary" do %><span class="glyphicon glyphicon-exclamation-sign"></span> Refund<% end %></td>
-            <% end %>
+
+          <td>
+          <% if ( current_user.can?("edit", "orders")) %>
+              <% if Refund.find_by(:order_id => order.id ) == nil %>  
+               <%= link_to "Refund",  new_refund_path(:order_id => order.id), class: "btn btn-primary" do %><span class="glyphicon glyphicon-exclamation-sign"></span> Refund<% end %> %>
+              <% else %>
+                Refunded!
+              <% end%>
+          <% end %>
+          </td>
+
           <td><%= link_to orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" do %><span class="glyphicon glyphicon-list-alt"></span> Receipt<% end %></td>
           <% if ( current_user.can?("destroy", "orders")) %>
             <td><%= link_to order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" do %><span class="glyphicon glyphicon-trash"></span> Delete<% end %></td>
