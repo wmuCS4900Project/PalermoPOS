@@ -51,9 +51,9 @@
       <%= select_tag :order_id, options_from_collection_for_select(Order.all, "id", "id"), {:class => 'form-control'} %>
       <% end %>
     </div>
-    <div class="field form-group">
-      <label for="include-tax">Include tax</label>
-      <input id="include-tax" name="include-tax" type="checkbox" />
+    <div class="field form-group checkbox">
+      <label for="include-tax">
+      <input id="include-tax" name="include-tax" type="checkbox" />Include tax</label>
     </div>
     <div class="field form-group subtotal" style="display:none">
       <%= f.label :subtotal, "Subtotal Refunded" %>
