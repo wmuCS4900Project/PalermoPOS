@@ -7,7 +7,7 @@ development:
   adapter: mysql2
   encoding: utf8
   database: palermodev2
-  username: swhc
+  username: root
   password: 
   host: <%=ENV['IP']%>
 

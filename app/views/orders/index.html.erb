@@ -72,6 +72,18 @@
                   <% if ( current_user.can?("destroy", "orders")) %>
                     <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
                   <% end %>
+                  <td>
+                  <% 
+                  if @refunded.include?(order) %> 
+                    Refunded!
+                  <% else %>
+                     <% if ( current_user.can?("edit", "orders")) %>
+                      <%= link_to 'Refund', new_refund_path(order_id: order.id), class: "btn btn-primary" %>
+                      <% else %>
+                      <% end %>
+                  <% end %>
+                  </td>
+                  <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" %></td>
                 </tr>
               <% end %>
             </tbody>
@@ -100,7 +112,7 @@
                   <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
                   <td><%= link_to 'Receipt', orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" %></td>
                   <% if ( current_user.can?("destroy", "orders")) %>
-                    <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
                   <% end %>
                 </tr>
               <% end %>

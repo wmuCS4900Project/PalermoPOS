@@ -58,6 +58,15 @@
         <td><%= order.id %> </td>
         <td><%= @customers.find(order.customer_id).FirstName %><%= @customers.find(order.customer_id).LastName %> </td>
         <td><%= order.created_at.strftime("%I:%M %p %m/%d/%y") %> </td>
+        <% if Refund.find_by(:order_id => order.id) == nil %>
+          <% if ( current_user.can?("edit", "orders")) %>
+            <%= link_to 'Refund', new_refund_path(order_id: order.id), class: "btn btn-primary" %>
+            <% else %>
+            <td></td>
+            <% end %>
+        <% else %>
+        <td>Refunded!</td>
+        <% end %>
         <td><%= link_to 'Show', order %></td>
         <td><%= link_to 'Edit', edit_order_path(order) %></td>
         <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>

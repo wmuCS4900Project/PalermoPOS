@@ -67,15 +67,24 @@
                 <th><%= "Order Number" %></th>
                 <th><%= "Ordered by" %></th>
                 <th><%= "Ordered at" %></th>
-                <th colspan="4"></th>
+                <th colspan="2"></th>
               </tr>
             </thead>
             <tbody>
-              <% @completed.each do |order| %>
+              <% @completed.each do |order|%>
                 <tr>
                   <td><%= order.id %> </td>
                   <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %></td>
                   <td><%= order.created_at %> </td>
+                  <td>
+                  <% 
+                  if @refunded.include?(order) %> 
+                    Refunded!
+                  <% else %>
+                     <% if ( current_user.can?("edit", "orders")) %>
+                      <%= link_to 'Refund', new_refund_path(order_id: order.id), class: "btn btn-primary" %>
+                      <% end %>
+                  <% end %>
                   <td><%= link_to 'Delete', order, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
                 </tr>
               <% end %>

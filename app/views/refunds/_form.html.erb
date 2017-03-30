@@ -1,0 +1,92 @@
+<% if @order != nil %>
+  <%= form_for(refund) do |f| %>
+    <% if refund.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(refund.errors.count, "error") %> prohibited this refund from being saved:</h2>
+
+        <ul>
+        <% refund.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <div class="field form-group">
+        <h2>
+          <%= "Order #" %>
+          <%= @order.id %><br>
+        </h2>
+
+        <%= "Ordered by:" %>
+        <%= Customer.find(@order.customer_id).FirstName %> <%= Customer.find(@order.customer_id).LastName %><br>
+        <%= "Subtotal:" %>
+        <%= number_to_currency(@order.Subtotal) %><br>
+        <%= "Total Cost:" %>
+        <%= number_to_currency(@order.TotalCost) %><br>
+
+        <% if @order.PaidFor == true %>
+          <%= "Paid Cash or Credit:" %>
+          <% if @order.PaidCash == true %>
+            <%= "Cash" %>
+          <% else %>
+            <%= "Credit" %>
+          <% end %>
+        <% end %>
+          
+
+        <h3><%= "Items:" %></h3>
+        <% @orderlines.each do |a| %>
+        <div class="field form-group">
+          <p><strong><%= Product.find(a.product_id).Name %></strong>
+          (<%= number_to_currency(a.ItemTotalCost) %>)
+          <input class="order-line" name="orderlines[<%= a.id %>]" />
+          <button class="btn-primary btn add-refund">Update Refund</button>
+          </p>
+        </div>
+        <% end %>
+      <% if @order != nil %>
+      <%= hidden_field_tag :order_id, @order.id %>
+      <% else %>
+      <%= select_tag :order_id, options_from_collection_for_select(Order.all, "id", "id"), {:class => 'form-control'} %>
+      <% end %>
+    </div>
+
+    <div class="field form-group">
+      <%= f.label :subtotal, "Subtotal Refunded" %>
+      <%= f.text_field :subtotal, :class => "form-control" %>
+    </div>
+
+    <div class="field form-group"> 
+      <%= f.label :total, "Total Refunded" %>
+      <%= f.text_field :total, :class => "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Submit Refund", :class => 'btn btn-primary' %>
+    </div>
+  <% end %>
+
+  <script type="text/javascript">
+    jQuery(function($) {
+      $("button.add-refund").click(function(e) {
+        var total = 0;
+        $("input.order-line").each(function() {
+          if (! isNaN(parseFloat($(this).val())) && $(this).val() != '')
+            total += parseFloat($(this).val());
+          console.log(parseFloat($(this).val()));
+        });
+
+        $("#refund_subtotal").val(total.toFixed(2));
+        $("#refund_total").val(total.toFixed(2));
+        e.preventDefault();
+      });
+    });
+  </script>
+
+  <% else # Give ability to choose order %>
+    <form>
+      <%= select_tag :order_id, options_from_collection_for_select(@completed, "id", "id"), {:class => 'form-control'} %>
+      <button type="submit" class="btn btn-primary">Use Order</button>
+    </form>
+  <% end %>
