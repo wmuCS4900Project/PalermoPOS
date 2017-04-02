@@ -21,8 +21,10 @@ class ManagementController < ApplicationController
       @orders = Order.where("IsDelivery IS true AND PaidFor = true AND DriverID = ? AND created_at BETWEEN ? AND ?", @driver.id, DateTime.now.beginning_of_day, DateTime.now.end_of_day).all 
       
       @tiptotal = 0.0
+      @dlvtotal = 0.0
       @orders.each do |a|
         @tiptotal += a.Tip.to_f
+        @dlvtotal += a.DeliveryCharge
       end
       
       puts @tiptotal
@@ -134,6 +136,8 @@ class ManagementController < ApplicationController
     @tottotals = Array.new(4, 0.0)
     @cashtotal = Array.new(4, 0.0)
     @credittotal = Array.new(4, 0.0)
+    @tiptotal = Array.new(4, 0.0)
+    @dlvtotal = Array.new(4, 0.0)
     
     @pending.each do |a|
       @subtotals[0] += a.Subtotal
@@ -144,6 +148,8 @@ class ManagementController < ApplicationController
       else
         @credittotal[0] += a.TotalCost
       end
+      @tiptotal[0] += a.Tip
+      @dlvtotal[0] += a.DeliveryCharge
     end
     
     @completed.each do |a|
@@ -155,6 +161,8 @@ class ManagementController < ApplicationController
       else
         @credittotal[1] += a.TotalCost
       end
+      @tiptotal[1] += a.Tip
+      @dlvtotal[1] += a.DeliveryCharge
     end
     
     @cancelled.each do |a|
@@ -166,6 +174,8 @@ class ManagementController < ApplicationController
       else
         @credittotal[2] += a.TotalCost
       end
+      @tiptotal[2] += a.Tip
+      @dlvtotal[2] += a.DeliveryCharge
     end
 
     @completed.each do |a|
@@ -177,6 +187,8 @@ class ManagementController < ApplicationController
       else
         @credittotal[3] += a.TotalCost
       end
+      @tiptotal[3] += a.Tip
+      @dlvtotal[3] += a.DeliveryCharge
     end
     
 
@@ -187,10 +199,10 @@ class ManagementController < ApplicationController
   def query
     <<-SQL
     SELECT product_id, COUNT(*), SUM(ItemTotalCost)
-    FROM orderlines
-    LEFT JOIN orders
-    ON orderlines.order_id = orders.id
-    WHERE Paidfor = 1
+    FROM orderlines AS A
+    INNER JOIN orders AS B
+    ON A.order_id= B.id
+    WHERE B.Paidfor = 1 AND B.created_at >= CURDATE()
     GROUP BY product_id;
     SQL
     

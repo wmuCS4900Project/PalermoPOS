@@ -8,12 +8,14 @@ namespace :wipeandreload do
       ActiveRecord::Base.connection.execute("delete from options;")
       ActiveRecord::Base.connection.execute("delete from products;")
       ActiveRecord::Base.connection.execute("delete from categories")
+      ActiveRecord::Base.connection.execute("delete from coupons")
       
       ActiveRecord::Base.connection.execute("alter table orders AUTO_INCREMENT = 1")
       ActiveRecord::Base.connection.execute("alter table orderlines AUTO_INCREMENT = 1")
       ActiveRecord::Base.connection.execute("alter table categories AUTO_INCREMENT = 1")
       ActiveRecord::Base.connection.execute("alter table products AUTO_INCREMENT = 1")
       ActiveRecord::Base.connection.execute("alter table options AUTO_INCREMENT = 1")
+      ActiveRecord::Base.connection.execute("alter table coupons AUTO_INCREMENT = 1")
       
       Rake::Task["import:categories"].invoke
       Rake::Task["import:products"].invoke
@@ -21,6 +23,9 @@ namespace :wipeandreload do
       
       Rake::Task["freeoptionsload:loadall"].invoke
       Rake::Task["extralightload:loadall"].invoke
+      
+      Rake::Task["import:coupons"].invoke
   end
   
 end
+

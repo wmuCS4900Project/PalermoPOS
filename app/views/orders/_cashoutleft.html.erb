@@ -1,9 +1,11 @@
 <div class="left around">
+  <% puts "thing1213123" %>
   <div class="under">
     <h3>Items Ordered</h3>
   </div>
   
   <% @orderlines.each do |a| %>
+    <% puts 'thingrwerwer' %>
     <div class="item">
       <%= @products.find(a.product_id).Name %>
       <span class="right">

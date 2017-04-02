@@ -301,11 +301,11 @@ $( document ).ready(function() {
       
       
       <%# orderlines displayed for customer %>
-      <%= render 'cashoutleft', locals: {products: @products, order: @order }%>
+      <%= render 'cashoutleft', locals: {products: @products, order: @order, orderlines: @orderlines } %>
 
       
       <%# order totals displayed for customer %>
-      <%= render 'cashoutmiddle', locals: {order: @order }%>
+      <%= render 'cashoutmiddle', locals: {order: @order } %>
       
       <%# cash out calculator and other buttons %>
       <div class="rightmost around">

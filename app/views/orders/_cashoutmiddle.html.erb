@@ -1,7 +1,7 @@
 <div class="mid around">
   <div class="breakdown">
     <div class="under"><h3>Order Totals</h3></div>
-    
+    <% puts "thingxxxxx3" %>
     <%= "Sub" %>
     <span class="right">
       <%= number_to_currency(@order.Subtotal).delete('$') %>
@@ -39,6 +39,7 @@
       <%= number_to_currency(@order.TotalCost) %>
     </span>
   </div>
+  <br>
   
   <% if !@order.Coupons.nil? %>
     <%= "Coupons: " %><br>
