@@ -1,0 +1,35 @@
+<div class="sidebar-left">
+  <div class="navbar">
+    <ul class="nav">     
+      <% if ( current_user.can?("edit", "orders")) %>
+        <li>
+          <% if request.path == refunds_path %>
+              <%= link_to "Refunds", refunds_path, class: "active nav-item" %><span class="active-arrow"></span>
+            <% else %>
+              <%= link_to "Refunds", refunds_path, class: "nav-item" %>
+          <% end %>          
+        </li>
+      <% end %>
+
+      <% if ( current_user.can?("edit", "orders")) %>
+      <li>
+        <% if request.path == new_refund_path %>
+            <%= link_to "New Refund", new_refund_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "New Refund", new_refund_path, class: "nav-item" %>
+        <% end %>          
+      </li>
+      <% end %>
+
+      <% if ( current_user.can?("view", "orders")) %>
+        <li>
+          <% if request.path == orders_path %>
+              <%= link_to "Today's Orders", orders_path, class: "active nav-item" %><span class="active-arrow"></span>
+            <% else %>
+              <%= link_to "Today's Orders", orders_path, class: "nav-item" %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

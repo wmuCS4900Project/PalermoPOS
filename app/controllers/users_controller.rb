@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     if ( !logged_in? || !current_user.can?("view", "users"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     if ( !logged_in? || !current_user.can?("view", "users"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
   end
@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     if ( !logged_in? || !current_user.can?("create", "users"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -38,7 +38,8 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     if ( !logged_in? || !current_user.can?("edit", "users"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      flash[:danger] = "You don't have permissions for this"
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -50,7 +51,7 @@ class UsersController < ApplicationController
   def create
     # Check Capabilities
     if ( !logged_in? || !current_user.can?("create", "users"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -83,21 +84,24 @@ class UsersController < ApplicationController
   def update
     # Check Capabilities
     if ( !logged_in? || !current_user.can?("edit", "users"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
     # If blank, don't change password
-    # if user_params["password"].blank?
-    #   user_params.delete("password")
-    # end 
+    if user_params["password"].blank?
+      puts "BLANK-----"
+      user_params.delete "password"
+      user_params.delete :password
+      params[:user].delete :password
+    end 
+
+    puts user_params.inspect
 
     roles = params["roles"]
 
     if @user.update(user_params)
       # Remove roles 
-      puts @user.roles
-      puts roles
 
       user_roles = @user.roles
       user_roles.each do |role|
@@ -117,6 +121,7 @@ class UsersController < ApplicationController
     end
     
     redirect_to @user
+    return
   end
 
   # DELETE /users/1
@@ -124,7 +129,7 @@ class UsersController < ApplicationController
   def destroy
     # Check Capabilities
     if ( !logged_in? || !current_user.can?("destroy", "users"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 

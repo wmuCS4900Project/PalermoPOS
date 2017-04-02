@@ -22,9 +22,6 @@ Rails.application.routes.draw do
   post "coupons/save" => 'coupons#save'
   resources :coupons
   
-  resources :caps
-  resources :roles
-  
   get "management" => 'management#index'
   get "management/cashoutdrivers" => 'management#cashoutdrivers'
   get "management/endofday" => 'management#endofday'
@@ -65,6 +62,7 @@ Rails.application.routes.draw do
 
   resources :caps, :path => "capabilities"
   resources :roles
+  resources :refunds
 
   # Route Logins to Sessions controller
   get    '/login',   to: 'sessions#new'

@@ -16,7 +16,20 @@
 //= require bootstrap
 //= require bootstrap-sprockets
 //= require turbolinks
-//= require growlyflash
 //= require moment
 //= require bootstrap-datetimepicker
 //= require_tree .
+//= require growlyflash
+
+Growlyflash.defaults = $.extend(true, Growlyflash.defaults, {
+  align: 'right',
+  // Don't fade out unless manually dismissed
+  delay: 0,
+  dismiss: true,
+  spacing: 10,
+  target: 'body',
+  title: false,
+  // Danger by default
+  type: 'danger',
+  "class": ['alert', 'growlyflash', 'fade'],
+});

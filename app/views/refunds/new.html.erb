@@ -1,0 +1,9 @@
+<%= render 'bars/top2' %>
+	<div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/refundside' %>
+    <div class="container main-content">
+			<h1>New Refund</h1>
+			<%= render 'form', refund: @refund %>
+			<%= link_to 'Back', refunds_path %>
+		</div>
+	</div>
