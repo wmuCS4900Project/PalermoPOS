@@ -156,8 +156,9 @@ class OrdersController < ApplicationController
     @comments = params[:comments]
 
     orders_options_update(@orderid, @pickup, @discount, @user, @driver, @comments)
+    calc_order(params[:order_id])
 
-    if params['commit'] == "Submit Order"
+    if params['commit'] == "Submit Order & Print"
       redirect_to orders_receipt_url(id: @order.id)
       return
     else
@@ -553,12 +554,19 @@ class OrdersController < ApplicationController
     
     @order = Order.find(params[:order_id])
     
+    if @order.PaidFor == true
+      redirect_to orders_url, :flash => { :notice => "This order has already been cashed out!" }
+    end
+    
     if @order.IsDelivery?
       if !params[:order][:DriverID].present?
         redirect_to orders_cashout_url(id: params[:order_id]), :flash => { :notice => "No driver selected!" }
         return
       end
     end
+    
+    @order.DriverID = params[:order][:DriverID]
+    @order.save!
     
     @customer = Customer.find(@order.customer_id)
     @orderlines = Orderline.where(order_id: @order.id)
