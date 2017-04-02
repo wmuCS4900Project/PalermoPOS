@@ -1,0 +1,50 @@
+<div class="mid around">
+  <div class="breakdown">
+    <div class="under"><h3>Order Totals</h3></div>
+    
+    <%= "Sub" %>
+    <span class="right">
+      <%= number_to_currency(@order.Subtotal).delete('$') %>
+    </span>
+    <br>
+    
+    <%= "Adj" %>
+    <span class="right">
+      <%= number_to_currency(-@order.Discounts).delete('$') %>
+    </span>
+    <br>
+    
+    <%= "Tax" %>
+    <span class="right">
+      <%= number_to_currency(@order.Tax).delete('$') %>
+    </span>
+    <br>
+    
+    <% if @order.IsDelivery == true %>
+      <%= "Dlv" %>
+      <span class="right">
+        <% if Customer.find(@order.customer_id).LongDelivery == true %>
+          <%= number_with_precision(Palconfig.where('name = ?', 'deliverylong').first.val1.to_f, precision: 2) %>
+        <% else %>
+          <%= number_with_precision(Palconfig.where('name = ?', 'delivery').first.val1.to_f, precision: 2) %>
+        <% end %>
+      </span>
+      <br>
+    <% end %>
+  </div>
+  
+  <div class="bold total">
+    <%= "Total" %>
+    <span class="right">
+      <%= number_to_currency(@order.TotalCost) %>
+    </span>
+  </div>
+  
+  <% if !@order.Coupons.nil? %>
+    <%= "Coupons: " %><br>
+    <% @order.Coupons.each do |b| %>
+      <%= Coupon.find(b).Name %><%= " -" %> <%= number_to_currency(Coupon.find(b).DollarsOff) %><br>
+    <% end %>
+    <br>
+  <% end %>
+</div>

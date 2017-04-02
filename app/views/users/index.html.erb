@@ -36,23 +36,21 @@
               <td><%= user.username %></td>
               <td><%= user.created_at.strftime("%l:%M %p %B %m, %Y") %></td>
               <td><%= user.updated_at.strftime("%l:%M %p %B %m, %Y") %></td>
-              <td><%= link_to 'More', user, class: 'btn-primary btn' %></td>
+              <td><%= link_to user, class: 'btn-primary btn' do %><span class="glyphicon glyphicon-list-alt"></span> Show<% end %></td>
               <td>
               
-              <% if logged_in? #TODO Extend has_role for nil to return false 
-                %>
-                <% if ( (user.id == current_user.id) || (current_user.can? "edit", "user") ) %>
-                <%= link_to 'Edit', edit_user_path(user), class: 'btn btn-primary' %>
-                <% end %>
+
+              <% if ( (user.id == current_user.id) || (current_user.can? "edit", "user") ) %>
+              <%= link_to edit_user_path(user), class: 'btn btn-primary' do %><span class="glyphicon glyphicon-pencil"></span> Edit<% end %></td>
               <% end %>
+
               </td>
               <td>
 
-              <% if logged_in? %>
-                <% if (current_user.can? :delete, :User) %>
-                  <%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
-                <% end %> 
-              <% end; %>
+              <% if (current_user.can? :delete, :User) %>
+                <%= link_to user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' do %><span class="glyphicon glyphicon-trash"></span> Delete<% end %></td>
+              <% end %> 
+
               </td>
             </tr>
           <% end %>

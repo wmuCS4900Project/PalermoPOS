@@ -4,11 +4,7 @@
   <div class="wrapper has-sidebar-left">
     <%= render 'sidebars/orderside' %>
     <div class="container main-content">
-      
-      <% if flash[:notice].present? %>
-        <p id="notice" class="alert alert-warning"><strong>Notice! </strong><%= flash[:notice] %></p>
-      <% end %>
-      
+
       <h1>Delivery Orders</h1>
       <% if !@orders.empty? %>
         <%= render 'pending', orders: @orders %>

@@ -369,7 +369,7 @@ $( document ).ready(function() {
                 
                 <h4>Quick Cash Out</h4>
                 
-                <%= button_tag "Exact Cash", :type => "button", :value => @order.TotalCost.to_s.delete('.'), :class => 'btn btn-primary half quickexact' %>
+                <%= button_tag "Exact Cash", :type => "button", :value => ('%.2f' % @order.TotalCost).to_s.delete('.'), :class => 'btn btn-primary half quickexact' %>
                 <br>
                 <%= button_tag "$5 and Change", :type => "button", :value => "500", :class => 'btn btn-primary half quickchange' %>
                 <% if @order.IsDelivery %>

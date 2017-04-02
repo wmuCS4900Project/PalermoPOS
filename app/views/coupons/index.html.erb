@@ -5,8 +5,6 @@
     <%= render 'sidebars/couponside' %>
     <div class="container main-content">
 
-      <p id="notice"><%= notice %></p>
-      
       <h1>Coupons</h1>
       
       <div class="table">
@@ -30,8 +28,8 @@
                 <td><%= coupon.Type %></td>
                 <td><%= coupon.DollarsOff %></td>
                 <td><%= coupon.PercentOff %></td>
-                <td><%= link_to 'Edit', edit_coupon_path(coupon), :class => "btn btn-primary" %></td>
-                <td><%= link_to 'Delete', coupon, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary" %></td>
+                <td><%= link_to edit_coupon_path(coupon), :class => "btn btn-primary" do %><span class="glyphicon glyphicon-pencil"></span> Edit<% end %></td>
+                <td><%= link_to coupon, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary" do %><span class="glyphicon glyphicon-trash"></span> Delete<% end %></td>
               </tr>
             <% end %>
           </tbody>

@@ -29,8 +29,8 @@
                 <td><%= option.Cost %></td>
                 <td><%= option.Abbreviation %></td>
                 <td><% if !option.ChildOf.nil? %><%= Option.find(option.ChildOf).Name %><% end %></td>
-                <td><%= link_to 'Edit', edit_option_path(option), class: "btn btn-primary" %></td>
-                <td><%= link_to 'Delete', option, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %></td>
+                <td><%= link_to edit_option_path(option), class: "btn btn-primary" do %><span class="glyphicon glyphicon-pencil"></span> Edit<% end %></td>
+                <td><%= link_to option, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" do %><span class="glyphicon glyphicon-trash"></span> Delete<% end %></td>
               </tr>
             <% end %>
           </tbody>

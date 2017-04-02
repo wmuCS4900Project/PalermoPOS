@@ -3,10 +3,6 @@
     <div id="error_explanation">
       <h2><%= pluralize(cap.errors.count, "error") %> prohibited this cap from being saved:</h2>
 
-      <ul>
-      <% cap.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
       </ul>
     </div>
     <% end %>
@@ -15,12 +11,12 @@
     <%= select_tag :role_id, options_from_collection_for_select(@roles, :id, :name), {:class => 'form-control'} %>
 
     <%= label_tag :ability %>
-    <%= select_tag :ability, options_for_select({"View" => "view","Create" => "create", "Edit" => "edit", "Destroy" => "destroy", "All" => "all"},), {:class => 'form-control'} %>
+    <%= select_tag :ability, options_for_select({"View" => "view","Create" => "create", "Edit" => "edit", "Cancel" => 'cancel', "Destroy" => "destroy", "All" => "all"},), {:class => 'form-control'} %>
 
     <%= label_tag :object %>
-    <%= select_tag :object, options_for_select({"Orders" => "orders", "Customers" => "customers", "Users" => "users", "Products" => "products", "Options" => "options", "Coupons" => 'coupons', "Orderlines" => 'orderlines', "Roles" => "roles", "Capabilities" => "capabilities", "Configurations" => 'configurations', "Management" => 'management', All" => "all"},), {:class => 'form-control'} %>
+    <%= select_tag :object, options_for_select({"Orders" => "orders", "Customers" => "customers", "Users" => "users", "Products" => "products", "Options" => "options", "Coupons" => 'coupons', "Orderlines" => 'orderlines', "Roles" => "roles", "Capabilities" => "capabilities", "Configurations" => 'configurations', "Management" => 'management', "All" => "all"}), {:class => 'form-control'} %>
   </div>
   <div class="actions">
-    <%= f.submit "Submit" %>
+    <%= button_tag class: "btn btn-primary" do %><span class="glyphicon glyphicon-floppy-disk"></span> Save Capability<% end %>
   </div>
 <% end %>
