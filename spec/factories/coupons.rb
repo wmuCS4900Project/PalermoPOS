@@ -1,9 +1,15 @@
 FactoryGirl.define do
   factory :coupon do
-    Name "MyString"
-    Type 1
-    DollarsOff "9.99"
-    PercentOff 1
-    Requirements "MyString"
+    
+    trait :coupon1 do
+      Name "2 Item 12 Inch"
+      Type 0
+      DollarsOff "1.25"
+      PercentOff 0
+      ProductData = ['2','','','','','','','','','']
+      ProductType = ['0','','','','','','','','','']
+      ProductMinOptions = ['','','','','','','','','','']
+    end
+    
   end
 end

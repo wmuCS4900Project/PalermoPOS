@@ -23,29 +23,31 @@
     <%= text_field_tag :PercentOff, @coupon.PercentOff %>
   </div>
   
+  
+  <%# note: ids are only for testing purposes for selecting %>
   <% (0...10).each do |a| %>
   
     <div class="field">
       <% "Product " + a.to_s %>
       <%= label_tag "Product data" %>
       <% if !@coupon.ProductData.nil? %>
-        <%= text_field_tag 'ProductData[]', @coupon.ProductData[a] %>
+        <%= text_field_tag 'ProductData[]', @coupon.ProductData[a], id: 'pdata' + a.to_s %>
       <% else %>
-        <%= text_field_tag 'ProductData[]' %>
+        <%= text_field_tag 'ProductData[]', id: 'pdata' + a.to_s %>
       <% end %>
       
       <%= label_tag "Match type" %>
       <% if !@coupon.ProductType.nil? %>
-        <%= select_tag 'ProductType[]', options_for_select({"Exact Product" => 0, "Category Match" => 1, "String Match" => 2}, @coupon.ProductType[a].to_i ) %>
+        <%= select_tag 'ProductType[]', options_for_select({"Exact Product" => 0, "Category Match" => 1, "String Match" => 2}, @coupon.ProductType[a].to_i ),  id: 'ptype' + a.to_s %>
       <% else %>
-        <%= select_tag 'ProductType[]', options_for_select({"Exact Product" => 0, "Category Match" => 1, "String Match" => 2}) %>
+        <%= select_tag 'ProductType[]', options_for_select({"Exact Product" => 0, "Category Match" => 1, "String Match" => 2}),  id: 'ptype' + a.to_s %>
       <% end %>
       
       <%= label_tag "Minimum required options" %>
       <% if !@coupon.ProductMinOptions.nil? %>
-        <%= text_field_tag 'ProductMinOptions[]', @coupon.ProductMinOptions[a] %>
+        <%= text_field_tag 'ProductMinOptions[]', @coupon.ProductMinOptions[a], id: 'pops' + a.to_s %>
       <% else %>
-        <%= text_field_tag 'ProductMinOptions[]' %>
+        <%= text_field_tag 'ProductMinOptions[]', id: 'pops' + a.to_s %>
       <% end %>
       
     </div>
@@ -53,6 +55,6 @@
   <% end %>
 
   <div class="actions">
-    <%= submit_tag "Save" %>
+    <%= button_tag class: "btn btn-primary" do %><span class="glyphicon glyphicon-floppy-disk"></span> Save Coupon<% end %>
   </div>
 <% end %>

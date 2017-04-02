@@ -1,7 +1,7 @@
 
 require "rails_helper"
 
-describe "admin creates a new user", :type => :feature do
+describe "users integration tests", :type => :feature do
   
   before(:each) do
     @role1 = FactoryGirl.create :role, :admin
@@ -22,7 +22,6 @@ describe "admin creates a new user", :type => :feature do
     find(:css, "#roles_[value='driver']").set(true)
     click_button 'Create User'
     
-    expect(page).to have_content('User successfully added')
     expect(page).to have_content('Name: user2guy')
     expect(page).to have_content('Username: user2')
     expect(page).to have_content('Roles:')
@@ -31,9 +30,8 @@ describe "admin creates a new user", :type => :feature do
     visit '/logout'
     sign_in_with('user2','use123')
     
-    expect(page).to have_content('Logged in as username')
-    expect(page).to have_content('Name: user2guy')
-    expect(page).to have_content('Username: user2')
+    expect(page).to have_content('Dashboard')
+    expect(page).to have_content('user2')
 
   end
   
@@ -51,8 +49,7 @@ describe "admin creates a new user", :type => :feature do
     fill_in 'user_password', with: 'user123'
     
     click_button 'Update User'
-    expect(page).to have_content 'User successfully updated'
-    
+
   end
   
   # it 'deletes a user' do

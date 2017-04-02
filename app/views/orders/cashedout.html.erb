@@ -1,3 +1,15 @@
+<style>
+  .moneybox {
+    width: 12%;
+  }
+  .right {
+    float: right;
+  }
+  .break {
+    float: none;
+  }
+</style>
+
 <%= render 'bars/top2' %>
 
 <body>
@@ -6,31 +18,55 @@
     <div class="container main-content">
       
       <h1><%= "Paid: Order" %> <%= @order.id %></h1>
+      
+      
+      <%= "Comments: " %>
+      <%= @order.Comments %><br><br>
+      
+      <% if @order.IsDelivery %>
+        <%= "Driver: " %>
+        <%= User.find(@order.DriverID).Name %>
+        <br><br>
+      <% end %>
+      
+      <div class="moneybox">
+      
         
-        <% @orderlines.each do |a| %>
-          <%= @products.find(a.product_id).Name %>
-          <%= a.ItemTotalCost %><br>
-        <% end %><br>
-        
-        <%= "Comments: " %>
-        <%= @order.Comments %><br>
         <%= "Subtotal:" %>
-        <%= @order.Subtotal %><br>
+        <span class="right"><%= number_to_currency(@order.Subtotal) %></span>
+        <br>
+        
         <% if @order.Discounts > 0.0 %>
           <%= "Discount:"%>
-          <%= @order.Discounts %><br>
+          <span class="right"><%= number_to_currency(@order.Discounts) %></span>
+          <br>
         <% end %>
+        
         <%= "Taxes:" %>
-        <%= @order.Tax %><br>
-        <%= "Total Due" %>
-        <%= @order.TotalCost %><br>
+        <span class="right"><%= number_to_currency(@order.Tax) %></span>
+        <br>
+        
+        <% if @order.IsDelivery %>
+          Delivery Charge:
+          <span class="right"><%= number_to_currency(@order.DeliveryCharge) %></span>
+          <br>
+        <% end %>
+        
+        
+        <%= "Total Charge:" %>
+        <span class="right"><%= number_to_currency(@order.TotalCost) %></span>
+        <br><br>
         
         <%= "Tip: " %>
-        <%= @order.Tip %> <br>
+        <span class="right"><%= number_to_currency(@order.Tip) %></span> <br>
+        
         <%= "Paid: " %>
-        <%= @order.AmountPaid %><br>
+        <span class="right"><%= number_to_currency(@order.AmountPaid) %></span><br>
+        
         <%= "Change due: " %>
-        <%= @order.ChangeDue %>
+        <span class="right"><%= number_to_currency(@order.ChangeDue) %></span>
+        
+      </div>
         
     </div>
   </div>
