@@ -265,6 +265,7 @@ module OrdersHelper
   end
   
   #runs through products on an order and determines if the selected coupon(s) can be applied or not
+  #don't touch me
   def coupon_processor(coupon_id, order_id)
     
     puts "called the coupon processor"
