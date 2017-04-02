@@ -1,0 +1,167 @@
+<% if @order != nil %>
+  <%= form_for(refund) do |f| %>
+    <% if refund.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(refund.errors.count, "error") %> prohibited this refund from being saved:</h2>
+
+        <ul>
+        <% refund.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <div class="field form-group">
+        <h2>
+          <%= "Order #" + @order.id.to_s %><br>
+        </h2>
+
+        <%= "Ordered by:" %>
+        <%= Customer.find(@order.customer_id).FirstName %> <%= Customer.find(@order.customer_id).LastName %><br>
+        <%= "Subtotal:" %>
+        <%= number_to_currency(@order.Subtotal) %><br>
+        <%= "Total Cost:" %>
+        <%= number_to_currency(@order.TotalCost) %><br>
+
+        <% if @order.PaidFor == true %>
+          <%= "Paid Cash or Credit:" %>
+          <% if @order.PaidCash == true %>
+            <%= "Cash" %>
+          <% else %>
+            <%= "Credit" %>
+          <% end %>
+        <% end %>
+          
+
+        <h3><%= "Items:" %></h3>
+        <% @orderlines.each do |a| %>
+        <div class="field form-group">
+          <p><strong><%= Product.find(a.product_id).Name %></strong>
+          (<%= number_to_currency(a.ItemTotalCost) %>)
+          <input class="order-line" name="orderlines[<%= a.id %>]" />
+          <button class="btn-primary btn add-refund">Update Refund</button>
+          </p>
+        </div>
+        <% end %>
+      <% if @order != nil %>
+      <%= hidden_field_tag :order_id, @order.id %>
+      <% else %>
+      <%= select_tag :order_id, options_from_collection_for_select(Order.all, "id", "id"), {:class => 'form-control'} %>
+      <% end %>
+    </div>
+    <div class="field form-group checkbox">
+      <label for="include-tax">
+      <input id="include-tax" name="include-tax" type="checkbox" />Include tax</label>
+    </div>
+    <div class="field form-group subtotal" style="display:none">
+      <%= f.label :subtotal, "Subtotal Refunded" %>
+      <%= f.text_field :subtotal, :class => "form-control" %>
+    </div>
+
+    <div class="field form-group"> 
+      <%= f.label :total, "Total Refunded" %>
+      <%= f.text_field :total, :class => "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Submit Refund", :class => 'btn btn-primary' %>
+    </div>
+  <% end %>
+
+  <script type="text/javascript">
+    jQuery(function($) {
+      $("button.add-refund").click(function(e) {
+        var total = 0;
+        $("input.order-line").each(function() {
+          if (! isNaN(parseFloat($(this).val())) && $(this).val() != '')
+            total += parseFloat($(this).val());
+        });
+
+        $("#refund_subtotal").val(total.toFixed(2));
+        
+        // Whether or not to include taxes in total
+        if ($("#include-tax").prop("checked")) {
+          $("#refund_total").val(calculateTaxes(total));
+          $(".subtotal").show();
+        } else {
+          $("#refund_total").val(total.toFixed(2));
+          $(".subtotal").hide();
+        }
+
+        e.preventDefault();
+      });
+
+      $("#include-tax").change(function() {
+        if ($(this).prop("checked")) {
+          if ($("#refund_subtotal").val() == '')
+            $("#refund_total").val(0);
+          else 
+            $("#refund_total").val( calculateTaxes( parseFloat($("#refund_subtotal").val() )) );
+          
+          $(".subtotal").show();
+        } else {
+            if ($("#refund_subtotal").val() == '')
+              $("#refund_total").val(0);
+           else 
+            $("#refund_total").val((parseFloat($("#refund_subtotal").val())).toFixed(2));
+         
+           $(".subtotal").hide();
+        }
+      });
+
+      $("#refund_subtotal").change(function() {
+        if ($(this).prop("checked")) {
+          if ($("#refund_subtotal").val() == '')
+            $("#refund_total").val(0);
+          else 
+            $("#refund_total").val( calculateTaxes( parseFloat($("#refund_subtotal").val() )) );
+         
+          $(".subtotal").show();
+        } else {
+          if ($("#refund_subtotal").val() == '')
+            $("#refund_total").val(0);
+          else 
+            $("#refund_total").val((parseFloat($("#refund_subtotal").val())).toFixed(2));
+          
+          $(".subtotal").hide();
+        }
+      });
+    });
+
+    function calculateTaxes(total) {
+      var cents = total % 1;
+      var dollars = Math.floor(total);
+      var taxes = (dollars * 0.06)
+    
+      if((0.10 >= cents) && (cents >= 0.00))
+        centstax = 0.0;
+      else if ((0.24 >= cents) && (cents >= 0.11))
+        centstax = 0.01;
+      else if ((0.41 >= cents) && (cents >= 0.25))
+        centstax = 0.02;
+      else if ((0.58 >= cents) && (cents >= 0.42))
+        centstax = 0.03;   
+      else if ((0.74 >= cents) && (cents >= 0.59))
+        centstax = 0.04;   
+      else if ((0.91 >= cents) && (cents >= 0.75))
+        centstax = 0.05;
+      else if ((0.99 >= cents) && (cents >= 0.92))
+        centstax = 0.06;
+
+      taxes += centstax;   
+
+      return (total + taxes).toFixed(2);
+    }
+  </script>
+
+  <% else # Give ability to choose order %>
+    <p>Select an order to refund</p>
+    <form>
+      <div class="field form-group">
+      <%= select_tag :order_id, options_from_collection_for_select(@completed, "id", "id"), {:class => 'form-control'} %>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Use Order</button>
+    </form>
+  <% end %>

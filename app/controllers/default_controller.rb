@@ -16,5 +16,8 @@ class DefaultController < ApplicationController
     	puts order
     	@total_revenue += order.TotalCost
     end
+
+    # Preserve flash through redirects
+    flash.keep
   end
 end

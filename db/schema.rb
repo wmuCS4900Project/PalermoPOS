@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170319235314) do
+ActiveRecord::Schema.define(version: 20170327024346) do
 
-  create_table "caps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "caps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "role_id"
     t.string   "action"
     t.string   "object"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20170319235314) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Name"
     t.boolean  "Splits"
     t.datetime "created_at",   null: false
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20170319235314) do
     t.string   "Abbreviation"
   end
 
-  create_table "coupons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "coupons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Name"
     t.integer  "Type"
     t.decimal  "DollarsOff",        precision: 8, scale: 2
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20170319235314) do
     t.string   "ProductMinOptions"
   end
 
-  create_table "customers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "customers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Phone"
     t.string   "LastName"
     t.string   "FirstName"
@@ -52,25 +52,25 @@ ActiveRecord::Schema.define(version: 20170319235314) do
     t.string   "Directions"
     t.integer  "LastOrderNumber"
     t.datetime "FirstOrderDate"
+    t.decimal  "TotalOrderDollars", precision: 10
     t.integer  "TotalOrderCount"
-    t.decimal  "TotalOrderDollars", precision: 8, scale: 2
-    t.integer  "BadCkCount"
-    t.decimal  "BadCkTotal",        precision: 8, scale: 2
+    t.integer  "BadCkAmt"
+    t.decimal  "BadCkCount",        precision: 10
     t.boolean  "LongDelivery"
     t.datetime "LastOrderDate"
     t.string   "Notes"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
-  create_table "drivers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "drivers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_drivers_on_user_id", using: :btree
   end
 
-  create_table "options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Name"
     t.decimal  "Cost",         precision: 8, scale: 2
     t.integer  "category_id"
@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 20170319235314) do
     t.index ["category_id"], name: "index_options_on_category_id", using: :btree
   end
 
-  create_table "orderlines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "orderlines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.decimal  "ItemTotalCost", precision: 8, scale: 2
     t.integer  "product_id"
     t.integer  "order_id"
@@ -99,34 +99,35 @@ ActiveRecord::Schema.define(version: 20170319235314) do
     t.index ["product_id"], name: "index_orderlines_on_product_id", using: :btree
   end
 
-  create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.decimal  "TotalCost",      precision: 8, scale: 2
+  create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.decimal  "TotalCost",      precision: 10
     t.boolean  "PaidFor"
     t.integer  "DriverID"
-    t.decimal  "Discounts",      precision: 8, scale: 2
-    t.decimal  "AmountPaid",     precision: 8, scale: 2
-    t.decimal  "ChangeDue",      precision: 8, scale: 2
-    t.decimal  "Tip",            precision: 8, scale: 2
+    t.decimal  "Discounts",      precision: 10
+    t.decimal  "AmountPaid",     precision: 10
+    t.decimal  "ChangeDue",      precision: 10
+    t.decimal  "Tip",            precision: 10
     t.integer  "user_id"
     t.integer  "customer_id"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.decimal  "Tax",            precision: 8, scale: 2
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.decimal  "Tax",            precision: 8,  scale: 2
     t.boolean  "PaidCash"
     t.boolean  "Cancelled"
     t.boolean  "Refunded"
-    t.decimal  "RefundedTotal",  precision: 8, scale: 2
-    t.decimal  "Subtotal",       precision: 8, scale: 2
+    t.decimal  "RefundedTotal",  precision: 8,  scale: 2
+    t.decimal  "Subtotal",       precision: 8,  scale: 2
     t.boolean  "IsDelivery"
     t.string   "Comments"
     t.string   "Coupons"
-    t.decimal  "ManualDiscount", precision: 8, scale: 2
-    t.decimal  "DeliveryCharge", precision: 8, scale: 2
+    t.decimal  "ManualDiscount", precision: 8,  scale: 2
+    t.decimal  "DeliveryCharge", precision: 8,  scale: 2
+    t.integer  "DailyID"
     t.index ["customer_id"], name: "index_orders_on_customer_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
 
-  create_table "palconfigs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "palconfigs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.string   "val1"
     t.string   "val2"
@@ -135,13 +136,13 @@ ActiveRecord::Schema.define(version: 20170319235314) do
     t.datetime "updated_at",               null: false
   end
 
-  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Name"
     t.decimal  "Cost",                precision: 8, scale: 2
-    t.string   "freeoptions"
-    t.integer  "category_id"
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+    t.integer  "category_id"
+    t.string   "freeoptions"
     t.string   "Abbreviation"
     t.decimal  "MinimumOptionCharge", precision: 8, scale: 2
     t.boolean  "Favorite"
@@ -149,7 +150,16 @@ ActiveRecord::Schema.define(version: 20170319235314) do
     t.index ["category_id"], name: "index_products_on_category_id", using: :btree
   end
 
-  create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "refunds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "order_id"
+    t.decimal  "tax",        precision: 8, scale: 2
+    t.decimal  "subtotal",   precision: 8, scale: 2
+    t.decimal  "total",      precision: 8, scale: 2
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.string   "resource_type"
     t.integer  "resource_id"
@@ -159,7 +169,7 @@ ActiveRecord::Schema.define(version: 20170319235314) do
     t.index ["name"], name: "index_roles_on_name", using: :btree
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Name"
     t.string   "Password"
     t.boolean  "Driver"
@@ -170,7 +180,7 @@ ActiveRecord::Schema.define(version: 20170319235314) do
     t.string   "username"
   end
 
-  create_table "users_roles", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "users_roles", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "user_id"
     t.integer "role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree

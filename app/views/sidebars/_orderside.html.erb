@@ -52,6 +52,14 @@
           <% end %>
         <% end %>
       </li>
+
+      <li>
+        <% if request.path == refunds_path %>
+            <%= link_to "Refunds", refunds_path, class: "active nav-item" %><span class="active-arrow"></span>
+          <% else %>
+            <%= link_to "Refunds", refunds_path, class: "nav-item" %>
+        <% end %>          
+      </li>
   
     </ul>
   </div>

@@ -1,0 +1,11 @@
+<%= render 'bars/top2' %>
+	<div class="wrapper has-sidebar-left">
+    <%= render 'sidebars/refundside' %>
+
+    <div class="container main-content">
+	<p id="notice"><%= notice %></p>
+	</div>
+</div>
+
+<%= link_to 'Edit', edit_refund_path(@refund) %> |
+<%= link_to 'Back', refunds_path %>

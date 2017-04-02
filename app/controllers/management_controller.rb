@@ -7,7 +7,7 @@ class ManagementController < ApplicationController
   
   def cashoutdrivers
     if ( !logged_in? || !current_user.can?("view", "management"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -34,7 +34,7 @@ class ManagementController < ApplicationController
   
   def palconfig
     if ( !logged_in? || !current_user.can?("view", "configurations"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     @palconfigs = Palconfig.all
@@ -42,7 +42,7 @@ class ManagementController < ApplicationController
   
   def palconfigedit
     if ( !logged_in? || !current_user.can?("edit", "configurations"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -52,7 +52,7 @@ class ManagementController < ApplicationController
   
   def salesreport
     if ( !logged_in? || !current_user.can?("view", "management"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -60,7 +60,7 @@ class ManagementController < ApplicationController
   
   def genreport
     if ( !logged_in? || !current_user.can?("view", "management"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -107,7 +107,7 @@ class ManagementController < ApplicationController
   #end of day print out page to show sales totals and breakdowns by item
   def endofday
     if ( !logged_in? || !current_user.can?("view", "management"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
