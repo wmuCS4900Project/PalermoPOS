@@ -43,7 +43,6 @@ describe "options tests", :type => :feature do
     
     click_button 'Save Changes'
     expect(page).to have_current_path(options_path)
-    expect(page).to have_content('Notice! Option was successfully updated.')
     expect(page).to have_content('Sausage')
     
   end

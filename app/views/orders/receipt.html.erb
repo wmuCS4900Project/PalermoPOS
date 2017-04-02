@@ -14,9 +14,9 @@
     font-size: 12px;
   }
   .item {
-    border-left: .1em solid black;
-    border-right: .1em solid black;
-    border-top: .1em solid black;
+    border-left: .1em dotted black;
+    border-right: .1em dotted black;
+    border-top: .1em dotted black;
     font-size: 14px;
     overflow: auto;
     padding: .3em;
@@ -45,9 +45,8 @@
   .lineitem{
     display: block;
     text-align: center;
-    border-bottom: 1px dashed #000; 
+    border-bottom: .1em dotted black; 
     line-height: 1em;
-    margin: 0px 5px 0px 5px;
   }
 
   .total{
@@ -241,6 +240,8 @@
       <% end %>
     </div>
   <% end %>
+  
+  <span class="lineitem"></span>
   
   <div class="breakdown">
     <%= "Sub" %>

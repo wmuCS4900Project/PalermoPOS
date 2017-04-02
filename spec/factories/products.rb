@@ -7,6 +7,7 @@ FactoryGirl.define do
       Cost "5.99"
       category_id "2"
       created_at { DateTime.now }
+      MinimumOptionCharge '0.5'
     end
     
     trait :plainpizza do
@@ -15,6 +16,7 @@ FactoryGirl.define do
       Cost "8.99"
       category_id "1"
       created_at { DateTime.now }
+      MinimumOptionCharge '1.0'
     end
     
     free = ['7','8','9','10']
@@ -25,7 +27,19 @@ FactoryGirl.define do
       Cost "12.99"
       category_id "1"
       created_at { DateTime.now }
+      MinimumOptionCharge '1.0'
     end
+    
+    trait :cheesybread do
+      id "4"
+      Name "Cheesy Bread"
+      Cost "6.99"
+      category_id "1"
+      created_at { DateTime.now }
+      MinimumOptionCharge '1.0'
+    end
+      
+    
     
   end
 end

@@ -157,8 +157,9 @@ class OrdersController < ApplicationController
     @comments = params[:comments]
 
     orders_options_update(@orderid, @pickup, @discount, @user, @driver, @comments)
+    calc_order(params[:order_id])
 
-    if params['commit'] == "Submit Order"
+    if params['commit'] == "Submit Order & Print"
       redirect_to orders_receipt_url(id: @order.id)
       return
     else
@@ -524,59 +525,22 @@ class OrdersController < ApplicationController
     end
     
     if !params[:id].present?
-      redirect_to orders_url
+      redirect_to orders_url, :flash => { :notice => "No order selected." }
       return
     end
-
-    @id = params[:id]
     
-    @order = Order.find(@id)
+    @order = Order.find(params[:id])
     @products = Product.all
-
-    if params[:discount].present?
-      @order.Manual = params[:discount]
-    end
-    
-    if params[:cid].present?
-      
-      if params[:cid] == "clear"
-        @order.Coupons = nil
-        flash.now[:notice] = 'Coupons removed!'
-      else
-        @ret = coupon_processor(params[:cid],@id)
-        
-        if @ret == true
-          if !@order.Coupons.nil?
-            @coupons = @order.Coupons
-          else
-            @coupons = []
-          end
-          
-          @coupons.push(params[:cid])
-          @order.Coupons = @coupons
-          
-          flash.now[:notice] = 'Coupon added!'
-        else
-          flash.now[:notice] = 'Order inelligible for coupon!'
-        end
-      end
-    end
-    
-    @order.save!
     
     @customer = Customer.find(@order.customer_id)
     @orderlines = Orderline.where(order_id: @id)
     
-    calc_order(@order.id)
-    
-    @order = Order.find(@id)
-      
   end
   
   #displays final cashout amounts including change and tip
   def cashedout
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -585,18 +549,25 @@ class OrdersController < ApplicationController
       return
     end
     if !params[:amountpaid].present?
-      redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "No amount entered!" }
+      redirect_to orders_cashout_url(id: params[:order_id]), :flash => { :notice => "No amount entered!" }
       return
     end
     
     @order = Order.find(params[:order_id])
     
+    if @order.PaidFor == true
+      redirect_to orders_url, :flash => { :notice => "This order has already been cashed out!" }
+    end
+    
     if @order.IsDelivery?
       if !params[:order][:DriverID].present?
-        redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "No driver selected!" }
+        redirect_to orders_cashout_url(id: params[:order_id]), :flash => { :notice => "No driver selected!" }
         return
       end
     end
+    
+    @order.DriverID = params[:order][:DriverID]
+    @order.save!
     
     @customer = Customer.find(@order.customer_id)
     @orderlines = Orderline.where(order_id: @order.id)
@@ -611,7 +582,7 @@ class OrdersController < ApplicationController
     
     if @paid.to_d < @order.TotalCost
       puts "checking under"
-      redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "Not enough to cover cost!" }
+      redirect_to orders_cashout_url(id: params[:order_id]), :flash => { :notice => "Not enough to cover cost!" }
       puts "not enough"
       return
     elsif @paid.to_d > @order.TotalCost
@@ -620,7 +591,7 @@ class OrdersController < ApplicationController
         puts "found credit"
         if !@order.IsDelivery?
           puts "overpay credit pickup"
-          redirect_to orders_url(id: params[:order_id]), :flash => { :notice => "Can't overpay with credit for pickup!" }
+          redirect_to orders_cashout_url(id: params[:order_id]), :flash => { :notice => "Can't overpay with credit for pickup!" }
           return
         else
           puts "overpay credit delivery"
@@ -666,6 +637,31 @@ class OrdersController < ApplicationController
       redirect_to orders_url, :flash => { :notice => "Something went wrong." }
       return
     end
+  end
+  
+  def cancel
+    if ( !logged_in? || !current_user.can?("delete", "orders"))
+      redirect_to orders_path, :flash => { :notice => "You do not have permission to do this!" }
+      return
+    end
+    
+    if !params[:id].present?
+      redirect_to orders_path, :flash => { :notice => "No order selected!" }
+      return
+    end
+    
+    @order = Order.find(params[:id])
+    
+    if @order.Cancelled? || @order.Refunded? || @order.PaidFor?
+      redirect_to orders_path, :flash => { :notice => "Order not eligible to be cancelled!" }
+      return
+    end
+    
+    @order.Cancelled = true;
+    @order.save!
+    
+    redirect_to orders_path, :flash => { :notice => ("Order " + @order.DailyID.to_s + " cancelled!") }
+    
   end
   
   

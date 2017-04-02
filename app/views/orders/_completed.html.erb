@@ -38,7 +38,7 @@
 
           <td><%= link_to orders_receipt_path(id: order.id, print: "no"), class: "btn btn-primary" do %><span class="glyphicon glyphicon-list-alt"></span> Receipt<% end %></td>
           <% if ( current_user.can?("destroy", "orders")) %>
-            <td><%= link_to order, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-primary" do %><span class="glyphicon glyphicon-trash"></span> Delete<% end %></td>
+            <td><%= link_to order, method: :delete, data: { confirm: 'Are you sure you want to DELETE this order?' },class: "btn btn-primary" do %><span class="glyphicon glyphicon-trash"></span> Delete<% end %></td>
           <% end %>
         </tr>
       <% end %>

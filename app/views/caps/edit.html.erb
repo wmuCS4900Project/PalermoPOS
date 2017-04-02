@@ -3,18 +3,9 @@
 <div class="wrapper has-sidebar-left">
   <%= render 'sidebars/rolesside' %>
   <div class="container main-content">
-		<p id="notice"><%= notice %></p>
 
 		<h1>Editing Capability</h1>
-      <% # Check capabilities
-		if ( !logged_in? || !current_user.can?("edit", "capabilities")) %>
-			<p> Sorry, you don't have the capabilities to do that </p>
+		<%= render 'form', cap: @cap %>
 
-		<% else %>
-			<%= render 'form', cap: @cap %>
-		<% end %>
-
-		<%= link_to 'Show', @cap %> |
-		<%= link_to 'Back', caps_path %>
 	</div>
 </div>

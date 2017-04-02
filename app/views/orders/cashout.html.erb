@@ -1,17 +1,22 @@
+
+<%# these scripts handle the cash calculator button on this screen %>
 <script type="text/javascript">
 
-    var screen = $("#screen"); 
-    var total = screen.text();
-    var clrBtn = $("#clr");
-    var delBtn = $("#del");
-    var numBtn = $("button.number"); 
-    var dols = '';
-    var display;
-    var quicktip = $("button.quicktip");
-    var quickchange = $("button.quickchange");
+$( document ).ready(function() {
+  console.log( "ready!" );
+
+  var screen = $("#screen"); 
+  var total = screen.text();
+  var clrBtn = $("#clr");
+  var delBtn = $("#del");
+  var numBtn = $("button.number"); 
+  var dols = '';
+  var display;
+  var quicktip = $("button.quicktip");
+  var quickchange = $("button.quickchange");
+  var quickexact = $("button.quickexact");
   
   quicktip.click(function() {
-    console.log("thinger");
     var amount = $(this).val();
     document.getElementById("amountpaid").setAttribute('value', amount);
     var input = document.createElement("input");
@@ -22,7 +27,16 @@
     document.cashmeout.submit();
   });
   quickchange.click(function() {
-    console.log("thinger");
+    var amount = $(this).val();
+    document.getElementById("amountpaid").setAttribute('value', amount);
+    var input = document.createElement("input");
+    input.setAttribute("type", "hidden");
+    input.setAttribute("name", "commit");
+    input.setAttribute("value", "Cash Change");
+    document.getElementsByName("cashmeout")[0].appendChild(input);
+    document.cashmeout.submit();
+  });
+  quickexact.click(function() {
     var amount = $(this).val();
     document.getElementById("amountpaid").setAttribute('value', amount);
     var input = document.createElement("input");
@@ -49,64 +63,64 @@
     console.log('message3');
   });
   $(document).unbind('keydown').bind('keydown', function (e) {
-  if(e.which == 96) {
-    var number = 0;
-    updateScreenTotal(number);
-    updateDisplay();
-  }
-  if(e.which == 97) {
-    var number = 1;
-    updateScreenTotal(number);
-    updateDisplay();
-  }
-  if(e.which == 98) {
-    var number = 2;
-    updateScreenTotal(number);
-    updateDisplay();
-  }
-  if(e.which == 99) {
-    var number = 3;
-    updateScreenTotal(number);
-    updateDisplay();
-  }
-  if(e.which == 100) {
-    var number = 4;
-    updateScreenTotal(number);
-    updateDisplay();
-  }
-  if(e.which == 101) {
-    var number = 5;
-    updateScreenTotal(number);
-    updateDisplay();
-  }
-  if(e.which == 102) {
-    var number = 6;
-    updateScreenTotal(number);
-    updateDisplay();
-  }
-  if(e.which == 103) {
-    var number = 7;
-    updateScreenTotal(number);
-    updateDisplay();
-  }
-  if(e.which == 104) {
-    var number = 8;
-    updateScreenTotal(number);
-    updateDisplay();
-  }
-  if(e.which == 105) {
-    var number = 9;
-    updateScreenTotal(number);
-    updateDisplay();
-  }
-  if(e.which == 8){
-    deleteNumber();
-    updateDisplay();
-  }
-  if(e.which == 27){
-    clearNumber();
-    updateDisplay();
-  }
+    if(e.which == 96) {
+      var number = 0;
+      updateScreenTotal(number);
+      updateDisplay();
+    }
+    if(e.which == 97) {
+      var number = 1;
+      updateScreenTotal(number);
+      updateDisplay();
+    }
+    if(e.which == 98) {
+      var number = 2;
+      updateScreenTotal(number);
+      updateDisplay();
+    }
+    if(e.which == 99) {
+      var number = 3;
+      updateScreenTotal(number);
+      updateDisplay();
+    }
+    if(e.which == 100) {
+      var number = 4;
+      updateScreenTotal(number);
+      updateDisplay();
+    }
+    if(e.which == 101) {
+      var number = 5;
+      updateScreenTotal(number);
+      updateDisplay();
+    }
+    if(e.which == 102) {
+      var number = 6;
+      updateScreenTotal(number);
+      updateDisplay();
+    }
+    if(e.which == 103) {
+      var number = 7;
+      updateScreenTotal(number);
+      updateDisplay();
+    }
+    if(e.which == 104) {
+      var number = 8;
+      updateScreenTotal(number);
+      updateDisplay();
+    }
+    if(e.which == 105) {
+      var number = 9;
+      updateScreenTotal(number);
+      updateDisplay();
+    }
+    if(e.which == 8){
+      deleteNumber();
+      updateDisplay();
+    }
+    if(e.which == 27){
+      clearNumber();
+      updateDisplay();
+    }
   });
   
   function updateScreenTotal(newNumber) {
@@ -140,7 +154,8 @@
   	//document.getElementById('amountpaid').value = dols;
   	document.getElementById("amountpaid").setAttribute('value', dols);
   }
-  
+});
+
 </script>
 
 <style>
@@ -284,204 +299,15 @@
   
       <h1>Cash Out Order <%= @order.DailyID %> for <%= @customer.FirstName %> <%= @customer.LastName %> </h1>
       
-      <div class="left around">
-        <div class="under"><h3>Items Ordered</h3></div>
-        
-        <% @orderlines.each do |a| %>
-          <div class="item">
-            <%= @products.find(a.product_id).Name %>
-            <span class="right">
-              <%= number_to_currency(a.ItemTotalCost) %>
-            </span>
-            
-            <br>
-            
-            <% if a.whole? %> <%# list options if orderline is whole %>
-              <% if a.Options1.nil? %> <%# tried to move this block to an html partial and for some reason the Options1 array will NOT pass in %>
-                <%= "Plain" %>
-              <% else %>
-                <% @dif = Product.find(a.product_id).freeoptions - a.Options1 %> <%# grab any removed free items %>
-                <% if !@dif.nil? %>
-                  <% @dif.each do |b| %>
-                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
-                  <% end %>
-                <% end %>
-                <% a.Options1.each do |b| %>
-                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                    <%= Option.find(b).Abbreviation %>
-                  <% end %>
-                <% end %>
-              <% end %>
-              
-            <% elsif a.halves? %> <%#list the options if the product is split in halves %>
-              <%= "top: " %>
-              <% if a.Options1.nil? %> 
-                <%= "Plain" %>
-              <% else %>
-                <% @dif = Product.find(a.product_id).freeoptions - a.Options1 %> <%# grab any removed free items %>
-                <% if !@dif.nil? %>
-                  <% @dif.each do |b| %>
-                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
-                  <% end %>
-                <% end %>
-                <% a.Options1.each do |b| %>
-                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                    <%= Option.find(b).Abbreviation %>
-                  <% end %>
-                <% end %>
-              <% end %>
-              <br>
-              <%= "bot: " %>
-              <% if a.Options2.nil? %> 
-                <%= "Plain" %>
-              <% else %>
-                <% @dif = Product.find(a.product_id).freeoptions - a.Options2 %> <%# grab any removed free items %>
-                <% if !@dif.nil? %>
-                  <% @dif.each do |b| %>
-                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
-                  <% end %>
-                <% end %>
-                <% a.Options2.each do |b| %>
-                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                    <%= Option.find(b).Abbreviation %>
-                  <% end %>
-                <% end %>
-              <% end %>
-              
-            <% elsif a.quarters? %> <%#list the options if the product is split in halves %>
-              <%= "Q1: " %>
-              <% if a.Options1.nil? %> 
-                <%= "Plain" %>
-              <% else %>
-                <% @dif = Product.find(a.product_id).freeoptions - a.Options1 %> <%# grab any removed free items %>
-                <% if !@dif.nil? %>
-                  <% @dif.each do |b| %>
-                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
-                  <% end %>
-                <% end %>
-                <% a.Options1.each do |b| %>
-                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                    <%= Option.find(b).Abbreviation %>
-                  <% end %>
-                <% end %>
-              <% end %>
-              <br><%= "Q2: " %>
-              <% if a.Options2.nil? %> 
-                <%= "Plain" %>
-              <% else %>
-                <% @dif = Product.find(a.product_id).freeoptions - a.Options2 %> <%# grab any removed free items %>
-                <% if !@dif.nil? %>
-                  <% @dif.each do |b| %>
-                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
-                  <% end %>
-                <% end %>
-                <% a.Options2.each do |b| %>
-                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                    <%= Option.find(b).Abbreviation %>
-                  <% end %>
-                <% end %>
-              <% end %>
-              <br><%= "Q3: " %>
-              <% if a.Options3.nil? %> 
-                <%= "Plain" %>
-              <% else %>
-                <% @dif = Product.find(a.product_id).freeoptions - a.Options3 %> <%# grab any removed free items %>
-                <% if !@dif.nil? %>
-                  <% @dif.each do |b| %>
-                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
-                  <% end %>
-                <% end %>
-                <% a.Options3.each do |b| %>
-                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                    <%= Option.find(b).Abbreviation %>
-                  <% end %>
-                <% end %>
-              <% end %>
-              <br><%= "Q4: " %>
-              <% if a.Options4.nil? %> 
-                <%= "Plain" %>
-              <% else %>
-                <% @dif = Product.find(a.product_id).freeoptions - a.Options4 %> <%# grab any removed free items %>
-                <% if !@dif.nil? %>
-                  <% @dif.each do |b| %>
-                    <% if b != '' %><%= "-" + Option.find(b).Abbreviation %><% end %>
-                  <% end %>
-                <% end %>
-                <% a.Options4.each do |b| %>
-                  <% if !Product.find(a.product_id).freeoptions.include?(b) %> <%# don't print free option names %>
-                    <%= Option.find(b).Abbreviation %>
-                  <% end %>
-                <% end %>
-              <% end %>
-            <% end %>
-            <br> 
-            
-            <% if a.HowCooked != "normal" %>
-              Cooked: 
-              <%= a.HowCooked.humanize %>
-              <br>
-            <% end %>
-            
-            <% if a.Comments.length > 1 %>
-              Notes: 
-              <i><%= a.Comments %></i>
-              <br>
-            <% end %>
-          </div>
-        <% end %>
-        
-      </div>
-      <div class="mid around">
-        <div class="breakdown">
-          <div class="under"><h3>Order Totals</h3></div>
-          
-          <%= "Sub" %>
-          <span class="right">
-            <%= number_to_currency(@order.Subtotal).delete('$') %>
-          </span>
-          <br>
-          
-          <%= "Adj" %>
-          <span class="right">
-            <%= number_to_currency(-@order.Discounts).delete('$') %>
-          </span>
-          <br>
-          
-          <%= "Tax" %>
-          <span class="right">
-            <%= number_to_currency(@order.Tax).delete('$') %>
-          </span>
-          <br>
-          
-          <% if @order.IsDelivery == true %>
-            <%= "Dlv" %>
-            <span class="right">
-              <% if Customer.find(@order.customer_id).LongDelivery == true %>
-                <%= number_with_precision(Palconfig.where('name = ?', 'deliverylong').first.val1.to_f, precision: 2) %>
-              <% else %>
-                <%= number_with_precision(Palconfig.where('name = ?', 'delivery').first.val1.to_f, precision: 2) %>
-              <% end %>
-            </span>
-            <br>
-          <% end %>
-        </div>
-        
-        <div class="bold total">
-          <%= "Total" %>
-          <span class="right">
-            <%= number_to_currency(@order.TotalCost) %>
-          </span>
-        </div>
-        
-        <% if !@order.Coupons.nil? %>
-          <%= "Coupons: " %><br>
-          <% @order.Coupons.each do |b| %>
-            <%= Coupon.find(b).Name %><%= " -" %> <%= number_to_currency(Coupon.find(b).DollarsOff) %><br>
-          <% end %>
-          <br>
-        <% end %>
-      </div>
       
+      <%# orderlines displayed for customer %>
+      <%= render 'cashoutleft', locals: {products: @products, order: @order }%>
+
+      
+      <%# order totals displayed for customer %>
+      <%= render 'cashoutmiddle', locals: {order: @order }%>
+      
+      <%# cash out calculator and other buttons %>
       <div class="rightmost around">
         <div class="breakdown">
           <div class="under"><h3>Total Out</h3></div>
@@ -543,6 +369,8 @@
                 
                 <h4>Quick Cash Out</h4>
                 
+                <%= button_tag "Exact Cash", :type => "button", :value => ('%.2f' % @order.TotalCost).to_s.delete('.'), :class => 'btn btn-primary half quickexact' %>
+                <br>
                 <%= button_tag "$5 and Change", :type => "button", :value => "500", :class => 'btn btn-primary half quickchange' %>
                 <% if @order.IsDelivery %>
                   <%= button_tag "$5 and Tip", :type => "button", :value => "500", :class => 'btn btn-primary half quicktip' %>

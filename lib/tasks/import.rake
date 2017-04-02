@@ -55,6 +55,8 @@ namespace :import do
       Cap.create :role_id => '3', :action => 'view', :object => 'orders'
       Cap.create :role_id => '3', :action => 'create', :object => 'orders'
       Cap.create :role_id => '3', :action => 'edit', :object => 'orders'
+      Cap.create :role_id => '3', :action => 'cancel', :object => 'orders'
+      Cap.create :role_id => '3', :action => 'destroy', :object => 'orderlines'
       #only view products, options, coupons
       Cap.create :role_id => '3', :action => 'view', :object => 'products'
       Cap.create :role_id => '3', :action => 'view', :object => 'options'

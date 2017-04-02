@@ -10,10 +10,14 @@ class OptionsController < ApplicationController
     end
     
     if params[:category_id].present?
-      @category_id = params[:category_id]
-      @options = Option.where('category_id = ?', @category_id).all
+      if params[:category_id] == 'all'
+        @options = Option.all
+      else
+        @category_id = params[:category_id]
+        @options = Option.where('category_id = ?', @category_id).all
+      end
     else
-      @options = Option.all
+      @options = []
     end
     @categories = Category.all
   end

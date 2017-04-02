@@ -5,13 +5,6 @@
   <div class="container main-content">
 	<h1>Editing Role</h1>
 
-  	<% # Check capabilities
-  	if ( !logged_in? || !current_user.can?("edit", "roles")) %>
-  	<p> Sorry, you don't have the capabilities to do that</p>
-  	<% else %>
 		<%= render 'form', role: @role %>
-	<% end %>
-	<%= link_to 'Show', @role %> |
-	<%= link_to 'Back', roles_path %>
 	</div>
 </div>
