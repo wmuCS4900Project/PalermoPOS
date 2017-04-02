@@ -533,7 +533,7 @@ class OrdersController < ApplicationController
     @products = Product.all
     
     @customer = Customer.find(@order.customer_id)
-    @orderlines = Orderline.where(order_id: @id)
+    @orderlines = Orderline.where(order_id: @order.id).all
     
   end
   
@@ -563,11 +563,11 @@ class OrdersController < ApplicationController
       if !params[:order][:DriverID].present?
         redirect_to orders_cashout_url(id: params[:order_id]), :flash => { :notice => "No driver selected!" }
         return
+      else
+        @order.DriverID = params[:order][:DriverID]
+        @order.save!
       end
     end
-    
-    @order.DriverID = params[:order][:DriverID]
-    @order.save!
     
     @customer = Customer.find(@order.customer_id)
     @orderlines = Orderline.where(order_id: @order.id)

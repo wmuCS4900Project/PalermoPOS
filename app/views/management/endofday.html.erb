@@ -51,6 +51,8 @@
                 <th><%= "User" %></th>
                 <th><%= "Paid with" %></th>
                 <th><%= "Subtotal" %></th>
+                <th><%= "Delivery Charge " %></th>
+                <th><%= "Tip" %></th>
                 <th><%= "Discount" %></th>
                 <th><%= "Tax" %></th>
                 <th><%= "Total" %></th>
@@ -70,6 +72,8 @@
                     <td><%= "Credit" %><br></td>
                   <% end %>
                   <td><%= order.Subtotal %><br></td>
+                  <td><%= order.DeliveryCharge %></td>
+                  <td><%= order.Tip %></td>
                   <td><%= order.Discounts %><br></td>
                   <td><%= order.Tax %><br></td>
                   <td><%= order.TotalCost %><br></td>
@@ -87,6 +91,14 @@
             <span class="line">
               <%= "Tax for all: " %>
               <%= @taxtotals[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Delivery Charge for all: " %>
+              <%= @dlvtotal[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Tips for all: " %>
+              <%= @tiptotal[x].to_s %><br>
             </span>
             <span class="line">
               <%= "Totals for all: " %>
@@ -120,6 +132,8 @@
                 <th><%= "User" %></th>
                 <th><%= "Paid with" %></th>
                 <th><%= "Subtotal" %></th>
+                <th><%= "Delivery Charge " %></th>
+                <th><%= "Tip" %></th>
                 <th><%= "Discount" %></th>
                 <th><%= "Tax" %></th>
                 <th><%= "Total" %></th>
@@ -139,6 +153,8 @@
                     <td><%= "Credit" %><br></td>
                   <% end %>
                   <td><%= order.Subtotal %><br></td>
+                  <td><%= order.DeliveryCharge %></td>
+                  <td><%= order.Tip %></td>
                   <td><%= order.Discounts %><br></td>
                   <td><%= order.Tax %><br></td>
                   <td><%= order.TotalCost %><br></td>
@@ -156,6 +172,14 @@
             <span class="line">
               <%= "Tax for all: " %>
               <%= @taxtotals[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Delivery Charge for all: " %>
+              <%= @dlvtotal[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Tips for all: " %>
+              <%= @tiptotal[x].to_s %><br>
             </span>
             <span class="line">
               <%= "Totals for all: " %>
@@ -189,6 +213,8 @@
                 <th><%= "User" %></th>
                 <th><%= "Paid with" %></th>
                 <th><%= "Subtotal" %></th>
+                <th><%= "Delivery Charge " %></th>
+                <th><%= "Tip" %></th>
                 <th><%= "Discount" %></th>
                 <th><%= "Tax" %></th>
                 <th><%= "Total" %></th>
@@ -208,6 +234,8 @@
                     <td><%= "Credit" %><br></td>
                   <% end %>
                   <td><%= order.Subtotal %><br></td>
+                  <td><%= order.DeliveryCharge %></td>
+                  <td><%= order.Tip %></td>
                   <td><%= order.Discounts %><br></td>
                   <td><%= order.Tax %><br></td>
                   <td><%= order.TotalCost %><br></td>
@@ -225,6 +253,14 @@
             <span class="line">
               <%= "Tax for all: " %>
               <%= @taxtotals[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Delivery Charge for all: " %>
+              <%= @dlvtotal[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Tips for all: " %>
+              <%= @tiptotal[x].to_s %><br>
             </span>
             <span class="line">
               <%= "Totals for all: " %>
@@ -258,6 +294,8 @@
                 <th><%= "User" %></th>
                 <th><%= "Paid with" %></th>
                 <th><%= "Subtotal" %></th>
+                <th><%= "Delivery Charge " %></th>
+                <th><%= "Tip" %></th>
                 <th><%= "Discount" %></th>
                 <th><%= "Tax" %></th>
                 <th><%= "Total" %></th>
@@ -277,6 +315,8 @@
                     <td><%= "Credit" %><br></td>
                   <% end %>
                   <td><%= order.Subtotal %><br></td>
+                  <td><%= order.DeliveryCharge %></td>
+                  <td><%= order.Tip %></td>
                   <td><%= order.Discounts %><br></td>
                   <td><%= order.Tax %><br></td>
                   <td><%= order.TotalCost %><br></td>
@@ -287,16 +327,34 @@
           
           <p>
             <% x = 3 %>
-            <%= "Subtotal for all: " %>
-            <%= @subtotals[x].to_s %><br>
-            <%= "Tax for all: " %>
-            <%= @taxtotals[x].to_s %><br>
-            <%= "Totals for all: " %>
-            <%= @tottotals[x].to_s %><br>
-            <%= "Cash totals for all: " %>
-            <%= @cashtotal[x].to_s %><br>
-            <%= "Credit totals for all: " %>
-            <%= @credittotal[x].to_s %><br>
+            <span class="line">
+              <%= "Subtotal for all: " %>
+              <%= @subtotals[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Tax for all: " %>
+              <%= @taxtotals[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Delivery Charge for all: " %>
+              <%= @dlvtotal[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Tips for all: " %>
+              <%= @tiptotal[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Totals for all: " %>
+              <%= @tottotals[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Cash totals for all: " %>
+              <%= @cashtotal[x].to_s %><br>
+            </span>
+            <span class="line">
+              <%= "Credit totals for all: " %>
+              <%= @credittotal[x].to_s %><br>
+            </span>
           </p>
           
         <% end %>

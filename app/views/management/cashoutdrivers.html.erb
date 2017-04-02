@@ -5,20 +5,49 @@
     <%= render 'sidebars/managementside' %>
     <div class="container main-content">
       
+      <h1>Driver Cashout</h1>
+      
       <% if defined?(@driver) %>
-        <% @orders.each do |a| %>
-          <%= "Customer: " %><%= Customer.find(a.customer_id).FirstName + " " + Customer.find(a.customer_id).LastName %><br>
-          <%= "Total: " %><%= a.TotalCost %><br>
-          <%= "Tip: " %><%= a.Tip %><br>
-        <% end %>
+      
+        <% if !@orders.empty? %>
         
-        <br>
-        <%= "Total Tips: " %><%= number_to_currency(@tiptotal) %>
+          <div class="table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Total</th>
+                  <th>Delivery Charge</th>
+                  <th>Tip</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @orders.each do |a| %>
+                  <tr>
+                    <td><%= Customer.find(a.customer_id).FirstName + " " + Customer.find(a.customer_id).LastName %></td>
+                    <td><%= a.TotalCost %></td>
+                    <td><%= a.DeliveryCharge %></td>
+                    <td><%= a.Tip %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            
+          </div>
+          
+          <br>
+          <h3><%= "Total Tips: " %><%= number_to_currency(@tiptotal) %></h3>
+          <h3><%= "Total Delivery Charge: " %><%= number_to_currency(@dlvtotal) %></h3>
+          <h3><%= "Total Due to Driver: " %><%= number_to_currency(@dlvtotal + @tiptotal) %></h3>
+          
+        <% else %>
+          This driver had no orders today!
+        <% end %>
       
       <% else %>
       
         <% @users.each do |a| %>
-          <%= link_to a.Name, management_cashoutdrivers_path(:driver_id => a.id) %>
+          <p><%= link_to a.Name, management_cashoutdrivers_path(:driver_id => a.id), class: "btn btn-primary" %></p>
         <% end %>
       <% end %>
       

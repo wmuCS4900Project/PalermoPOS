@@ -35,9 +35,9 @@ class RefundsController < ApplicationController
     @refund = Refund.new
     @completed = Order.where("PaidFor IS true").all
 
-    if params[:order_id]
+    if params[:order_id].present?
       begin 
-        @order = Order.find(params[:order_id].to_i)
+        @order = Order.find(params[:order_id])
       rescue ActiveRecord::RecordNotFound => e
         @order = nil
       end
@@ -59,14 +59,10 @@ class RefundsController < ApplicationController
       return
     end
 
-    @refund = Refund.new
+    @refund = Refund.find(params[:id])
+    @order = Order.find(@refund.order_id)
 
-    if params[:order_id]
-      begin 
-        @order = Order.find(params[:order_id].to_i)
-      rescue ActiveRecord::RecordNotFound => e
-        @order = nil
-      end
+    if !@order.nil?
       
       @completed = Order.where("PaidFor IS true").all
 
@@ -78,7 +74,12 @@ class RefundsController < ApplicationController
       end
 
       @orderlines = Orderline.where("order_id = ?", @order.id).all
+    else
+      flash[:danger] = "Order not found!"
+      redirect_to orders_path
+      return
     end
+      
   end
 
   # POST /refunds
@@ -90,7 +91,8 @@ class RefundsController < ApplicationController
     end
 
     @completed = Order.where("PaidFor IS true").all
-    order = params[:order_id]
+    puts @completed
+    @order = Order.find(params[:order_id])
 
     if !@completed.include?(@order)
       # Whoa, this is not a completed order
@@ -103,6 +105,8 @@ class RefundsController < ApplicationController
 
     respond_to do |format|
       if @refund.save
+        @order.Refunded = true
+        @order.save!
         format.html { redirect_to @refund, notice: 'Refund was successfully created.' }
         format.json { render :show, status: :created, location: @refund }
       else
@@ -121,7 +125,7 @@ class RefundsController < ApplicationController
     end
 
     @completed = Order.where("PaidFor IS true").all
-    order = params[:order_id]
+    @order = Order.find(params[:order_id])
 
     if !@completed.include?(@order)
       # Whoa, this is not a completed order
@@ -130,7 +134,11 @@ class RefundsController < ApplicationController
       return
     end
     respond_to do |format|
-      if @refund.update(refund_params)
+      if @refund.update({:order_id => params[:order_id], :total => refund_params[:total], :subtotal => refund_params[:subtotal]})
+        if @order.Refunded == false
+          @order.Refunded = true
+          @order.save!
+        end
         format.html { redirect_to @refund, notice: 'Refund was successfully updated.' }
         format.json { render :show, status: :ok, location: @refund }
       else
