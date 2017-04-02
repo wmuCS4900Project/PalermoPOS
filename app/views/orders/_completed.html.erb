@@ -29,7 +29,7 @@
           <td>
           <% if ( current_user.can?("edit", "orders")) %>
               <% if Refund.find_by(:order_id => order.id ) == nil %>  
-               <%= link_to "Refund",  new_refund_path(:order_id => order.id), class: "btn btn-primary" do %><span class="glyphicon glyphicon-exclamation-sign"></span> Refund<% end %> %>
+               <%= link_to new_refund_path(:order_id => order.id), class: "btn btn-primary" do %><span class="glyphicon glyphicon-exclamation-sign"></span> Refund<% end %>
               <% else %>
                 Refunded!
               <% end%>

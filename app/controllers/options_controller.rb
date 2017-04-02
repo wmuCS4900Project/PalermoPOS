@@ -5,7 +5,7 @@ class OptionsController < ApplicationController
   # GET /options.json
   def index
     if ( !logged_in? || !current_user.can?("view", "options"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -22,7 +22,7 @@ class OptionsController < ApplicationController
   # GET /options/1.json
   def show
     if ( !logged_in? || !current_user.can?("view", "options"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
   end
@@ -30,7 +30,7 @@ class OptionsController < ApplicationController
   # GET /options/new
   def new
     if ( !logged_in? || !current_user.can?("create", "options"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -40,14 +40,14 @@ class OptionsController < ApplicationController
   # GET /options/1/edit
   def edit
     if ( !logged_in? || !current_user.can?("edit", "options"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
   end
   
   def changeall
     if ( !logged_in? || !current_user.can?("edit", "options"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -56,7 +56,7 @@ class OptionsController < ApplicationController
   
   def changeallapply
     if ( !logged_in? || !current_user.can?("edit", "options"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -98,7 +98,7 @@ class OptionsController < ApplicationController
   def create
     # Check capabilities
     if ( !logged_in? || !current_user.can?("create", "options"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -120,7 +120,7 @@ class OptionsController < ApplicationController
   def update
     # Check capabilities
     if ( !logged_in? || !current_user.can?("edit", "options"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -140,7 +140,7 @@ class OptionsController < ApplicationController
   def destroy
     # Check capabilities
     if ( !logged_in? || !current_user.can?("destroy", "options"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 

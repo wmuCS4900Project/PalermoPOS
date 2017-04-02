@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     redirect_to '/default/index'
   end
   
-  before_filter :require_login
+  before_action :require_login
 
    # Flash messages
   use_growlyflash
@@ -26,6 +26,11 @@ class ApplicationController < ActionController::Base
         puts request.path.inspect
         redirect_to login_path, :flash => { :danger => "You must be logged in!" }
       end
-
     end
+
+  alias :std_redirect_to :redirect_to
+  def redirect_to(*args)
+     flash.keep
+     std_redirect_to *args
+  end
 end

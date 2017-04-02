@@ -5,7 +5,7 @@ class RefundsController < ApplicationController
   # GET /refunds.json
   def index
     if ( !logged_in? || !current_user.can?("view", "orders"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -20,7 +20,7 @@ class RefundsController < ApplicationController
   # GET /refunds/1.json
   def show
     if ( !logged_in? || !current_user.can?("edit", "orders"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
   end
@@ -28,7 +28,7 @@ class RefundsController < ApplicationController
   # GET /refunds/new
   def new
     if ( !logged_in? || !current_user.can?("edit", "orders"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -55,7 +55,7 @@ class RefundsController < ApplicationController
   # GET /refunds/1/edit
   def edit
     if ( !logged_in? || !current_user.can?("edit", "orders"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -85,7 +85,7 @@ class RefundsController < ApplicationController
   # POST /refunds.json
   def create
     if ( !logged_in? || !current_user.can?("edit", "orders"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -116,7 +116,7 @@ class RefundsController < ApplicationController
   # PATCH/PUT /refunds/1.json
   def update
     if ( !logged_in? || !current_user.can?("edit", "orders"))
-      redirect_to root_path, :flash => { :notice => "You do not have permission to do this!" }
+      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
