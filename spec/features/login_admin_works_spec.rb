@@ -15,9 +15,8 @@ describe "tries logins", :type => :feature do
     expect(page).to have_content('Username')
     expect(page).to have_content('Password')
     sign_in_with('admin', 'admin123')
-    expect(page).to have_content('Logged in as username')
-    expect(page).to have_content('Name: admin')
-    expect(page).to have_content('Username: admin')
+    expect(page).to have_content('admin')
+    expect(page).to have_content('Dashboard')
 
   end
   
