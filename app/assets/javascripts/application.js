@@ -16,6 +16,8 @@
 //= require bootstrap
 //= require bootstrap-sprockets
 //= require turbolinks
+//= require moment
+//= require bootstrap-datetimepicker
 //= require_tree .
 //= require growlyflash
 
