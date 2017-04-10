@@ -53,6 +53,10 @@ group :development, :test do
   gem 'capybara'
   gem 'rails-controller-testing'
   gem 'database_cleaner'
+  gem 'selenium-webdriver', '3.3.0'
+  gem 'headless'
+  gem 'chromedriver-helper'
+  gem 'capybara-webkit'
 end
 
 group :development do
