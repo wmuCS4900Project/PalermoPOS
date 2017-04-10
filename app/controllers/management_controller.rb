@@ -71,9 +71,7 @@ class ManagementController < ApplicationController
     end
     
     @reporttype = params[:reporttype]
-    
-    if @reporttype == 'overall sales'
-      @year = params[:startdate]['(1i)'].to_s
+    @year = params[:startdate]['(1i)'].to_s
       @month = params[:startdate]['(2i)'].to_s
       @day = params[:startdate]['(3i)'].to_s
       @date1 = @year + '-' + @month + '-' + @day
@@ -84,6 +82,9 @@ class ManagementController < ApplicationController
       @date1 = DateTime.parse(@date1)
       @date2 = DateTime.parse(@date2).end_of_day
       @customers = Customer.all
+    
+    if @reporttype == 'overall sales'
+
       @completed = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all
       @cancelled = Order.where("PaidFor IS false AND Cancelled IS true AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all
       @refunded = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS true AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all
@@ -128,6 +129,10 @@ class ManagementController < ApplicationController
       @orderavgitems = ActiveRecord::Base.connection.exec_query(orderavgitemsquery(@date1, @date2))
       
       return
+    elsif @reporttype == 'product total sales'
+      @productCount = ActiveRecord::Base.connection.exec_query(productquery(@date1,@date2))
+      @cols = @productCount.columns
+      @rows = @productCount.rows
     end
   end
   
@@ -173,7 +178,7 @@ class ManagementController < ApplicationController
     FROM orderlines AS A
     LEFT JOIN orders AS B
     ON A.order_id = B.id
-    AND (B.created_at BETWEEN '2017-1-8' AND '2017-4-8') 
+    AND (B.created_at BETWEEN '#{date1}' AND '#{date2}') 
     group by order_id
     ) as counts;
     SQL
@@ -187,10 +192,23 @@ class ManagementController < ApplicationController
     FROM orderlines AS A
     LEFT JOIN orders AS B
     ON A.order_id = B.id
-    AND (B.created_at BETWEEN '2017-1-8' AND '2017-4-8') 
+    AND (B.created_at BETWEEN '#{date1}' AND '#{date2}') 
     group by order_id
     ) as counts;
     SQL
+  end
+  
+  #query to get a count of each product sold during the day
+  def productquery(date1, date2)
+    <<-SQL
+    SELECT product_id, COUNT(*), SUM(ItemTotalCost)
+    FROM orderlines AS A
+    INNER JOIN orders AS B
+    ON A.order_id= B.id
+    WHERE B.Paidfor = 1 AND (B.created_at BETWEEN '#{date1}' AND '#{date2}')
+    GROUP BY product_id;
+    SQL
+    
   end
   
   #end of day print out page to show sales totals and breakdowns by item

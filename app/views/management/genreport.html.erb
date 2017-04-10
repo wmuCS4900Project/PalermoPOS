@@ -100,6 +100,33 @@
 
 
 
+<% elsif @reporttype = 'product total sales' %>
+  <div class="container">
+    <h3>
+      <%= "Product Sales For " + @date1.strftime("%B %d, %Y") + " to " + @date2.strftime("%B %d, %Y") %>
+    </h3>
+    
+    <% if @rows.size > 0 %>
+      <table class="table">
+        <tr>
+          <th><%= "Product" %></th>
+          <th><%= "Count" %></th>
+          <th><%= "Total Revenue" %></th>
+        </tr>
+        
+      <% @rows.each do |this| %>
+        
+        <tr>
+          <td><%= Product.find(this[0]).Name %></td>
+          <td><%= this[1] %></td>
+          <td><%= this[2].to_s %></td>
+        </tr>
+            
+      <% end %>
+            
+      </table>
+    <% end %>
+  </div>
 <% end %>
 
 
