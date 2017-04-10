@@ -13,7 +13,7 @@
 
         <div class="form_row">
           <label>Report Type:</label>
-          <% [ 'overall sales', 'product total sales', 'sales by customer' ].each do |a| %>
+          <% [ 'overall sales', 'product total sales'].each do |a| %>
             <br><%= radio_button_tag 'reporttype', a, @a == a %>
             <%= a.humanize %>
           <% end %>
