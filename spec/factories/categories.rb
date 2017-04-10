@@ -17,5 +17,13 @@ FactoryGirl.define do
       created_at { DateTime.now }
     end
     
+    trait :fourteen do
+      id '3'
+      Name '14 Inch Pizzas'
+      Abbreviation '14 Inch'
+      Splits '1'
+      created_at { DateTime.now }
+    end
+    
   end
 end

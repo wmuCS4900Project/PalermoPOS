@@ -10,6 +10,7 @@ require 'capybara/rails'
 require 'capybara/rspec'
 require 'support/spec_test_helper'
 require 'database_cleaner'
+require 'headless'
 DatabaseCleaner.clean_with :truncation
 
 DatabaseCleaner.strategy = :transaction
@@ -39,23 +40,44 @@ RSpec.configure do |config|
   
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.include WaitForAjax, type: :feature
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
-  
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-  end
 
-  config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
+  config.use_transactional_fixtures = false
+
+  config.before :each do
+    if Capybara.current_driver == :rack_test
+      DatabaseCleaner.strategy = :transaction
+    else
+      DatabaseCleaner.strategy = :truncation
     end
+    DatabaseCleaner.start
   end
   
+  config.after do
+    DatabaseCleaner.clean
+  end
+  
+  config.include Capybara::DSL
+  
+  # Capybara.register_driver :chrome do |app|
+  #   Capybara::Selenium::Driver.new(app, :browser => :chrome)
+  # end
+
+  Capybara.javascript_driver = :webkit
+ # Capybara.default_driver = :webkit
+ # Capybara.default_wait_time = 20
+ #Capybara.app_host = 'http://stackoverflow.com'
+ # Capybara.server_port = 3200
+  #Capybara.run_server = false #Whether start server when testing
+  
+  #Capybara.default_selector = :css #:xpath #default selector , you can change to :css
+  
+  Capybara.ignore_hidden_elements = false #Ignore hidden elements when testing, make helpful when you hide or show elements using javascript
+  #Capybara.javascript_driver = :selenium #default driver when you using @javascript tag
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
@@ -76,4 +98,51 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+end
+Capybara::Webkit.configure do |config|
+  # Enable debug mode. Prints a log of everything the driver is doing.
+  #config.debug = true
+
+  # By default, requests to outside domains (anything besides localhost) will
+  # result in a warning. Several methods allow you to change this behavior.
+
+  # Silently return an empty 200 response for any requests to unknown URLs.
+  #config.block_unknown_urls
+
+  # Allow pages to make requests to any URL without issuing a warning.
+ # config.allow_unknown_urls
+
+  # Allow a specific domain without issuing a warning.
+  #config.allow_url("example.com")
+
+  # Allow a specific URL and path without issuing a warning.
+  #config.allow_url("example.com/some/path")
+
+  # Wildcards are allowed in URL expressions.
+  #config.allow_url("*.example.com")
+
+  # Silently return an empty 200 response for any requests to the given URL.
+  #config.block_url("example.com")
+
+  # Timeout if requests take longer than 5 seconds
+  config.timeout = 5
+
+  # Don't raise errors when SSL certificates can't be validated
+  config.ignore_ssl_errors
+
+  # Don't load images
+  config.skip_image_loading
+
+  # Use a proxy
+  # config.use_proxy(
+  #   host: "example.com",
+  #   port: 1234,
+  #   user: "proxy",
+  #   pass: "secret"
+  # )
+
+  # Raise JavaScript errors as exceptions
+  config.allow_url("https://fonts.googleapis.com/css?family=Coda+Caption:800%7CPT+Sans:400,400i,700")
+  config.allow_url("https://code.jquery.com/jquery-3.1.1.min.js")
+  config.raise_javascript_errors = true
 end

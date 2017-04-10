@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :order do
     
     trait :one do
-
+      
     end
     
     trait :two do

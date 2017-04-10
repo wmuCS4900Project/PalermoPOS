@@ -75,6 +75,7 @@ describe "coupons tests", :type => :feature do
   it 'edits that coupon' do
     
     visit '/coupons'
+    expect(current_path).to eq '/coupons'
     click_link 'New Coupon'
     fill_in 'Name', with: 'Palermo Duo'
     find("select#Type").value.should eq('dollarsoff')
@@ -85,9 +86,11 @@ describe "coupons tests", :type => :feature do
     page.select 'Category Match', :from => 'ptype1'
     click_button 'Save Coupon'
     
-    click_link 'Edit'
+    #expect(page).to have_link('Edit', count: 3, exact: true)
     
-    #find("Name").value.should eq('Palermo Duo')
+    click_link 'Edit', exact: true
+    
+    expect(current_path).to eq '/coupons/2/edit'
     find("select#Type").value.should eq('dollarsoff')
     expect(page).to have_field('Name', :with => 'Palermo Duo')
     expect(page).to have_field('pdata0', :with => 'Cheesy Bread')
@@ -95,6 +98,17 @@ describe "coupons tests", :type => :feature do
     expect(page).to have_select('ptype0', :selected => 'Exact Product')
     expect(page).to have_select('ptype1', :selected => 'Category Match')
     
+    fill_in 'Name', with: 'Palermo Dux'
+    fill_in 'DollarsOff', with: '2.25'
+    page.all(:fillable_field, 'ProductData[]').first.set('1')
+    page.select 'Exact Product', :from => 'ptype1'
+    page.all(:fillable_field, 'ProductData[]')[1].set('12 Inch Pizza')
+    page.select 'Category Match', :from => 'ptype0'
+    click_button 'Save Coupon'
+    
+    expect(page).to have_current_path(coupons_path)
+    expect(page).not_to have_content('Palermo Duo')
+    expect(page).to have_content('Palermo Dux')
     
   end
   

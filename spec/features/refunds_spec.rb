@@ -1,7 +1,7 @@
 
 require "rails_helper"
 
-describe "options tests", :type => :feature do
+describe "refunds tests", :type => :feature do
   
   before(:each) do
     @c1 = FactoryGirl.create :category, :subs
