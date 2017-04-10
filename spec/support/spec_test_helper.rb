@@ -21,7 +21,7 @@ module SpecTestHelper
     flash[:success] = 'Log out successful'
 	  redirect_to :back
     rescue ActionController::RedirectBackError
- 	    redirect_to root_path
+ 	    redirect_to default_index_url
   end
 
   # Logs in the given user.

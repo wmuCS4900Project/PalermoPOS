@@ -5,7 +5,7 @@ class RefundsController < ApplicationController
   # GET /refunds.json
   def index
     if ( !logged_in? || !current_user.can?("view", "orders"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -20,7 +20,7 @@ class RefundsController < ApplicationController
   # GET /refunds/1.json
   def show
     if ( !logged_in? || !current_user.can?("edit", "orders"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
   end
@@ -28,7 +28,7 @@ class RefundsController < ApplicationController
   # GET /refunds/new
   def new
     if ( !logged_in? || !current_user.can?("edit", "orders"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -55,7 +55,7 @@ class RefundsController < ApplicationController
   # GET /refunds/1/edit
   def edit
     if ( !logged_in? || !current_user.can?("edit", "orders"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -86,7 +86,7 @@ class RefundsController < ApplicationController
   # POST /refunds.json
   def create
     if ( !logged_in? || !current_user.can?("edit", "orders"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -102,7 +102,12 @@ class RefundsController < ApplicationController
     end
 
     @refund = Refund.new({:order_id => params[:order_id], :total => refund_params[:total], :subtotal => refund_params[:subtotal]})
-
+    if params[:includetax].present?
+      if params[:includetax] == "on"
+        @refund.taxrefunded = @refund.total - @refund.subtotal
+      end
+    end
+    
     respond_to do |format|
       if @refund.save
         @order.Refunded = true
@@ -120,7 +125,7 @@ class RefundsController < ApplicationController
   # PATCH/PUT /refunds/1.json
   def update
     if ( !logged_in? || !current_user.can?("edit", "orders"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 
@@ -135,6 +140,11 @@ class RefundsController < ApplicationController
     end
     respond_to do |format|
       if @refund.update({:order_id => params[:order_id], :total => refund_params[:total], :subtotal => refund_params[:subtotal]})
+        if params[:includetax].present?
+          if params[:includetax] == "on"
+            @refund.taxrefunded = @refund.total - @refund.subtotal
+          end
+        end
         if @order.Refunded == false
           @order.Refunded = true
           @order.save!

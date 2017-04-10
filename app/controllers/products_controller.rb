@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     if ( !logged_in? || !current_user.can?("view", "products"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     @products = Product.all
@@ -16,7 +16,7 @@ class ProductsController < ApplicationController
   # GET /products/1.json
   def show
     if ( !logged_in? || !current_user.can?("view", "products"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
   end
@@ -24,7 +24,7 @@ class ProductsController < ApplicationController
   # GET /products/new
   def new
     if ( !logged_in? || !current_user.can?("create", "products"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -35,7 +35,7 @@ class ProductsController < ApplicationController
   # GET /products/1/edit
   def edit
     if ( !logged_in? || !current_user.can?("edit", "products"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -45,7 +45,7 @@ class ProductsController < ApplicationController
   
   def changeall
     if ( !logged_in? || !current_user.can?("edit", "products"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -54,7 +54,7 @@ class ProductsController < ApplicationController
   
   def changeallapply
     if ( !logged_in? || !current_user.can?("edit", "products"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -94,7 +94,7 @@ class ProductsController < ApplicationController
   def create
     # Check capabilities
     if ( !logged_in? || !current_user.can?("create", "products"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 

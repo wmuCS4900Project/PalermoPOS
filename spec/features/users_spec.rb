@@ -20,7 +20,7 @@ describe "users integration tests", :type => :feature do
     fill_in 'user_username', with: 'user2'
     fill_in 'user_password', with: 'use123'
     find(:css, "#roles_[value='driver']").set(true)
-    click_button 'Create User'
+    click_button 'Save User'
     
     expect(page).to have_content('Name: user2guy')
     expect(page).to have_content('Username: user2')
@@ -48,7 +48,7 @@ describe "users integration tests", :type => :feature do
     find(:css, "#roles_[value='driver']").set(true)
     fill_in 'user_password', with: 'user123'
     
-    click_button 'Update User'
+    click_button 'Save User'
 
   end
   

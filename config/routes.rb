@@ -1,32 +1,48 @@
 Rails.application.routes.draw do
+  
+  #config routes
   resources :palconfigs
+  
+  #customers routes
   resources :customers
+  
+  #session routes
   get 'sessions/new'
   get 'users/new'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
+  #root routes
   root 'application#home'
+  
+  #users routes
   resources :users
   
+  #products routes
   get "products/changeall" => 'products#changeall'
   post "products/changeallapply" => 'products#changeallapply'
   resources :products
   
+  #categories routes
   resources :categories
   
+  #options routes
   get "options/changeall" => 'options#changeall'
   post "options/changeallapply" => 'options#changeallapply'
   resources :options
   
+  #coupons routes
   post "coupons/save" => 'coupons#save'
   resources :coupons
   
+  #management routes
   get "management" => 'management#index'
   get "management/cashoutdrivers" => 'management#cashoutdrivers'
   get "management/endofday" => 'management#endofday'
   get "management/salesreport" => 'management/salesreport'
+  get "management/genreport" => 'management/genreport'
   
+  #orders routes
   get "orders/cancel" => 'orders#cancel'
   get "orders/addPreviousOrderItems" => 'orders#addPreviousOrderItems'
   post "orders/commitorder" => 'orders#commitorder'
@@ -52,14 +68,15 @@ Rails.application.routes.draw do
   get "orders/selectcoupons" => 'orders#selectcoupons'
   post "orders/addcoupons" => 'orders#addcoupons'
   get "orders/recalcForOrderlineDelete" => 'orders#recalcForOrderlineDelete'
-  
   resources :orders
 
+  #orderline routes
   resources :orderlines
   
   # Route Signup to new users page
   get  '/signup',  to: 'users#new'
 
+  #caps, roles, refunds routes
   resources :caps, :path => "capabilities"
   resources :roles
   resources :refunds

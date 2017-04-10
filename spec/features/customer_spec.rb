@@ -27,6 +27,7 @@ describe "options tests", :type => :feature do
     FactoryGirl.create :product, :deluxepizza
     
     FactoryGirl.create :customer, :one
+    FactoryGirl.create :customer, :two
     
     FactoryGirl.create :palconfig, :delivery
     FactoryGirl.create :palconfig, :longdelivery
@@ -41,7 +42,7 @@ describe "options tests", :type => :feature do
     sign_in_with('admin', 'admin123')
   end
   
-  it 'adds an option', :js => true do
+  it 'adds an option' do
     
     visit '/options?category_id=all'
     expect(page).to have_content('Option Name')
@@ -59,39 +60,6 @@ describe "options tests", :type => :feature do
     
   end
   
-  it 'edits an option' do
-    visit '/options/1/edit'
-    expect(page).to have_content('Editing Option')
-    expect(find_field('option[Name]').value).to eq 'Ham'
-    fill_in 'option[Name]', with: 'Peppercini'
-    expect(find_field('option[Cost]').value).to eq '0.5'
-    fill_in 'option[Cost]', with: '2'
-    
-    click_button 'Save Option'
-    expect(page).to have_current_path(options_path)
-    visit '/options?category_id=2'
-    within(:xpath, '//tr[@class="Peppercini"]') do
-      expect(page).to have_content('Peppercini')
-      expect(page).not_to have_content('Ham')
-    end    
-    
-    
-  end
-  
-  it 'places options on the right sub-pages' do
-    visit '/options'
-    expect(page).not_to have_content('Ham')
-    expect(page).not_to have_content('Sausage')
-    
-    visit '/options?category_id=1'
-    expect(page).to have_content('Ham')
-    expect(page).to have_content('Sausage')
-    expect(page).to have_content('12 Inch Pizzas')
-    expect(page).not_to have_content('Subs')
-    
-    
-    
-  end
   
   def sign_in_with(username, password)
     fill_in 'session_username', with: username

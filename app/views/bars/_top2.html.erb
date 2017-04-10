@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <%= link_to "Palermo Pizza", root_path, class: "navbar-brand" %>
+      <%= link_to "Palermo Pizza", default_index_url, class: "navbar-brand" %>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -53,9 +53,24 @@
                 <% if ( current_user.can?("view", "configurations")) %>
                   <li> <%= link_to 'Configuration Settings', palconfigs_url %></li>
                 <% end %>
+                
+                <% if ( current_user.can?("view", "management")) %>
+                  <li> <%= link_to 'Sales Reports', management_salesreport_url %></li>
+                <% end %>
               </ul>
             </li>
           <% end %>
+          
+          <!--<#% if flash[:notice].present? %>-->
+          <!--  <span id="notice" class="alert alert-warning"><strong>Notice! </strong><#%= flash[:notice] %></span>-->
+          <!--<#% end %>-->
+          <!--<#% if flash[:success].present? %>-->
+          <!--  <span id="notice" class="alert alert-success"><strong>Success! </strong><#%= flash[:success] %></span>-->
+          <!--<#% end %>-->
+          <!--<#% if flash[:danger].present? %>-->
+          <!--  <span id="notice" class="alert alert-danger"><strong>Warning! </strong><#%= flash[:danger] %></span>-->
+          <!--<#% end %>-->
+          
         <% end %>
       </ul>
       

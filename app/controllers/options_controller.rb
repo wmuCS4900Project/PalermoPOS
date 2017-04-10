@@ -5,7 +5,7 @@ class OptionsController < ApplicationController
   # GET /options.json
   def index
     if ( !logged_in? || !current_user.can?("view", "options"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -26,7 +26,7 @@ class OptionsController < ApplicationController
   # GET /options/1.json
   def show
     if ( !logged_in? || !current_user.can?("view", "options"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url , :flash => { :danger => "You do not have permission to do this!" }
       return
     end
   end
@@ -34,7 +34,7 @@ class OptionsController < ApplicationController
   # GET /options/new
   def new
     if ( !logged_in? || !current_user.can?("create", "options"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url , :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -44,14 +44,15 @@ class OptionsController < ApplicationController
   # GET /options/1/edit
   def edit
     if ( !logged_in? || !current_user.can?("edit", "options"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      flash.now[:danger] = "You do not have permission to do this!"
+      redirect_to default_index_url
       return
     end
   end
   
   def changeall
     if ( !logged_in? || !current_user.can?("edit", "options"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -60,7 +61,7 @@ class OptionsController < ApplicationController
   
   def changeallapply
     if ( !logged_in? || !current_user.can?("edit", "options"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url , :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -101,8 +102,9 @@ class OptionsController < ApplicationController
   # POST /options.json
   def create
     # Check capabilities
-    if ( !logged_in? || !current_user.can?("create", "options"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+    if ( !logged_in? || !current_user.can?("create","options"))
+      flash[:danger] = "You do not have permission to do this!"
+      redirect_to default_index_url 
       return
     end
 
@@ -110,8 +112,7 @@ class OptionsController < ApplicationController
 
     respond_to do |format|
       if @option.save
-        format.html { redirect_to @option, notice: 'Option was successfully created.' }
-        format.json { render :show, status: :created, location: @option }
+        format.html { redirect_to options_url, notice: 'Option was successfully created.' }
       else
         format.html { render :new }
         format.json { render json: @option.errors, status: :unprocessable_entity }
@@ -124,14 +125,14 @@ class OptionsController < ApplicationController
   def update
     # Check capabilities
     if ( !logged_in? || !current_user.can?("edit", "options"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      flash[:danger] = "You do not have permission to do this!"
+      redirect_to default_index_url 
       return
     end
 
     respond_to do |format|
       if @option.update(option_params)
         format.html { redirect_to options_url, notice: 'Option was successfully updated.' }
-        format.json { render :show, status: :ok, location: @option }
       else
         format.html { render :edit }
         format.json { render json: @option.errors, status: :unprocessable_entity }
@@ -144,7 +145,7 @@ class OptionsController < ApplicationController
   def destroy
     # Check capabilities
     if ( !logged_in? || !current_user.can?("destroy", "options"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url , :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 

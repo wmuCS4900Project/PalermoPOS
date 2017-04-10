@@ -18,6 +18,7 @@ class DefaultController < ApplicationController
     end
 
     # Preserve flash through redirects
-    flash.keep
+    #flash.keep
+    # we don't actually want this happen!
   end
 end

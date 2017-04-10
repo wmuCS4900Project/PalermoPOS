@@ -5,7 +5,7 @@ class PalconfigsController < ApplicationController
   # GET /palconfigs.json
   def index
     if ( !logged_in? || !current_user.can?("view", "configurations"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -16,7 +16,7 @@ class PalconfigsController < ApplicationController
   # GET /palconfigs/1.json
   def show
     if ( !logged_in? || !current_user.can?("view", "configurations"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
   end
@@ -24,7 +24,7 @@ class PalconfigsController < ApplicationController
   # GET /palconfigs/new
   def new
     if ( !logged_in? || !current_user.can?("create", "configurations"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     @palconfig = Palconfig.new
@@ -33,7 +33,7 @@ class PalconfigsController < ApplicationController
   # GET /palconfigs/1/edit
   def edit
     if ( !logged_in? || !current_user.can?("edit", "configurations"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
   end
@@ -42,7 +42,7 @@ class PalconfigsController < ApplicationController
   # POST /palconfigs.json
   def create
     if ( !logged_in? || !current_user.can?("create", "configurations"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -62,7 +62,7 @@ class PalconfigsController < ApplicationController
   # PATCH/PUT /palconfigs/1.json
   def update
     if ( !logged_in? || !current_user.can?("edit", "configurations"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -80,7 +80,7 @@ class PalconfigsController < ApplicationController
   # DELETE /palconfigs/1.json
   def destroy
     if ( !logged_in? || !current_user.can?("destroy", "configurations"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     

@@ -15,14 +15,13 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require bootstrap-sprockets
-//= require turbolinks
 //= require_tree .
 //= require growlyflash
 
 Growlyflash.defaults = $.extend(true, Growlyflash.defaults, {
-  align: 'right',
+  align: 'center',
   // Don't fade out unless manually dismissed
-  delay: 0,
+  delay: 5000,
   dismiss: true,
   spacing: 10,
   target: 'body',
