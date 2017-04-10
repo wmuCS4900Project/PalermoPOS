@@ -8,6 +8,7 @@ class CustomersController < ApplicationController
     if ( !logged_in? || !current_user.can?("view", "customers") )
       redirect_to customers_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
     
     @customers = Customer.limit(100)
@@ -20,7 +21,17 @@ class CustomersController < ApplicationController
     if ( !logged_in? || !current_user.can?("view", "customers") )
       redirect_to customers_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
+    
+    @orders = Order.where('customer_id = ?', @customer.id).order('created_at DESC')
+    #update customer information
+    @customer.LastOrderDate = @orders.last.created_at
+    @customer.FirstOrderDate = @orders.first.created_at
+    @customer.TotalOrderCount = @orders.count
+    @customer.TotalOrderDollars = @orders.sum(:TotalCost)
+    @customer.save!
+    
   end
 
   # GET /customers/new
@@ -29,6 +40,7 @@ class CustomersController < ApplicationController
     if ( !logged_in? || !current_user.can?("create", "customers") )
       redirect_to customers_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
     
     @customer = Customer.new
@@ -40,6 +52,7 @@ class CustomersController < ApplicationController
     if ( !logged_in? || !current_user.can?("edit", "customers") )
       redirect_to customers_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
     
   end
@@ -51,6 +64,7 @@ class CustomersController < ApplicationController
     if ( !logged_in? || !current_user.can?("create", "customers") )
       redirect_to customers_url
       flash[:danger] = "Sorry, you don't have the capability to do that"
+      return
     end
 
     @customer = Customer.new(customer_params)

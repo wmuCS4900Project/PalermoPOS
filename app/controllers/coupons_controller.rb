@@ -5,7 +5,7 @@ class CouponsController < ApplicationController
   # GET /coupons.json
   def index
     if ( !logged_in? || !current_user.can?("view", "coupons"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     

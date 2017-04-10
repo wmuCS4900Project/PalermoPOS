@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
 
   alias :std_redirect_to :redirect_to
   def redirect_to(*args)
-     flash.keep
-     std_redirect_to *args
+    flash.keep
+    std_redirect_to *args
   end
 end

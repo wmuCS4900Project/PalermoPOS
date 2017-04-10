@@ -3,11 +3,15 @@ class ManagementController < ApplicationController
 
   def index
     @users = User.all
+    if ( !logged_in? || !current_user.can?("view", "management"))
+      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      return
+    end
   end
   
   def cashoutdrivers
     if ( !logged_in? || !current_user.can?("view", "management"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to management_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -36,7 +40,7 @@ class ManagementController < ApplicationController
   
   def palconfig
     if ( !logged_in? || !current_user.can?("view", "configurations"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to management_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     @palconfigs = Palconfig.all
@@ -44,7 +48,7 @@ class ManagementController < ApplicationController
   
   def palconfigedit
     if ( !logged_in? || !current_user.can?("edit", "configurations"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to management_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -54,7 +58,7 @@ class ManagementController < ApplicationController
   
   def salesreport
     if ( !logged_in? || !current_user.can?("view", "management"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to management_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -62,7 +66,7 @@ class ManagementController < ApplicationController
   
   def genreport
     if ( !logged_in? || !current_user.can?("view", "management"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to management_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -77,12 +81,13 @@ class ManagementController < ApplicationController
       @month = params[:enddate]['(2i)'].to_s
       @day = params[:enddate]['(3i)'].to_s
       @date2 = @year + '-' + @month + '-' + @day
+      @date1 = DateTime.parse(@date1)
+      @date2 = DateTime.parse(@date2).end_of_day
       @customers = Customer.all
       @completed = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all
       @cancelled = Order.where("PaidFor IS false AND Cancelled IS true AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all
       @refunded = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS true AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all
       
-      @orders.where(status: :paid).sum(:cost)
       @totalcharges = @completed.sum(:TotalCost) + @refunded.sum(:TotalCost)
       @totaltax = @completed.sum(:Tax) + @refunded.sum(:Tax)
       @totaltip = @completed.sum(:Tip) + @refunded.sum(:Tip)
@@ -95,6 +100,22 @@ class ManagementController < ApplicationController
       @cancelleddelivery = @cancelled.sum(:DeliveryCharge)
       @cancelledrevenue = @cancelledcharges - @cancelledtax - @cancelledtip - @cancelleddelivery
       
+      @refundedcharges = @refunded.sum(:TotalCost)
+      @refundedtax = @refunded.sum(:Tax)
+      @refundedtip = @refunded.sum(:Tip)
+      @refundeddelivery = @refunded.sum(:DeliveryCharge)
+      @refundedrevenue = @cancelledcharges - @cancelledtax - @cancelledtip - @cancelleddelivery
+      #@refunds = ActiveRecord::Base.connection.exec_query(refundsjoinquery(@date1, @date2))
+      #puts @refunds.inspect
+      #@refunds = Order.includes(:refunds).where("PaidFor IS true AND Cancelled IS false AND Refunded IS true AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2)
+      @refundcount = ActiveRecord::Base.connection.exec_query(refundscountquery(@date1, @date2))
+      puts @refundcount.inspect
+      @totalrefunded = ActiveRecord::Base.connection.exec_query(refundstotalquery(@date1, @date2))
+      puts @totalrefunded.inspect
+      @taxtotalrefunded = ActiveRecord::Base.connection.exec_query(refundstaxquery(@date1, @date2))
+      puts @taxtotalrefunded.inspect
+      @revenuerefunded = @totalrefunded.rows[0][0] - @taxtotalrefunded.rows[0][0]
+      
       @pickupscompleted = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ? AND IsDelivery = false", @date1, @date2).all
       @pickupcount = @pickupscompleted.count
       @deliveriescompleted = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ? AND IsDelivery = true", @date1, @date2).all
@@ -102,14 +123,80 @@ class ManagementController < ApplicationController
       @pickuprev = @pickupscompleted.sum(:TotalCost) - @pickupscompleted.sum(:Tax) - @pickupscompleted.sum(:Tip) - @pickupscompleted.sum(:DeliveryCharge)
       @deliveryrev = @deliveriescompleted.sum(:TotalCost) - @deliveriescompleted.sum(:Tax) - @deliveriescompleted.sum(:Tip) - @deliveriescompleted.sum(:DeliveryCharge)
       
+      @orders = Order.where("DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all
+      @orderavg = @orders.average(:Subtotal)
+      @orderavgitems = ActiveRecord::Base.connection.exec_query(orderavgitemsquery(@date1, @date2))
+      
       return
     end
+  end
+  
+  #query to get a count of each product sold during the day
+  def refundscountquery(date1, date2)
+    <<-SQL
+    SELECT COUNT(*)
+    FROM orders AS A
+    INNER JOIN refunds AS B
+    ON A.id = B.order_id
+    AND (A.created_at BETWEEN '#{date1}' AND '#{date2}')
+    GROUP BY A.created_at;
+    SQL
+  end
+  
+  def refundstotalquery(date1, date2)
+    <<-SQL
+    SELECT SUM(total)
+    FROM orders AS A
+    INNER JOIN refunds AS B
+    ON A.id = B.order_id
+    AND (A.created_at BETWEEN '#{date1}' AND '#{date2}')
+    GROUP BY A.created_at;
+    SQL
+  end
+  
+  def refundstaxquery(date1, date2)
+    <<-SQL
+    SELECT SUM(taxrefunded)
+    FROM orders AS A
+    INNER JOIN refunds AS B
+    ON A.id = B.order_id
+    AND (A.created_at BETWEEN '#{date1}' AND '#{date2}')
+    GROUP BY A.created_at;
+    SQL
+  end
+  
+  def orderavgitemsquery(date1, date2)
+    <<-SQL
+    SELECT AVG(count)
+    FROM(
+    SELECT COUNT(A.ID) AS Count
+    FROM orderlines AS A
+    LEFT JOIN orders AS B
+    ON A.order_id = B.id
+    AND (B.created_at BETWEEN '2017-1-8' AND '2017-4-8') 
+    group by order_id
+    ) as counts;
+    SQL
+  end
+  
+  def ordercostperitemquery(date1, date2)
+    <<-SQL
+    SELECT AVG(count)
+    FROM(
+    SELECT COUNT(A.ID) AS Count
+    FROM orderlines AS A
+    LEFT JOIN orders AS B
+    ON A.order_id = B.id
+    AND (B.created_at BETWEEN '2017-1-8' AND '2017-4-8') 
+    group by order_id
+    ) as counts;
+    SQL
   end
   
   #end of day print out page to show sales totals and breakdowns by item
   def endofday
     if ( !logged_in? || !current_user.can?("view", "management"))
-      redirect_to root_path, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to management_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
