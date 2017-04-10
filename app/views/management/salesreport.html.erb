@@ -10,8 +10,7 @@
         <%= date_select "startdate", "", selected: Date.today %>
         Ending date:
         <%= date_select "enddate", "", selected: Date.today %>
-        <%= submit_tag "Search for orders" %>
-        
+
         <div class="form_row">
           <label>Report Type:</label>
           <% [ 'overall sales', 'product total sales', 'sales by customer' ].each do |a| %>
@@ -24,7 +23,6 @@
         <%= submit_tag 'Generate Report' %>
         
       <% end %>
-  
       
     </div>
   </div>

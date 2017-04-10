@@ -22,7 +22,7 @@
         
           <tbody>
             <% @options.each do |option| %>
-              <tr>
+              <tr class="<%= option.Name %>">  <%# class is for testing targetting purposes %>
                 <td><%= option.id %></td>
                 <td><%= option.Name %></td>
                 <td><%= @categories.find(option.category_id).Name %></td>

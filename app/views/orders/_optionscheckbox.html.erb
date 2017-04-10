@@ -26,7 +26,7 @@
 .btn-child {
   width: 47%;
   height: 100%;
-  padding: .2em;
+  padding: .15em;
   font-size: .7em;
 }
 </style>
@@ -50,7 +50,7 @@
             
             <% if !currentops.nil? %>
               <% if currentops.include?(a.id.to_s) %>
-                <label class="btn btn-option btn-parent active">
+                <label class="btn btn-option btn-parent active" id='l<%= lead + a.id.to_s %>'>
                   <%= check_box_tag ops, a.id, true, id: ((lead + a.id.to_s).to_s), class: 'nocheck' %>
                   <% if Palconfig.where('name = ?', 'optiondisplay').first.val1 == 'long' %>
                     <%= a.Name %>
@@ -59,7 +59,7 @@
                   <% end %>
                 </label>
                 <% else %>
-                <label class="btn btn-option btn-parent">
+                <label class="btn btn-option btn-parent" id='l<%= lead + a.id.to_s %>'>
                   <%= check_box_tag ops, a.id, false, id: ((lead + a.id.to_s).to_s), class: 'nocheck' %>
                   <% if Palconfig.where('name = ?', 'optiondisplay').first.val1 == 'long' %>
                     <%= a.Name %>
@@ -70,7 +70,7 @@
               <% end %>
             <% else %>
               <% if (@product.freeoptions).include?(a.id.to_s) %>
-                <label class="btn btn-option btn-parent active">
+                <label class="btn btn-option btn-parent active" id='l<%= lead + a.id.to_s %>'>
                   <%= check_box_tag ops, a.id, true, id: ((lead + a.id.to_s).to_s), class: 'nocheck' %>
                   <% if Palconfig.where('name = ?', 'optiondisplay').first.val1 == 'long' %>
                     <%= a.Name %>
@@ -79,7 +79,7 @@
                   <% end %>
                 </label>
               <% else %>
-                <label class="btn btn-option btn-parent">
+                <label class="btn btn-option btn-parent" id='l<%= lead + a.id.to_s %>'>
                   <%= check_box_tag ops, a.id, false, id: ((lead + a.id.to_s).to_s), class: 'nocheck' %>
                   <% if Palconfig.where('name = ?', 'optiondisplay').first.val1 == 'long' %>
                     <%= a.Name %>
@@ -97,7 +97,7 @@
                 <% @relatedoptions.push(lead + b.id.to_s) %>
                 <% if !currentops.nil? %>
                   <% if currentops.include?(b.id.to_s) %>
-                    <label class="btn btn-option btn-child active">
+                    <label class="btn btn-option btn-child active" id='l<%= lead + a.id.to_s %>'>
                     <%= check_box_tag ops, b.id, true, id: ((lead + b.id.to_s).to_s), class: 'nocheck' %>
                     <% if b.Name.include?('Extra') %>
                         <%= 'X' %>
@@ -108,7 +108,7 @@
                       <% end %>
                     </label>
                   <% else %>
-                    <label class="btn btn-option btn-child">
+                    <label class="btn btn-option btn-child" id='l<%= lead + a.id.to_s %>'>
                       <%= check_box_tag ops, b.id, false, id: ((lead + b.id.to_s).to_s), class: 'nocheck' %>
                       <% if b.Name.include?('Extra') %>
                         <%= 'X' %>
@@ -121,7 +121,7 @@
                   <% end %>
                 <% else %>
                   <% if (@product.freeoptions).include?(b.id.to_s) %>
-                    <label class="btn btn-option btn-child active">
+                    <label class="btn btn-option btn-child active" id='l<%= lead + a.id.to_s %>'>
                       <%= check_box_tag ops, b.id, true, id: ((lead + b.id.to_s).to_s), class: 'nocheck' %>
                       <% if b.Name.include?('Extra') %>
                         <%= 'X' %>
@@ -132,7 +132,7 @@
                       <% end %>
                     </label>
                   <% else %>
-                    <label class="btn btn-option btn-child">
+                    <label class="btn btn-option btn-child" id='l<%= lead + a.id.to_s %>'>
                       <%= check_box_tag ops, b.id, false, id: ((lead + b.id.to_s).to_s), class: 'nocheck' %>
                       <% if b.Name.include?('Extra') %>
                         <%= 'X' %>

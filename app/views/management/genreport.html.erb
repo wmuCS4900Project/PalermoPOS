@@ -1,4 +1,3 @@
-
 <style>
   @media print
   {    
@@ -16,6 +15,7 @@
     font-size: 20px;
     color: black;
     padding: .4em;
+    border-bottom: none;
   }
   td {
     padding: .2em .8em;
@@ -34,307 +34,83 @@
   }
 </style>
 
-<% if @reporttype == 'overall sales'
+<% if @reporttype == 'overall sales' %>
 
-        <h3>
-          <%= DateTime.now.strftime("%B %d, %Y")%><br>
-          <%= "End of Day" %>
-        </h3>
-        
-        <% if !@pending.empty? %>
-          <h1>Pending Orders - This should not appear!</h1>
-        
-          <table>
-            <thead>
-              <tr>
-                <th><%= "Order Number" %></th>
-                <th><%= "Ordered by" %></th>
-                <th><%= "Time" %></th>
-                <th><%= "User" %></th>
-                <th><%= "Paid with" %></th>
-                <th><%= "Subtotal" %></th>
-                <th><%= "Discount" %></th>
-                <th><%= "Tax" %></th>
-                <th><%= "Total" %></th>
-              </tr>
-            </thead>
+  <h3>
+    <%= "Overall Sales For " + @date1.strftime("%B %d, %Y") + " to " + @date2.strftime("%B %d, %Y") %>
+  </h3>
+  
+  <div class="container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Type of Order</th>
+          <th>Amount</th>
+          <th>Total Charge</th>
+          <th>Tax</th>
+          <th>Tips</th>
+          <th>Delivery Charges</th>
+          <th>Total Revenue</th>
           
-            <tbody>
-              <% @pending.each do |order| %>
-                <tr>
-                  <td><%= order.id %></td>
-                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %><br></td>
-                  <td><%= order.created_at %></td>
-                  <td><%= User.find(order.user_id).Name %><br></td>
-                  <% if order.PaidCash == true %>
-                    <td><%= "Cash" %><br></td>
-                  <% else %>
-                    <td><%= "Credit" %><br></td>
-                  <% end %>
-                  <td><%= order.Subtotal %><br></td>
-                  <td><%= order.Discounts %><br></td>
-                  <td><%= order.Tax %><br></td>
-                  <td><%= order.TotalCost %><br></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-          
-          <p>
-            <% x = 0 %>
-            <span class="line">
-              <%= "Subtotal for all: " %>
-              <%= @subtotals[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Tax for all: " %>
-              <%= @taxtotals[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Totals for all: " %>
-              <%= @tottotals[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Discount totals for all: " %>
-              <%= %><br>
-            </span>
-            <span class="line">
-              <%= "Cash totals for all: " %>
-              <%= @cashtotal[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Credit for all: " %>
-              <%= @credittotal[x].to_s %><br>
-            </span>
-          </p>
-          
-        <% end %>
-        
-        <% if !@completed.empty? %>
-          <h1>Completed Orders</h1>
-        
-          <table>
-            <thead>
-              <tr>
-                <th><%= "Order Number" %></th>
-                <th><%= "Ordered by" %></th>
-                <th><%= "Time" %></th>
-                <th><%= "User" %></th>
-                <th><%= "Paid with" %></th>
-                <th><%= "Subtotal" %></th>
-                <th><%= "Discount" %></th>
-                <th><%= "Tax" %></th>
-                <th><%= "Total" %></th>
-              </tr>
-            </thead>
-          
-            <tbody>
-              <% @completed.each do |order| %>
-                <tr>
-                  <td><%= order.id %></td>
-                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %><br></td>
-                  <td><%= order.created_at %></td>
-                  <td><%= User.find(order.user_id).Name %><br></td>
-                  <% if order.PaidCash == true %>
-                    <td><%= "Cash" %><br></td>
-                  <% else %>
-                    <td><%= "Credit" %><br></td>
-                  <% end %>
-                  <td><%= order.Subtotal %><br></td>
-                  <td><%= order.Discounts %><br></td>
-                  <td><%= order.Tax %><br></td>
-                  <td><%= order.TotalCost %><br></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-          
-          <p>
-            <% x = 1 %>
-            <span class="line">
-              <%= "Subtotal for all: " %>
-              <%= @subtotals[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Tax for all: " %>
-              <%= @taxtotals[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Totals for all: " %>
-              <%= @tottotals[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Discount totals for all: " %>
-              <%= %><br>
-            </span>
-            <span class="line">
-              <%= "Cash totals for all: " %>
-              <%= @cashtotal[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Credit for all: " %>
-              <%= @credittotal[x].to_s %><br>
-            </span>
-          </p>
-          
-        <% end %>
-        
-        <% if !@cancelled.empty? %>
-          <h1>Cancelled Orders</h1>
-        
-          <table>
-            <thead>
-              <tr>
-                <th><%= "Order Number" %></th>
-                <th><%= "Ordered by" %></th>
-                <th><%= "Time" %></th>
-                <th><%= "User" %></th>
-                <th><%= "Paid with" %></th>
-                <th><%= "Subtotal" %></th>
-                <th><%= "Discount" %></th>
-                <th><%= "Tax" %></th>
-                <th><%= "Total" %></th>
-              </tr>
-            </thead>
-          
-            <tbody>
-              <% @cancelled.each do |order| %>
-                <tr>
-                  <td><%= order.id %></td>
-                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %><br></td>
-                  <td><%= order.created_at %></td>
-                  <td><%= User.find(order.user_id).Name %><br></td>
-                  <% if order.PaidCash == true %>
-                    <td><%= "Cash" %><br></td>
-                  <% else %>
-                    <td><%= "Credit" %><br></td>
-                  <% end %>
-                  <td><%= order.Subtotal %><br></td>
-                  <td><%= order.Discounts %><br></td>
-                  <td><%= order.Tax %><br></td>
-                  <td><%= order.TotalCost %><br></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-          
-          <p>
-            <% x = 2 %>
-            <span class="line">
-              <%= "Subtotal for all: " %>
-              <%= @subtotals[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Tax for all: " %>
-              <%= @taxtotals[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Totals for all: " %>
-              <%= @tottotals[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Discount totals for all: " %>
-              <%= %>
-            </span>
-            <span class="line">
-              <%= "Cash totals for all: " %>
-              <%= @cashtotal[x].to_s %><br>
-            </span>
-            <span class="line">
-              <%= "Credit for all: " %>
-              <%= @credittotal[x].to_s %><br>
-            </span>
-          </p> 
-        
-        <% end %>
-        
-        <% if !@refunded.empty? %>
-          <h1>Refunded Orders</h1>
-        
-          <table>
-            <thead>
-              <tr>
-                <th><%= "Order Number" %></th>
-                <th><%= "Ordered by" %></th>
-                <th><%= "Time" %></th>
-                <th><%= "User" %></th>
-                <th><%= "Paid with" %></th>
-                <th><%= "Subtotal" %></th>
-                <th><%= "Discount" %></th>
-                <th><%= "Tax" %></th>
-                <th><%= "Total" %></th>
-              </tr>
-            </thead>
-          
-            <tbody>
-              <% @refunded.each do |order| %>
-                <tr>
-                  <td><%= order.id %></td>
-                  <td><%= @customers.find(order.customer_id).FirstName %> <%= @customers.find(order.customer_id).LastName %><br></td>
-                  <td><%= order.created_at %></td>
-                  <td><%= User.find(order.user_id).Name %><br></td>
-                  <% if order.PaidCash == true %>
-                    <td><%= "Cash" %><br></td>
-                  <% else %>
-                    <td><%= "Credit" %><br></td>
-                  <% end %>
-                  <td><%= order.Subtotal %><br></td>
-                  <td><%= order.Discounts %><br></td>
-                  <td><%= order.Tax %><br></td>
-                  <td><%= order.TotalCost %><br></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-          
-          <p>
-            <% x = 3 %>
-            <%= "Subtotal for all: " %>
-            <%= @subtotals[x].to_s %><br>
-            <%= "Tax for all: " %>
-            <%= @taxtotals[x].to_s %><br>
-            <%= "Totals for all: " %>
-            <%= @tottotals[x].to_s %><br>
-            <%= "Cash totals for all: " %>
-            <%= @cashtotal[x].to_s %><br>
-            <%= "Credit totals for all: " %>
-            <%= @credittotal[x].to_s %><br>
-          </p>
-          
-        <% end %>
-        
-        <br>
-        <h1>Products sold</h1>
-        <% if @rows.size > 0 %>
-          <table>
-            <tr>
-              <th><%= "Product" %></th>
-              <th><%= "Count" %></th>
-              <th><%= "Total Revenue" %></th>
-            </tr>
-            
-          <% @rows.each do |this| %>
-            
-            <tr>
-              <td><%= Product.find(this[0]).Name %></td>
-              <td><%= this[1] %></td>
-              <td><%= this[2].to_s %></td>
-            </tr>
-                
-          <% end %>
-                
-          </table>
-        <% end %>
-      
-      <div class="no-print">
-        <br><br>
-        <script>
-        function printPage() {
-            window.print()
-        }
-        </script>
-        <%= link_to "print", "#", onclick: "printPage()" %>
-        <%= link_to "back", management_path %>
-      </div>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Complete Orders</td>
+          <td><%= @completed.count %></td>
+          <td><%= number_to_currency @totalcharges %></td>
+          <td><%= number_to_currency @totaltax %></td>
+          <td><%= number_to_currency @totaltip %></td>
+          <td><%= number_to_currency @totaldelivery %></td>
+          <td><%= number_to_currency @totalrevenue %></td>
+        </tr>
+        <tr>
+          <td>Cancelled Orders</td>
+          <td><%= @cancelled.count %></td>
+          <td><%= number_to_currency @cancelledcharges %></td>
+          <td><%= number_to_currency @cancelledtax %></td>
+          <td><%= number_to_currency @cancelledtip %></td>
+          <td><%= number_to_currency @cancelleddelivery %></td>
+          <td><%= number_to_currency @cancelledrevenue %></td>
+        </tr>
+        <tr>
+          <td>Refunded Orders</td>
+          <td><%= @refunded.count %></td>
+          <td><%= number_to_currency @totalrefunded.rows[0][0].to_s %></td>
+          <td><%= number_to_currency @taxtotalrefunded.rows[0][0].to_s %></td>
+          <td><%=  %></td>
+          <td><%=  %></td>
+          <td><%= number_to_currency @revenuerefunded %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="container">
+    <p>
+      <h1>
+        Average Order Subtotal: <%= number_to_currency @orderavg %>
+      </h1>
+      <h1>
+        Average items per order: <%= @orderavgitems.rows[0][0] %>
+      </h1>
+    </p>
+  </div>
+  
+
+
+
 
 <% end %>
+
+
+  
+<div class="no-print">
+  <br><br>
+  <script>
+  function printPage() {
+      window.print()
+  }
+  </script>
+  <%= link_to "Print", "#", onclick: "printPage()", class: "btn btn-primary" %>
+  <%= link_to "Back", management_path, class: "btn btn-primary" %>
+</div>

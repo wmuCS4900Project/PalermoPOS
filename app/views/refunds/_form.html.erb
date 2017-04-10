@@ -40,7 +40,7 @@
           <p><strong><%= Product.find(a.product_id).Name %></strong>
           (<%= number_to_currency(a.ItemTotalCost) %>)
           <input class="order-line" name="orderlines[<%= a.id %>]" />
-          <button class="btn-primary btn add-refund">Update Refund</button>
+          <button type="button" class="btn-primary btn add-refund">Update Refund</button>
           </p>
         </div>
         <% end %>
@@ -51,8 +51,8 @@
       <% end %>
     </div>
     <div class="field form-group checkbox">
-      <label for="include-tax">
-      <input id="include-tax" name="include-tax" type="checkbox" />Include tax</label>
+      <label for="includetax">
+      <input id="includetax" name="includetax" type="checkbox" />Include tax</label>
     </div>
     <div class="field form-group subtotal" style="display:none">
       <%= f.label :subtotal, "Subtotal Refunded" %>
@@ -81,7 +81,7 @@
         $("#refund_subtotal").val(total.toFixed(2));
         
         // Whether or not to include taxes in total
-        if ($("#include-tax").prop("checked")) {
+        if ($("#includetax").prop("checked")) {
           $("#refund_total").val(calculateTaxes(total));
           $(".subtotal").show();
         } else {
@@ -92,7 +92,7 @@
         e.preventDefault();
       });
 
-      $("#include-tax").change(function() {
+      $("#includetax").change(function() {
         if ($(this).prop("checked")) {
           if ($("#refund_subtotal").val() == '')
             $("#refund_total").val(0);
