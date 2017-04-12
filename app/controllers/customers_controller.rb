@@ -71,6 +71,12 @@ class CustomersController < ApplicationController
 
     respond_to do |format|
       if @customer.save
+        if params[:ordermode].present?
+          if params[:ordermode] == 'go'
+            redirect_to orders_startorder_path(custid: @customer.id, mode: 'pickup')
+            return
+          end
+        end
         format.html { redirect_to @customer, notice: 'Customer was successfully created.' }
         format.json { render :show, status: :created, location: @customer }
       else
@@ -91,6 +97,12 @@ class CustomersController < ApplicationController
 
     respond_to do |format|
       if @customer.update(customer_params)
+        if params[:ordermode].present?
+          if params[:ordermode] == 'go'
+            redirect_to orders_startorder_path(custid: @customer.id, mode: 'pickup')
+            return
+          end
+        end
         format.html { redirect_to @customer, notice: 'Customer was successfully updated.' }
         format.json { render :show, status: :ok, location: @customer }
       else
