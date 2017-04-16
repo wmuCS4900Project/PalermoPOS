@@ -26,11 +26,13 @@ class CustomersController < ApplicationController
     
     @orders = Order.where('customer_id = ?', @customer.id).order('created_at DESC')
     #update customer information
-    @customer.LastOrderDate = @orders.last.created_at
-    @customer.FirstOrderDate = @orders.first.created_at
-    @customer.TotalOrderCount = @orders.count
-    @customer.TotalOrderDollars = @orders.sum(:TotalCost)
-    @customer.save!
+    if !@orders.empty?
+      @customer.LastOrderDate = @orders.last.created_at
+      @customer.FirstOrderDate = @orders.first.created_at
+      @customer.TotalOrderCount = @orders.count
+      @customer.TotalOrderDollars = @orders.sum(:TotalCost)
+      @customer.save!
+    end
     
   end
 
