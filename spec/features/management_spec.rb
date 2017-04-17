@@ -64,5 +64,25 @@ describe "management tests", :type => :feature do
     
   end
   
+  it 'gets end of day' do 
+    #TODO WRITE ME
+  end
+  
+  it 'gets overall sales report' do
+    #TODO WRITE ME
+  end
+  
+  it 'gets product total sales report' do
+    #TODO WRITE ME
+  end
+  
+  it 'cashes out drivers' do
+    #TODO WRITE ME
+  end
+  
+  it 'sets config settings' do 
+    #TODO WRITE ME
+  end
+  
   
 end

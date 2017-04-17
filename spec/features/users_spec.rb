@@ -52,22 +52,19 @@ describe "users integration tests", :type => :feature do
 
   end
   
-  # it 'deletes a user' do
-  #   visit '/users/2'
-  #   expect(page).to have_content('Name: User1guy')
-  #   expect(page).to have_content('Driver: No')
+  it 'deletes a user', :js => true do
+    visit '/users/2'
+    expect(page).to have_content('Name: User1guy')
+    accept_confirm do
+      click_link 'Delete'
+    end
     
-  #   #page.accept_alert 'Are you sure?' do
-  #   # click_button('Destroy')
-  #   #end
+    expect(page).to have_current_path(users_path)
+    expect(page).to have_content('User was successfully destroyed.')
+    expect(page).not_to have_content('User1guy')
+    expect(page).not_to have_content('user1')
     
-    
-  #   #expect(page).to have_content('User was successfully destroyed.')
-  #   #expect(page).not_to have_content('User1guy')
-  #   #expect(page).not_to have_content('user1')
-    
-  # end
-  
+  end
   
   
   def sign_in_with(username, password)

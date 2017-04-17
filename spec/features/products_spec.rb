@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe "products tests", :type => :feature do
+describe "products integration tests", :type => :feature do
   
   def sign_in_with(username, password)
     fill_in 'session_username', with: username
@@ -103,6 +103,10 @@ describe "products tests", :type => :feature do
     expect(page).to have_content('14 Inch Pizzas')
 
     
+  end
+  
+  it 'deletes a product' do
+    #TODO WRITE ME
   end
   
 end

@@ -34,7 +34,7 @@ class OptionsController < ApplicationController
   # GET /options/new
   def new
     if ( !logged_in? || !current_user.can?("create", "options"))
-      redirect_to default_index_url , :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to options_path , :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -45,14 +45,14 @@ class OptionsController < ApplicationController
   def edit
     if ( !logged_in? || !current_user.can?("edit", "options"))
       flash.now[:danger] = "You do not have permission to do this!"
-      redirect_to default_index_url
+      redirect_to options_path
       return
     end
   end
   
   def changeall
     if ( !logged_in? || !current_user.can?("edit", "options"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to options_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -61,7 +61,7 @@ class OptionsController < ApplicationController
   
   def changeallapply
     if ( !logged_in? || !current_user.can?("edit", "options"))
-      redirect_to default_index_url , :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to options_path , :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -104,7 +104,7 @@ class OptionsController < ApplicationController
     # Check capabilities
     if ( !logged_in? || !current_user.can?("create","options"))
       flash[:danger] = "You do not have permission to do this!"
-      redirect_to default_index_url 
+      redirect_to options_path 
       return
     end
 
@@ -126,7 +126,7 @@ class OptionsController < ApplicationController
     # Check capabilities
     if ( !logged_in? || !current_user.can?("edit", "options"))
       flash[:danger] = "You do not have permission to do this!"
-      redirect_to default_index_url 
+      redirect_to options_path 
       return
     end
 
@@ -145,7 +145,7 @@ class OptionsController < ApplicationController
   def destroy
     # Check capabilities
     if ( !logged_in? || !current_user.can?("destroy", "options"))
-      redirect_to default_index_url , :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to options_path , :flash => { :danger => "You do not have permission to do this!" }
       return
     end
 

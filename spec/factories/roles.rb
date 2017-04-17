@@ -14,5 +14,10 @@ FactoryGirl.define do
       name 'driver'
     end
     
+    trait :userdef do
+      id '3'
+      name 'userdef'
+    end
+    
   end
 end

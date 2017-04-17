@@ -12,5 +12,9 @@ FactoryGirl.define do
       after(:create) {|user| user.add_role(:driver)}
     end
     
+    trait :userdef do
+      after(:create) {|user| user.add_role(:userdef)}
+    end
+    
   end
 end

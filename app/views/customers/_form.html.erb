@@ -102,12 +102,11 @@
   </div>
 
   <div class="actions">
-    <%= button_tag(type: 'submit', class: "btn btn-primary") do %>
+    <%= button_tag(type: 'submit', class: "btn btn-primary", params: { ordermode: 'no' }) do %>
       <span class="glyphicon glyphicon-floppy-disk"></span> Save Customer
     <% end %>
-    <%= button_tag(type: 'submit', class: "btn btn-primary") do %>
+    <%= button_tag(type: 'submit', class: "btn btn-primary", params: { ordermode: 'go' }) do %>
       <span class="glyphicon glyphicon-floppy-disk"></span> Save And Start An Order
-      <%= hidden_field_tag 'ordermode', 'go' %>
     <% end %>
   </div>
 <% end %>
