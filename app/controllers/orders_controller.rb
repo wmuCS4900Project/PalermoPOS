@@ -82,7 +82,7 @@ class OrdersController < ApplicationController
     
   end
   
-  #in-between for editting orders so we can check "edit" and "orders" in cancan while keeping the actual order functions under "create"
+  #in-between for editting orders so we can check "edit" and "orders" in caps while keeping the actual order functions under "create"
   def changeorder
     if ( !logged_in? || !current_user.can?("edit", "orders"))
       redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
@@ -138,7 +138,7 @@ class OrdersController < ApplicationController
   
   def commitorder
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -171,7 +171,7 @@ class OrdersController < ApplicationController
   
   def selectcoupons
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -185,7 +185,7 @@ class OrdersController < ApplicationController
   
   def addcoupons
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -234,7 +234,7 @@ class OrdersController < ApplicationController
   #a workaround to recalculate the order total if you delete an orderline
   def recalcForOrderlineDelete
     if ( !logged_in? || !current_user.can?("delete", "orderlines"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -251,7 +251,7 @@ class OrdersController < ApplicationController
   #view handles selection of options for an orderline
   def chooseoptions
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -284,7 +284,7 @@ class OrdersController < ApplicationController
   #saves any options selected in the chooseoptions view
   def addoptions
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -334,7 +334,7 @@ class OrdersController < ApplicationController
   #adds the orderlines from the previously placed order to the current order. no check for paid/cancelled/refunded status
   def addPreviousOrderItems
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -408,7 +408,7 @@ class OrdersController < ApplicationController
   #first step in creating a new order. page includes a "walk in customer" button. calls itself again for a search, displaying results
   def custsearch
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -446,7 +446,7 @@ class OrdersController < ApplicationController
   # GET /orders/walkin
   def walkin
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -465,7 +465,7 @@ class OrdersController < ApplicationController
   #when a customer is selected, this runs to create the order before giving any order options in the selectproduct view
   def startorder
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -521,7 +521,7 @@ class OrdersController < ApplicationController
   #generates the cashout page for an order. calls itself over and over to handle tips, adjustments, or coupons if they are added.
   def cashout
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -541,7 +541,7 @@ class OrdersController < ApplicationController
   #displays final cashout amounts including change and tip
   def cashedout
     if ( !logged_in? || !current_user.can?("create", "orders"))
-      redirect_to orders_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -670,7 +670,7 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1.json
   def update
     if ( !logged_in? || !current_user.can?("edit", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
@@ -689,7 +689,7 @@ class OrdersController < ApplicationController
   # DELETE /orders/1.json
   def destroy
     if ( !logged_in? || !current_user.can?("destroy", "orders"))
-      redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
+      redirect_to orders_path, :flash => { :danger => "You do not have permission to do this!" }
       return
     end
     
