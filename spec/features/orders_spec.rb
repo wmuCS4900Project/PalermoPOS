@@ -182,9 +182,6 @@ describe "orders tests", :type => :feature do
     expect(page).to have_content('Cash Out Order 1 for Jim Smith')
     expect(page).to have_content('Total $25.95')
     
-    #click_button('$20 and Change')
-    #expect(page).to have_current_path('/orders/cashout?id=1')
-    
     click_button '4'
     click_button '0'
     click_button '0'
@@ -193,8 +190,7 @@ describe "orders tests", :type => :feature do
     click_button 'CASH out'
     
     #click_button('$40 and Change')
-    #wait_for_ajax
-    #expect(page).to have_current_path('/orders/cashedout')
+    expect(page).to have_current_path('/orders/cashedout')
     expect(page).to have_content('Paid: Order 1')
     
   end
@@ -337,6 +333,18 @@ describe "orders tests", :type => :feature do
   #   expect(page).to have_content('Paid: Order 1')
     
   # end
+  
+  it 'deletes an order' do 
+    #TODO WRITE ME
+  end
+  
+  it 'cancels an order' do
+    #TODO WRITE ME
+  end
+  
+  it 'refunds an order' do
+    #TODO WRITE ME
+  end
   
 
 end

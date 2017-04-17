@@ -89,8 +89,10 @@ describe "options tests", :type => :feature do
     expect(page).to have_content('12 Inch Pizzas')
     expect(page).not_to have_content('Subs')
     
-    
-    
+  end
+  
+  it 'deletes an option' do
+    #TODO WRITE ME
   end
   
   def sign_in_with(username, password)

@@ -6,36 +6,42 @@ FactoryGirl.define do
       id "1"
       Name "Ham"
       Cost ".5"
+      Abbreviation "H"
     end
     trait :sub2 do
       category_id "2"
       id "2"
       Name "Sausage"
       Cost ".5"
+      Abbreviation "S"
     end
     trait :sub3 do
       category_id "2"
       id "3"
       Name "Pepperoni"
       Cost ".5"
+      Abbreviation "P"
     end
     trait :sub4 do
       category_id "2"
       id "4"
       Name "Onion"
       Cost ".5"
+      Abbreviation "O"
     end
     trait :sub5 do
       category_id "2"
       id "5"
       Name "Mushroom"
       Cost ".5"
+      Abbreviation "M"
     end
     trait :sub6 do
       category_id "2"
       id "6"
       Name "Extra Cheese"
       Cost "1"
+      Abbreviation "Exchs"
     end
       
     

@@ -1,7 +1,7 @@
 
 require "rails_helper"
 
-describe "options tests", :type => :feature do
+describe "customer tests", :type => :feature do
   
   before(:each) do
     FactoryGirl.create :category, :subs
@@ -27,7 +27,6 @@ describe "options tests", :type => :feature do
     FactoryGirl.create :product, :deluxepizza
     
     FactoryGirl.create :customer, :one
-    FactoryGirl.create :customer, :two
     
     FactoryGirl.create :palconfig, :delivery
     FactoryGirl.create :palconfig, :longdelivery
@@ -42,21 +41,60 @@ describe "options tests", :type => :feature do
     sign_in_with('admin', 'admin123')
   end
   
-  it 'adds an option' do
+  it 'adds a customer' do
     
-    visit '/options?category_id=all'
-    expect(page).to have_content('Option Name')
-    expect(page).to have_content('Create New Option')
-    expect(page).to have_content('Ham')
-    expect(page).not_to have_content('Bacon')
+    visit '/customers/new'
+    expect(page).to have_current_path(new_customer_path)
+    fill_in 'Phone', with: '6667778888'
+    fill_in 'Firstname', with: 'Fred'
+    fill_in 'Lastname', with: 'Rogers'
+    fill_in 'Addressnumber', with: '123'
+    fill_in 'Streetname', with: 'Street St'
+    fill_in 'City', with: 'Fairy Tale'
+    fill_in 'State', with: 'MI'
+    fill_in 'Zip', with: '11111'
+    fill_in 'Directions', with: 'turn on your tube tv'
+    click_button 'Save Customer'
     
-    click_link 'Create New Option'
-    expect(page).to have_current_path(new_option_path)
-    expect(page).to have_content('New Option')
-    fill_in 'option[Name]', with: 'Bacon'
-    fill_in 'option[Cost]', with: '2'
+    expect(page).to have_current_path(customer_path(id: 2))
+    expect(page).to have_content('Firstname: Fred')
+    expect(page).to have_content('Lastname: Rogers')
+    expect(page).to have_content('Phone: 6667778888')
+    expect(page).to have_content('Directions: turn on your tube tv')
     
-    click_button 'Save Option'
+  end
+  
+  it 'deletes a customer' do
+    
+    visit '/customers'
+    expect(page).to have_current_path(customers_path)
+    expect(page).to have_content('Smith Jim')
+    click_link('Delete')
+    
+    expect(page).to have_current_path(customers_path)
+    expect(page).not_to have_content('Smith Jim')
+    
+  end
+  
+  it 'edits a customer' do 
+    
+    visit '/customers'
+    expect(page).to have_current_path(customers_path)
+    expect(page).to have_content('Smith Jim')
+    click_link('Edit')
+    
+    expect(page).to have_current_path(edit_customer_path(id: 1))
+    fill_in 'Firstname', with: 'Fred'
+    fill_in 'Lastname', with: 'Rogers'
+    click_button 'Save Customer'
+    
+    expect(page).to have_current_path(customer_path(id: 1))
+    expect(page).to have_content('Firstname: Fred')
+    expect(page).to have_content('Lastname: Rogers')
+    
+    visit '/customers'
+    expect(page).to have_current_path(customers_path)
+    expect(page).to have_content('Rogers Fred')
     
   end
   

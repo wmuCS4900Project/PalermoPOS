@@ -20,6 +20,14 @@ describe "tries logins", :type => :feature do
 
   end
   
+  it 'logs in a user' do 
+    #TODO WRITE ME
+  end
+  
+  it 'logs out' do 
+    #TODO WRITE ME
+  end
+  
   def sign_in_with(username, password)
     fill_in 'session_username', with: username
     fill_in 'session_password', with: password

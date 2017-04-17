@@ -2,11 +2,18 @@ FactoryGirl.define do
   factory :order do
     
     trait :one do
-      
+      id '1'
+      customer_id '1'
+      user_id '1'
+      DailyID '1'
     end
     
     trait :two do
-
+      id '2'
+      customer_id '1'
+      user_id '1'
+      DailyID '2'
+      TotalCost '5.00'
     end
     
     trait :new do
