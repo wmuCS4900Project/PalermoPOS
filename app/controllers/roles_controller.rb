@@ -76,7 +76,7 @@ class RolesController < ApplicationController
     end
 
     respond_to do |format|
-      if @role.update(role_params)
+      if @role.update(:name => role_params[:name])
         format.html { redirect_to @role, notice: 'Role was successfully updated.' }
         format.json { render :show, status: :ok, location: @role }
       else
