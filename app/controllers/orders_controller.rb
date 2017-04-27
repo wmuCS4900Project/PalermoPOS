@@ -23,7 +23,7 @@ class OrdersController < ApplicationController
     if ( !logged_in? || !current_user.can?("view", "orders"))
       redirect_to default_index_url, :flash => { :danger => "You do not have permission to do this!" }
       return
-    end
+  end
     
     @customers = Customer.all
     @orders = Order.where("PaidFor IS false AND Cancelled IS false AND Refunded IS false AND IsDelivery IS false AND created_at BETWEEN ? AND ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day).all

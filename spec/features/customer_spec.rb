@@ -56,7 +56,7 @@ describe "customer tests", :type => :feature do
     fill_in 'Directions', with: 'turn on your tube tv'
     click_button 'Save Customer'
     
-    expect(page).to have_current_path(customer_path(id: 2))
+    expect(page).to have_current_path(customer_path(id: 4))
     expect(page).to have_content('Firstname: Fred')
     expect(page).to have_content('Lastname: Rogers')
     expect(page).to have_content('Phone: 6667778888')

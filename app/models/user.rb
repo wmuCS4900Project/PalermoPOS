@@ -3,8 +3,9 @@ class User < ApplicationRecord
 	# before_save { self.username = username.downcase }
   has_many :orders, :dependent => :destroy
   has_many :drivers, :dependent => :destroy
-  validates :username, uniqueness: true
-
+  validates :username, format: { with: /\A[\w\s\-\.]+\z/, message: "only allows letters, numbers, dashes, underscores, periods, and spaces." }, allow_blank: false, uniqueness: true
+  validates :name, format: { with: /\A[\w\s\-\.]+\z/, message: "only allows letters, numbers, dashes, underscores, periods, and spaces." }, allow_blank: false
+	
 	# User virtual attributes now include password and password_confirm
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
