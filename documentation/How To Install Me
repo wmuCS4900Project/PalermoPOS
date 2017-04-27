@@ -36,8 +36,8 @@ sudo gem update --system
 Install bundler:
 sudo gem install bundler
 
-Install nokogiri:
-sudo gem install nokogiri
+Install webkit prereqs
+sudo apt-get install libqt4-dev libqtwebkit-dev
 
 Install rails:
 sudo gem install rails --version=5.0.0.1
