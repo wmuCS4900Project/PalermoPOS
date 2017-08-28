@@ -76,11 +76,19 @@
         <tr>
           <td>Refunded Orders</td>
           <td><%= @refunded.count %></td>
-          <td><%= number_to_currency @totalrefunded.rows[0][0].to_s %></td>
-          <td><%= number_to_currency @taxtotalrefunded.rows[0][0].to_s %></td>
-          <td><%=  %></td>
-          <td><%=  %></td>
-          <td><%= number_to_currency @revenuerefunded %></td>
+          <% if !@totalrefunded.empty? %>
+            <td><%= number_to_currency @totalrefunded.rows[0][0].to_s %></td>
+            <td><%= number_to_currency @taxtotalrefunded.rows[0][0].to_s %></td>
+            <td><%=  %></td>
+            <td><%=  %></td>
+            <td><%= number_to_currency @revenuerefunded %></td>
+          <% else %>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          <% end %>
         </tr>
       </tbody>
     </table>

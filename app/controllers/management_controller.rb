@@ -89,33 +89,38 @@ class ManagementController < ApplicationController
       @cancelled = Order.where("PaidFor IS false AND Cancelled IS true AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all
       @refunded = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS true AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2).all
       
-      @totalcharges = @completed.sum(:TotalCost) + @refunded.sum(:TotalCost)
-      @totaltax = @completed.sum(:Tax) + @refunded.sum(:Tax)
-      @totaltip = @completed.sum(:Tip) + @refunded.sum(:Tip)
-      @totaldelivery = @completed.sum(:DeliveryCharge) + @refunded.sum(:DeliveryCharge)
-      @totalrevenue = @totalcharges - @totaltax - @totaldelivery - @totaltip
+      if !@completed.empty?
+        @totalcharges = @completed.sum(:TotalCost) + @refunded.sum(:TotalCost)
+        @totaltax = @completed.sum(:Tax) + @refunded.sum(:Tax)
+        @totaltip = @completed.sum(:Tip) + @refunded.sum(:Tip)
+        @totaldelivery = @completed.sum(:DeliveryCharge) + @refunded.sum(:DeliveryCharge)
+        @totalrevenue = @totalcharges - @totaltax - @totaldelivery - @totaltip
+      end
       
-      @cancelledcharges = @cancelled.sum(:TotalCost)
-      @cancelledtax = @cancelled.sum(:Tax)
-      @cancelledtip = @cancelled.sum(:Tip)
-      @cancelleddelivery = @cancelled.sum(:DeliveryCharge)
-      @cancelledrevenue = @cancelledcharges - @cancelledtax - @cancelledtip - @cancelleddelivery
+      if !@cancelled.empty?
+        @cancelledcharges = @cancelled.sum(:TotalCost)
+        @cancelledtax = @cancelled.sum(:Tax)
+        @cancelledtip = @cancelled.sum(:Tip)
+        @cancelleddelivery = @cancelled.sum(:DeliveryCharge)
+        @cancelledrevenue = @cancelledcharges - @cancelledtax - @cancelledtip - @cancelleddelivery
+      end
       
-      @refundedcharges = @refunded.sum(:TotalCost)
-      @refundedtax = @refunded.sum(:Tax)
-      @refundedtip = @refunded.sum(:Tip)
-      @refundeddelivery = @refunded.sum(:DeliveryCharge)
-      @refundedrevenue = @cancelledcharges - @cancelledtax - @cancelledtip - @cancelleddelivery
+      if !@refunded.empty?
+        @refundedcharges = @refunded.sum(:TotalCost)
+        @refundedtax = @refunded.sum(:Tax)
+        @refundedtip = @refunded.sum(:Tip)
+        @refundeddelivery = @refunded.sum(:DeliveryCharge)
+        @refundedrevenue = @cancelledcharges - @cancelledtax - @cancelledtip - @cancelleddelivery
+      end
       #@refunds = ActiveRecord::Base.connection.exec_query(refundsjoinquery(@date1, @date2))
       #puts @refunds.inspect
       #@refunds = Order.includes(:refunds).where("PaidFor IS true AND Cancelled IS false AND Refunded IS true AND DATE(created_at) >= ? AND DATE(created_at) <= ?", @date1, @date2)
       @refundcount = ActiveRecord::Base.connection.exec_query(refundscountquery(@date1, @date2))
-      puts @refundcount.inspect
       @totalrefunded = ActiveRecord::Base.connection.exec_query(refundstotalquery(@date1, @date2))
-      puts @totalrefunded.inspect
       @taxtotalrefunded = ActiveRecord::Base.connection.exec_query(refundstaxquery(@date1, @date2))
-      puts @taxtotalrefunded.inspect
-      @revenuerefunded = @totalrefunded.rows[0][0] - @taxtotalrefunded.rows[0][0]
+      if !@refundcount.empty?
+        @revenuerefunded = @totalrefunded.rows[0][0] - @taxtotalrefunded.rows[0][0]
+      end
       
       @pickupscompleted = Order.where("PaidFor IS true AND Cancelled IS false AND Refunded IS false AND DATE(created_at) >= ? AND DATE(created_at) <= ? AND IsDelivery = false", @date1, @date2).all
       @pickupcount = @pickupscompleted.count
