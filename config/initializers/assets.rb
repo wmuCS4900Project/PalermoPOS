@@ -8,6 +8,7 @@ Rails.application.config.assets.precompile += %w( bootstrap.css )
 Rails.application.config.assets.precompile += %w( style.css )
 Rails.application.config.assets.precompile += %w( jquery-3.1.1.min.js )
 Rails.application.config.assets.precompile += %w( .svg .eot .woff .ttf )
+Rails.application.config.assets.precompile += %w( globalscripts.js )
 
 
 # Add additional assets to the asset load path
